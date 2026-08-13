@@ -3,3 +3,7 @@
     --main-color: green;
 }
 
+#seasonNewsCont
+{
+    min-height: 200px;
+}
