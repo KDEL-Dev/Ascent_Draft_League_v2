@@ -7,3 +7,11 @@
 {
     min-height: 200px;
 }
+
+.seasonBanner
+{
+    min-height: 150px;
+    width: 100%;
+    background-color: grey;
+}
+
