@@ -15,3 +15,77 @@
     background-color: grey;
 }
 
+/* Badge Colors for every type */
+
+.typeBadge-normal {
+    background-color: #A8A77A;
+}
+
+.typeBadge-fire {
+    background-color: #EE8130;
+}
+
+.typeBadge-water {
+    background-color: #6390F0;
+}
+
+.typeBadge-electric {
+    background-color: #F7D02C;
+}
+
+.typeBadge-grass {
+    background-color: #7AC74C;
+}
+
+.typeBadge-ice {
+    background-color: #96D9D6;
+}
+
+.typeBadge-fighting {
+    background-color: #C22E28;
+}
+
+.typeBadge-poison {
+    background-color: #A33EA1;
+}
+
+.typeBadge-ground {
+    background-color: #E2BF65;
+}
+
+.typeBadge-flying {
+    background-color: #A98FF3;
+}
+
+.typeBadge-psychic {
+    background-color: #F95587;
+}
+
+.typeBadge-bug {
+    background-color: #A6B91A;
+}
+
+.typeBadge-rock {
+    background-color: #B6A136;
+}
+
+.typeBadge-ghost {
+    background-color: #735797;
+}
+
+.typeBadge-dragon {
+    background-color: #6F35FC;
+}
+
+.typeBadge-dark {
+    background-color: #705746;
+}
+
+.typeBadge-steel {
+    background-color: #B7B7CE;
+}
+
+.typeBadge-fairy {
+    background-color: #D685AD;
+}
+

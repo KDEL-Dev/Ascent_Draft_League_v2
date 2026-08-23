@@ -97,7 +97,7 @@
                                 <?=  htmlspecialchars($pokemon['name']) ?>
                             </span>
                             <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge bg-warning">
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
                                 <?= htmlspecialchars($pokemon['type1']) ?>
                             </span>
                             <?php if (!empty($pokemon['type2'])): ?>
