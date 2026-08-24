@@ -93,7 +93,7 @@
                 <div class="col-12 col-md-6 col-lg-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
                         <div>
-                            <span>
+                            <span class="me-1">
                                 <?=  htmlspecialchars($pokemon['name']) ?>
                             </span>
                             <!-- Remove Tier and see if in the future you can display owners name -->
