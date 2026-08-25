@@ -18,6 +18,11 @@
 /***** DRAFT  PAGE *****/
 /***********************/
 
+.draftBtn
+{
+    cursor: pointer;
+}
+
 /* Badge Colors for every type */
 
 .typeBadge-normal {

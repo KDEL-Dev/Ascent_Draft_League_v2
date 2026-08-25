@@ -106,7 +106,7 @@
                                 </span>
                             <?php endif; ?>
                         </div>
-                        <span class="badge bg-primary">Draft</span>
+                        <span class="draftBtn badge bg-primary">Draft</span>
                     </div>
                 </div>
             <?php endwhile; ?>
