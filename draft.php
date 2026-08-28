@@ -5,19 +5,20 @@
     require_once __DIR__ . '/includes/connection.php';
 
     // Begin by created your query
-    $sql = "
+    $ouSql = "
     SELECT showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
     FROM showdown_pokemon
     JOIN pokemon_tier_per_season
     ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
-    WHERE season_id = 1;
+    WHERE season_id = 1
+    AND pokemon_tier_per_season.tier IN ('OU', 'UUBL');
     ";
 
     // Grab the results and place them in a variable
-    $result = $conn->query($sql);
+    $ouResults = $conn->query($ouSql);
 
     // If no results, display error
-    if(!$result)
+    if(!$ouResults)
     {
         die("Query Failed: " . $conn->error);
     }
@@ -25,6 +26,58 @@
     // This is so easy, just memorize above and how to display data!
 
     //  Return to add placeholders
+
+    // Adding rest of the tiers
+
+    $uuSql = "
+    SELECT showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
+    FROM showdown_pokemon
+    JOIN pokemon_tier_per_season
+    ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
+    WHERE season_id = 1
+    AND pokemon_tier_per_season.tier IN ('UU', 'RUBL');
+    ";
+
+    $uuResults = $conn->query($uuSql);
+
+    if(!$uuResults)
+    {
+        die("Query Failed: " . $conn->error);
+    }
+
+    // RU + NUBL POKEMON
+
+     $ruSql = "
+    SELECT showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
+    FROM showdown_pokemon
+    JOIN pokemon_tier_per_season
+    ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
+    WHERE season_id = 1
+    AND pokemon_tier_per_season.tier IN ('RU', 'NUBL');
+    ";
+
+    $ruResults = $conn->query($ruSql);
+
+    if(!$ruResults)
+    {
+        die("Query Failed: " . $conn->error);
+    }
+
+    $nuSql = "
+    SELECT showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
+    FROM showdown_pokemon
+    JOIN pokemon_tier_per_season
+    ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
+    WHERE season_id = 1
+    AND pokemon_tier_per_season.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU');
+    ";
+
+    $nuResults = $conn->query($nuSql);
+
+    if(!$nuResults)
+    {
+        die("Query Failed: " . $conn->error);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -89,24 +142,97 @@
     </header>
     <main class="p-4">
         <div class="row">
-            <?php while($pokemon = $result->fetch_assoc()): ?>
-                <div class="col-12 col-md-6 col-lg-3 my-2">
+            <h2>OU Pokemon(+UUBL)</h2>
+            <?php while($ouPokemon = $ouResults->fetch_assoc()): ?>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
                         <div>
                             <span class="me-1">
-                                <?=  htmlspecialchars($pokemon['name']) ?>
+                                <?=  htmlspecialchars($ouPokemon['name']) ?>
                             </span>
                             <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
-                                <?= htmlspecialchars($pokemon['type1']) ?>
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ouPokemon['type1'])) ?>">
+                                <?= htmlspecialchars($ouPokemon['type1']) ?>
                             </span>
-                            <?php if (!empty($pokemon['type2'])): ?>
-                                <span class="badge bg-warning">
-                                    <?= htmlspecialchars($pokemon['type2']) ?>
+                            <?php if (!empty($ouPokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ouPokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($ouPokemon['type2']) ?>
                                 </span>
                             <?php endif; ?>
                         </div>
                         <span class="draftBtn badge bg-primary">Draft</span>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+        <div class="row">
+            <h2>UU Pokemon(+RUBL)</h2>
+            <?php while($uuPokemon = $uuResults->fetch_assoc()): ?>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
+                    <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="me-1">
+                                <?=  htmlspecialchars($uuPokemon['name']) ?>
+                            </span>
+                            <!-- Remove Tier and see if in the future you can display owners name -->
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($uuPokemon['type1'])) ?>">
+                                <?= htmlspecialchars($uuPokemon['type1']) ?>
+                            </span>
+                            <?php if (!empty($uuPokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($uuPokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($uuPokemon['type2']) ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                        <span class="draftBtn badge bg-primary">Draft</span>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+        <div class="row">
+            <h2>RU Pokemon(+NUBL)</h2>
+            <?php while($ruPokemon = $ruResults->fetch_assoc()): ?>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
+                    <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="me-1">
+                                <?=  htmlspecialchars($ruPokemon['name']) ?>
+                            </span>
+                            <!-- Remove Tier and see if in the future you can display owners name -->
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ruPokemon['type1'])) ?>">
+                                <?= htmlspecialchars($ruPokemon['type1']) ?>
+                            </span>
+                            <?php if (!empty($ruPokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ruPokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($ruPokemon['type2']) ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                        <span class="draftBtn badge bg-primary">Draft</span>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+        <div class="row">
+            <h2>NU Pokemon(+PUBL +PU +ZUBL +ZU)</h2>
+            <?php while($nuPokemon = $nuResults->fetch_assoc()): ?>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
+                    <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="me-1">
+                                <?=  htmlspecialchars($nuPokemon['name']) ?>
+                            </span>
+                            <!-- Remove Tier and see if in the future you can display owners name -->
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($nuPokemon['type1'])) ?>">
+                                <?= htmlspecialchars($nuPokemon['type1']) ?>
+                            </span>
+                            <?php if (!empty($nuPokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($nuPokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($nuPokemon['type2']) ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                        <span class="draftBtn badge bg-danger">Draft</span>
                     </div>
                 </div>
             <?php endwhile; ?>
