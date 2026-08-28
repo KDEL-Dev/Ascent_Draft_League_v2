@@ -142,7 +142,10 @@
     </header>
     <main class="p-4">
         <div class="row">
-            <h2>OU Pokemon(+UUBL)</h2>
+            <h2>
+                OU Pokemon
+                <span class="badge text-bg-secondary">UUBL</span>
+            </h2>
             <?php while($ouPokemon = $ouResults->fetch_assoc()): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
@@ -166,7 +169,10 @@
             <?php endwhile; ?>
         </div>
         <div class="row">
-            <h2>UU Pokemon(+RUBL)</h2>
+            <h2>
+                UU Pokemon
+                <span class="badge text-bg-secondary">RUBL</span>
+            </h2>
             <?php while($uuPokemon = $uuResults->fetch_assoc()): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
@@ -190,7 +196,10 @@
             <?php endwhile; ?>
         </div>
         <div class="row">
-            <h2>RU Pokemon(+NUBL)</h2>
+            <h2>
+                RU Pokemon
+                <span class="badge text-bg-secondary">NUBL</span>
+            </h2>
             <?php while($ruPokemon = $ruResults->fetch_assoc()): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
@@ -214,7 +223,13 @@
             <?php endwhile; ?>
         </div>
         <div class="row">
-            <h2>NU Pokemon(+PUBL +PU +ZUBL +ZU)</h2>
+            <h2>
+                NU Pokemon
+                <span class="badge text-bg-secondary">PUBL</span>
+                <span class="badge text-bg-secondary">PU</span>
+                <span class="badge text-bg-secondary">ZUBL</span>
+                <span class="badge text-bg-secondary">ZU</span>
+            </h2>
             <?php while($nuPokemon = $nuResults->fetch_assoc()): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
