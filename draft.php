@@ -6,7 +6,7 @@
 
     // Begin by created your query
     $ouSql = "
-    SELECT showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
+    SELECT showdown_pokemon.id, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
     FROM showdown_pokemon
     JOIN pokemon_tier_per_season
     ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
@@ -140,7 +140,7 @@
              </div>
         </nav>
     </header>
-    <main class="p-4">
+    <main class="p-4" id="draft">
         <div class="row">
             <h2>
                 OU Pokemon
@@ -163,7 +163,12 @@
                                 </span>
                             <?php endif; ?>
                         </div>
-                        <span class="draftBtn badge bg-primary">Draft</span>
+                        <button 
+                            class="draftBtn btn btn-primary" 
+                            data-pokemon-id="<?= $ouPokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($ouPokemon['name']) ?>">
+                            Draft 
+                        </button>
                     </div>
                 </div>
             <?php endwhile; ?>
