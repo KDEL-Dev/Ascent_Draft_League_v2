@@ -142,6 +142,47 @@
     </header>
     <main class="p-4" id="draft">
         <div class="row">
+            <h2>Draft Information</h2>
+            <div class="p-3 border">
+                <div>
+                    <h3>Draft Teams</h3>
+                    <div class="border  d-flex justify-content-between">
+                        <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center">
+                            <li>D@Hj6</li>
+                            <li>h52h</li>
+                            <li>T46</li>
+                        </ul>
+                        <button>Randomize Draft</button>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-end">
+                        <button>Start Draft</button>
+                        <button>Pause Draft</button>
+                        <button>Skip Pick</button>
+                        <button>End Draft</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="border mt-4">
+                <h2>Draftboard</h2>
+                <div class="d-flex justify-content-evenly">
+                    <div>
+                        <h3>Drafted</h3>
+                    </div>
+                    <div>
+                        <h3>Current Pick</h3>
+                    </div>
+                    <div>
+                        <h3>Your Dashboard</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <h2>
                 OU Pokemon
                 <span class="badge text-bg-secondary">UUBL</span>
