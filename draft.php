@@ -4,6 +4,10 @@
 
     require_once __DIR__ . '/includes/connection.php';
 
+    // RANDOMIZE TEAMS
+
+    // next is to add code for this
+
     // Begin by created your query
     $ouSql = "
     SELECT showdown_pokemon.id, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
@@ -149,8 +153,11 @@
                     <div class="border  d-flex justify-content-between">
                         <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center">
                             <li>D@Hj6</li>
-                            <li>h52h</li>
+                            <li>h5hh</li>
                             <li>T46</li>
+                            <li>hj2j5</li>
+                            <li>u5636</li>
+                            <li>634i2</li>
                         </ul>
                         <button>Randomize Draft</button>
                     </div>
@@ -167,7 +174,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="border mt-4">
+            <div class="border my-4">
                 <h2>Draftboard</h2>
                 <div class="d-flex justify-content-evenly">
                     <div>
