@@ -4,29 +4,22 @@
 const draftOrder = document.getElementById("draftOrder");
 const randomizeBtn = document.getElementById("randomizeDraft")
 
-let teams = [
-    "Normal",
-    "Dark",
-    "Bug",
-    "Fairy",
-    "Steel"
-]
-
-randomizeBtn.addEventListener("click", function()
-{
-
-    teams.sort(() => Math.random() -0.5);
-
-    draftOrder.innerHTML = "";
-
-    teams.forEach((team, index) => {
-        const li = document.createElement("li");
-
-        li.textContent = `${index + 1}. ${team}`;
-
-        draftOrder.appendChild(li)
+randomizeBtn.addEventListener("click", function() {
+    //Send request to PHP
+    fetch("api/draft/randomize_draft.php")
+    // Wait for PHP Response --which normally is echo"Draft order randomized successfully";
+    .then(response => response.text())
+    .then(data => {
+        // Print the response in the browswer console
+        console.log(data);
+        // Refresh the page
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error("Randomization failed:", error);
     });
 });
+
 
 // select draft buttons by class name
 let draftButtons = document.querySelectorAll(".draftBtn")
