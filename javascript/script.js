@@ -20,6 +20,21 @@ randomizeBtn.addEventListener("click", function() {
     });
 });
 
+// Draft State - Start Draft
+const startDraftBtn = document.getElementById("startDraft");
+
+startDraftBtn.addEventListener("click", function(){
+    fetch('api/draft/start_draft.php')
+    .then(response => response.text)
+    .then(data => {
+        console.log(data)
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error("Starting draft failed:", error)
+    })
+})
+
 
 // select draft buttons by class name
 let draftButtons = document.querySelectorAll(".draftBtn")

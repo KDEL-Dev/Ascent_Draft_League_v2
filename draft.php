@@ -7,10 +7,61 @@
     $seasonId = 1;
 
     // ---------------
-    // RANDOMIZE TEAMS
+    // DRAFT STATE
     // ---------------
 
+    $draftStateSql = "
+        SELECT draft_position, current_round, total_picks, is_active
+        FROM draft_state
+        WHERE season_id = ?
+    ";
 
+    $stmt = $conn->prepare($draftStateSql);
+
+    if (!$stmt) {
+        die("Prepare Failed: " . $conn->error);
+    }
+
+    $stmt->bind_param("i", $seasonId);
+    $stmt->execute();
+
+    $draftStateResult = $stmt->get_result();
+
+    if (!$draftStateResult) {
+        die("Query Failed: " . $stmt->error);
+    }
+
+    $draftState = $draftStateResult->fetch_assoc();
+
+    $draftStateSql = "
+    SELECT draft_position, current_round, total_picks, is_active
+    FROM draft_state
+    WHERE season_id = ?
+";
+
+// dropping this here cause i feel insane and cant think
+// next is to display whatever info im grabbing
+$stmt = $conn->prepare($draftStateSql);
+
+if (!$stmt) {
+    die("Prepare Failed: " . $conn->error);
+}
+
+$stmt->bind_param("i", $seasonId);
+$stmt->execute();
+
+$draftStateResult = $stmt->get_result();
+
+if (!$draftStateResult) {
+    die("Query Failed: " . $stmt->error);
+}
+
+$draftState = $draftStateResult->fetch_assoc();
+
+
+    // ---------------
+    // RANDOMIZE TEAMS
+    // ---------------
 
     // Retrieve in order, randomized draft order
     $activeUsersSql = "
@@ -187,8 +238,13 @@
                         <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
                              <?php while ($activeUser = $activeUsersResults->fetch_assoc()): ?>
                                 <li>
-                                    <?= htmlspecialchars($activeUser['draft_position']) ?>.
-                                    <?= htmlspecialchars($activeUser['team_name']) ?>
+                                    <span class="draftPosition">
+                                        <?= htmlspecialchars($activeUser['draft_position']) ?>.
+                                    </span>
+                                    <span>
+                                        <?= htmlspecialchars($activeUser['team_name']) ?>
+                                    </span>
+                                    
                                 </li>
                             <?php endwhile; ?>
                         </ul>
@@ -197,7 +253,7 @@
                 </div>
                 <div class="mt-4">
                     <div class="d-flex justify-content-end">
-                        <button>Start Draft</button>
+                        <button id="startDraft">Start Draft</button>
                         <button>Pause Draft</button>
                         <button>Skip Pick</button>
                         <button>End Draft</button>
