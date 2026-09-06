@@ -260,14 +260,64 @@ $draftState = $draftStateResult->fetch_assoc();
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="border m-3">
                 <h2>Draft Information</h2>
-                <div class="d-flex justify-content-evenly">
-                    <div>
+                <div class="d-flex">
+                    <div class="flex-grow-1">
                         <h3>Drafted</h3>
-                    </div>
-                    <div>
+                        <div class="border d-flex justify-content-evenly">
+                            <div>
+                                <div>
+                                    <p>pick owner</p>
+                                    
+                                    <p>pokemon stats</p>
+                                    <p>pokemon name</p>
+                                    <p>pokemon abilities</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>pick display with tier</p>
+                            </div>
+                            <div>
+                                <p>last 5 picks</p>
+                            </div>
+                        </div>
+                        </div>
+                        
+                    <div class="flex-grow-1">
                         <h3>Your Dashboard</h3>
+                        <div class="d-flex justify-content-evenly">
+                            <div>
+                                <p>Roster Counter</p>
+                                <p>0/12</p>
+                            </div>
+                            <div>
+                                <div class="d-flex">
+                                    <ul>
+                                        <li>OU/UUBL</li>
+                                        <li>OU/UUBL</li>
+                                        <li>OU/UUBL</li>
+                                    </ul>
+                                    <ul>
+                                        <li>UU/RUBL</li>
+                                        <li>UU/RUBL</li>
+                                        <li>UU/RUBL</li>                            
+                                    </ul>
+                                </div>
+                                <div class="d-flex">
+                                    <ul>
+                                        <li>RU/NUBL</li>
+                                        <li>RU/NUBL</li>
+                                        <li>RU/NUBL</li>
+                                    </ul>
+                                    <ul>
+                                        <li>NU/BELOW</li>
+                                        <li>NU/BELOW</li>
+                                        <li>NU/BELOW</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
