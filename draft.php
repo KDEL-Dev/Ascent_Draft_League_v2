@@ -279,15 +279,15 @@ $draftState = $draftStateResult->fetch_assoc();
                                 <p>pick display with tier</p>
                             </div>
                             <div>
-                                <p>last 5 picks</p>
+                                <p>team so far</p>
                             </div>
                         </div>
                         </div>
                         
                     <div class="flex-grow-1">
                         <h3>Your Dashboard</h3>
-                        <div class="d-flex justify-content-evenly">
-                            <div>
+                        <div class="border d-flex justify-content-evenly">
+                            <div class="d-flex align-items-center">
                                 <p>Roster Counter</p>
                                 <p>0/12</p>
                             </div>
@@ -318,6 +318,15 @@ $draftState = $draftStateResult->fetch_assoc();
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="border d-flex">
+                        <p>Timer</p>
+                        <p>On the clock - user</p>
+                    </div>
+                    <div>
+                        <p>sliding display of previous pick</p>
                     </div>
                 </div>
             </div>
