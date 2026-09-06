@@ -261,13 +261,10 @@ $draftState = $draftStateResult->fetch_assoc();
                 </div>
             </div>
             <div>
-                <h2>Draftboard</h2>
+                <h2>Draft Information</h2>
                 <div class="d-flex justify-content-evenly">
                     <div>
                         <h3>Drafted</h3>
-                    </div>
-                    <div>
-                        <h3>Current Pick</h3>
                     </div>
                     <div>
                         <h3>Your Dashboard</h3>
