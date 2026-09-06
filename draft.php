@@ -228,9 +228,8 @@ $draftState = $draftStateResult->fetch_assoc();
              </div>
         </nav>
     </header>
-    <main class="p-4" id="draft">
-        <div class="row border">
-            <h2>Draft Overview</h2>
+    <main class="p-3" id="draft">
+        <div class="row border mb-3" id="draftDashboard">
             <div>
                 <div>
                     <h3>Draft Order</h3>
@@ -260,10 +259,9 @@ $draftState = $draftStateResult->fetch_assoc();
                     </div>
                 </div>
             </div>
-            <div class="border m-3">
-                <h2>Draft Information</h2>
-                <div class="d-flex">
-                    <div class="flex-grow-1">
+            <div class="contaier p-3">
+                <div class="row p-3">
+                    <div class="col-sm-12 col-lg-8 p-0">
                         <h3>Drafted</h3>
                         <div class="border d-flex justify-content-evenly">
                             <div>
@@ -284,12 +282,12 @@ $draftState = $draftStateResult->fetch_assoc();
                         </div>
                         </div>
                         
-                    <div class="flex-grow-1">
+                    <div class="col-sm-12 col-lg-4 p-0">
                         <h3>Your Dashboard</h3>
                         <div class="border d-flex justify-content-evenly">
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex flex-column justify-content-center align-items-center">
                                 <p>Roster Counter</p>
-                                <p>0/12</p>
+                                <h4>0/12</h4>
                             </div>
                             <div>
                                 <div class="d-flex">
@@ -320,12 +318,12 @@ $draftState = $draftStateResult->fetch_assoc();
                         </div>
                     </div>
                 </div>
-                <div class="d-flex">
-                    <div class="border d-flex">
+                <div class="row p-3">
+                    <div class="border col-2 d-flex">
                         <p>Timer</p>
                         <p>On the clock - user</p>
                     </div>
-                    <div>
+                    <div class="col-10 border">
                         <p>sliding display of previous pick</p>
                     </div>
                 </div>
