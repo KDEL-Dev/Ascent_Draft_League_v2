@@ -37,6 +37,7 @@ startDraftBtn.addEventListener("click", function(){
 
 
 // select draft buttons by class name
+
 let draftButtons = document.querySelectorAll(".draftBtn")
 
 // select each draft button and display id number
@@ -45,6 +46,22 @@ draftButtons.forEach(button => {
     button.addEventListener("click", () => {
         const pokemonId = button.dataset.pokemonId;
 
-        console.log("Trying to draft:", pokemonId);
+        fetch("api/draft/make_pick.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            pokemon_id: pokemonId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("PHP RESPONSE:", data);
+    })
+    .catch(error => {
+        console.error("Draft Failed:", error);
+    });
+
     })
 })

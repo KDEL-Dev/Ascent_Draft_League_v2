@@ -253,9 +253,9 @@ $draftState = $draftStateResult->fetch_assoc();
                 <div class="mt-4">
                     <div class="d-flex justify-content-end">
                         <button id="startDraft">Start Draft</button>
-                        <button>Pause Draft</button>
+                        <button id="pauseDraft">Pause Draft</button>
                         <button>Skip Pick</button>
-                        <button>End Draft</button>
+                        <button id="endDraft">End Draft</button>
                     </div>
                 </div>
             </div>
@@ -319,12 +319,16 @@ $draftState = $draftStateResult->fetch_assoc();
                     </div>
                 </div>
                 <div class="row p-3">
-                    <div class="border col-2 d-flex">
-                        <p>Timer</p>
-                        <p>On the clock - user</p>
+                    <div class="border col-1 text-center">
+                        <p class="border-bottom">timer</p>
+                        <p class="fs-5">60</p>
                     </div>
-                    <div class="col-10 border">
-                        <p>sliding display of previous pick</p>
+                    <div class="col-2 border text-center">
+                        <p class="border-bottom">On the clock</p>
+                        <p>-</p>
+                    </div>
+                    <div class="col-9 border d-flex align-items-center">
+                        <p class="mb-0">sliding display of previous pick</p>
                     </div>
                 </div>
             </div>
