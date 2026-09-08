@@ -84,7 +84,60 @@
         exit;
     }
 
-    // INSERT
+    // ----------
+    // TEAM COUNT
+    // ----------
+
+    $sql = "
+        SELECT COUNT(*) AS team_count
+        FROM active_users
+        WHERE season_id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $seasonId);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $teamCount = $result->fetch_assoc()['team_count'];
+
+    // --------------------------------
+    // CHECK IF POKEMON ALREADY DRAFTED
+    // --------------------------------
+
+    // Check if Pokemon has already been drafted
+
+    $sql = "
+        SELECT id
+        FROM draft_picks
+        WHERE season_id = ?
+        AND showdown_pokemon_id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param(
+        "ii",
+        $seasonId,
+        $pokemonId
+    );
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo json_encode([
+            "success" => false,
+            "message" => "That Pokemon has already been drafted."
+        ]);
+        exit;
+    }
+
+
+    // --------------
+    // INSERT into dB
+    // --------------
 
     $pickNumber = $draftState['total_picks'] + 1;
     $roundNumber = $draftState['current_round'];
@@ -120,25 +173,73 @@
         exit;
     }
 
+    
+
+
+
+    // -------------------
     // Advance Draft State
+    // -------------------
 
     $newTotalPicks = $draftState['total_picks'] + 1;
-    $newDraftPosition = $draftState['draft_position'] + 1; //This will break at the end but its ok for now while building apparently
+
+    $currentPosition = $draftState['draft_position'];
+    $currentRound = $draftState['current_round'];
+
+    // Odd rounds move forward
+    if($currentRound % 2 === 1)
+    {
+        if($currentPosition < $teamCount)
+        {
+            // Keep moving forward
+            $newDraftPosition = $currentPosition + 1;
+            $newRound = $currentRound;
+        }
+        else
+        {
+            // End of round
+            // Same team gets the first pick
+            // of the next round
+            $newDraftPosition = $teamCount;
+            $newRound = $currentRound + 1;
+        }
+    }
+    // Even rounds move backward
+    else
+    {
+        if($currentPosition > 1)
+        {
+            // Keep moving backward
+            $newDraftPosition = $currentPosition - 1;
+            $newRound = $currentRound;
+        }
+        else
+        {
+            // End of round
+            // Same team gets first pick
+            // of the next round
+
+            $newDraftPosition = 1;
+            $newRound = $currentRound + 1;
+        }
+    }
 
     $sql = "
         UPDATE draft_state
         SET
             total_picks = ?,
-            draft_position = ?
+            draft_position = ?,
+            current_round = ?
         WHERE season_id = ?
     ";
 
     $stmt = $conn->prepare($sql);
 
     $stmt->bind_param(
-        "iii",
+        "iiii",
         $newTotalPicks,
         $newDraftPosition,
+        $newRound,
         $seasonId
     );
 

@@ -33,32 +33,6 @@
 
     $draftState = $draftStateResult->fetch_assoc();
 
-    $draftStateSql = "
-    SELECT draft_position, current_round, total_picks, is_active
-    FROM draft_state
-    WHERE season_id = ?
-";
-
-// dropping this here cause i feel insane and cant think
-// next is to display whatever info im grabbing
-$stmt = $conn->prepare($draftStateSql);
-
-if (!$stmt) {
-    die("Prepare Failed: " . $conn->error);
-}
-
-$stmt->bind_param("i", $seasonId);
-$stmt->execute();
-
-$draftStateResult = $stmt->get_result();
-
-if (!$draftStateResult) {
-    die("Query Failed: " . $stmt->error);
-}
-
-$draftState = $draftStateResult->fetch_assoc();
-
-
     // ---------------
     // RANDOMIZE TEAMS
     // ---------------
