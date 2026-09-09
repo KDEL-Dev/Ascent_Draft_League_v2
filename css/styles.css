@@ -1,7 +1,16 @@
+
+/* Website Wide */
 :root
 {
     --main-color: green;
 }
+
+li
+{
+    list-style: none;
+}
+
+/* custom */
 
 #seasonNewsCont
 {
@@ -17,6 +26,8 @@
 /***********************/
 /***** DRAFT  PAGE *****/
 /***********************/
+
+/********** Draft Information *********/
 
 #draftDashboard
 {
@@ -35,12 +46,20 @@
     border: none;
 }
 
+/* Draft Image */
+#draftPokemonImage img
+{
+    max-width: 100px;
+}
+
+
 .draftBtn
 {
     cursor: pointer;
 }
 
-/* Badge Colors for every type */
+
+/********** Badge Colors for every type ***********/
 
 .typeBadge-normal {
     background-color: #A8A77A;

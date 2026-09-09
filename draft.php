@@ -238,54 +238,83 @@
                     <div class="col-sm-12 col-lg-8 p-0">
                         <h3>Drafted</h3>
                         <div class="border d-flex justify-content-evenly">
-                            <div>
-                                <div>
-                                    <p>pick owner</p>
-                                    
-                                    <p>pokemon stats</p>
-                                    <p>pokemon name</p>
-                                    <p>pokemon abilities</p>
-                                </div>
+                            <div id="draftPickInfo" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+                                <p id="draftPickOwner">pick owner</p>
+                                
+                                <p id="draftPokemonStats">pokemon stats</p>
+                                <p id="draftPokemonName">pokemon name</p>
+                                <p id="draftPokemonAbility">pokemon abilities</p>                            </div>
+                            <div class="d-flex flex-column flex-grow-1">
+                                <div id="draftPokemonImage"></div>
+                                <p id="draftPokemonTier">tier</p>
                             </div>
-                            <div>
-                                <p>pick display with tier</p>
-                            </div>
-                            <div>
-                                <p>team so far</p>
+                            <div id="draftDisplayTeamRoster" class="d-flex flex-grow-1">
+                                 <div class=" d-flex flex-column flex-grow-1">
+                                    <p>ou</p>
+                                    <ul id="ouDraftDisplayRoster" class="p-0">
+                                        <li>-</li>
+                                        <li>-</li>
+                                        <li>-</li>
+                                    </ul>
+                                    <p>uu</p>
+                                    <ul id="uuDraftDisplayRoster" class="p-0">
+                                        <li>-</li>
+                                        <li>-</li>
+                                        <li>-</li>
+                                    </ul>
+                                 </div>
+                                 <div class="d-flex flex-column flex-grow-1">
+                                    <p>ru</p>
+                                    <ul id="ruDraftDisplayRoster" class="p-0">
+                                        <li>-</li>
+                                        <li>-</li>
+                                        <li>-</li>
+                                    </ul>
+                                    <p>nu</p>
+                                    <ul id="nuDraftDisplayRoster" class="p-0">
+                                        <li>-</li>
+                                        <li>-</li>
+                                        <li>-</li>
+                                    </ul>
+                                 </div>
                             </div>
                         </div>
                         </div>
                         
-                    <div class="col-sm-12 col-lg-4 p-0">
+                    <div class="col-sm-12 col-lg-4 p-0 ">
                         <h3>Your Dashboard</h3>
                         <div class="border d-flex justify-content-evenly">
                             <div class="d-flex flex-column justify-content-center align-items-center">
                                 <p>Roster Counter</p>
-                                <h4>0/12</h4>
+                                <h4 id="draftRosterCount">0/12</h4>
                             </div>
-                            <div>
-                                <div class="d-flex">
-                                    <ul>
-                                        <li>OU/UUBL</li>
-                                        <li>OU/UUBL</li>
-                                        <li>OU/UUBL</li>
+                            <div class="d-flex">
+                                <div class="d-flex flex-column">
+                                    <p>OU</p>
+                                    <ul id="ouDraftRoster">
+                                        <li>—</li>
+                                        <li>—</li>
+                                        <li>—</li>
                                     </ul>
-                                    <ul>
-                                        <li>UU/RUBL</li>
-                                        <li>UU/RUBL</li>
-                                        <li>UU/RUBL</li>                            
+                                    <p>UU</p>
+                                    <ul id="uuDraftRoster">
+                                        <li>—</li>
+                                        <li>—</li>
+                                        <li>—</li>                           
                                     </ul>
                                 </div>
-                                <div class="d-flex">
-                                    <ul>
-                                        <li>RU/NUBL</li>
-                                        <li>RU/NUBL</li>
-                                        <li>RU/NUBL</li>
+                                <div class="d-flex flex-column">
+                                    <p>RU</p>
+                                    <ul id="ruDraftRoster">
+                                        <li>—</li>
+                                        <li>—</li>
+                                        <li>—</li>
                                     </ul>
-                                    <ul>
-                                        <li>NU/BELOW</li>
-                                        <li>NU/BELOW</li>
-                                        <li>NU/BELOW</li>
+                                    <p>NU</p>
+                                    <ul id="nuDraftRoster">
+                                        <li>—</li>
+                                        <li>—</li>
+                                        <li>—</li>
                                     </ul>
                                 </div>
                             </div>
@@ -361,7 +390,12 @@
                                 </span>
                             <?php endif; ?>
                         </div>
-                        <span class="draftBtn badge bg-primary">Draft</span>
+                        <button 
+                            class="draftBtn btn btn-primary" 
+                            data-pokemon-id="<?= $uuPokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($uuPokemon['name']) ?>">
+                            Draft 
+                        </button>
                     </div>
                 </div>
             <?php endwhile; ?>
@@ -388,7 +422,12 @@
                                 </span>
                             <?php endif; ?>
                         </div>
-                        <span class="draftBtn badge bg-primary">Draft</span>
+                        <button 
+                            class="draftBtn btn btn-primary" 
+                            data-pokemon-id="<?= $ruPokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($ruPokemon['name']) ?>">
+                            Draft 
+                        </button>
                     </div>
                 </div>
             <?php endwhile; ?>
@@ -418,7 +457,12 @@
                                 </span>
                             <?php endif; ?>
                         </div>
-                        <span class="draftBtn badge bg-danger">Draft</span>
+                        <button 
+                            class="draftBtn btn btn-primary" 
+                            data-pokemon-id="<?= $nuPokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($nuPokemon['name']) ?>">
+                            Draft 
+                        </button>
                     </div>
                 </div>
             <?php endwhile; ?>
