@@ -5,7 +5,11 @@
     header('Content-Type: application/json');
 
     $seasonId = 1;
-    $activeUserId = 6; // Temporary for testing
+    // $activeUserId = 6;
+    $activeUserId = isset($_GET['active_user_id'])
+    ? (int) $_GET['active_user_id']
+    : 0;
+
 
     $sql = "
     SELECT

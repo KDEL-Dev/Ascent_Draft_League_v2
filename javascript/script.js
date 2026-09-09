@@ -38,11 +38,16 @@ startDraftBtn.addEventListener("click", function(){
 })
 
 
-// -------------LOAD USER ROSTER to DRAFT PAGE---------------
+// -------------LOADS LOGGED IN USER ROSTER to DRAFT PAGE---------------
 
-async function loadDraftRoster()
+async function loadUserDraftRoster()
 {
-    const response = await fetch('api/roster/get_roster.php');
+    const activeUserId = 6; // temp: grab active user from loggedin person later
+    const response = await fetch(
+        `api/roster/get_roster.php?active_user_id=${activeUserId}`
+    );
+
+    // const response = await fetch('api/roster/get_roster.php');
 
     const data = await response.json();
 
@@ -59,70 +64,101 @@ async function loadDraftRoster()
     document.getElementById('draftRosterCount').textContent =
     `${data.roster_count}/${data.roster_limit}`;
 
-    // ------------
-    // ROSTER SLOTS
-    // ------------
+    // ----------------
+    // GET ROSTER LISTS
+    // ----------------
 
-    // Clear existing placeholders
-    const ouRoster = document.querySelectorAll('#ouDraftRoster li');
-    const uuRoster = document.querySelectorAll('#uuDraftRoster li');
-    const ruRoster = document.querySelectorAll('#ruDraftRoster li');
-    const nuRoster = document.querySelectorAll('#nuDraftRoster li');
+    const ouRoster = document.getElementById('ouDraftRoster');
+    const uuRoster = document.getElementById('uuDraftRoster');
+    const ruRoster = document.getElementById('ruDraftRoster');
+    const nuRoster = document.getElementById('nuDraftRoster');
 
 
-    data.roster.forEach(pokemon => {
+    // ----------------
+    // CLEAR OLD ROSTER
+    // ----------------
 
-        if (['OU', 'UUBL'].includes(pokemon.tier)) {
+    ouRoster.replaceChildren();
+    uuRoster.replaceChildren();
+    ruRoster.replaceChildren();
+    nuRoster.replaceChildren();
 
-            for (let i = 0; i < ouRoster.length; i++) {
-                if (ouRoster[i].textContent === '—') {
-                    ouRoster[i].textContent = pokemon.name;
-                    break;
-                }
-            }
 
-        }
+    // ----------------
+    // DISPLAY ROSTER
+    // ----------------
 
-        else if (['UU', 'RUBL'].includes(pokemon.tier)) {
+    displayUserDraftTier(
+        ouRoster,
+        data.roster,
+        ['OU', 'UUBL']
+    );
 
-            for (let i = 0; i < uuRoster.length; i++) {
-                if (uuRoster[i].textContent === '—') {
-                    uuRoster[i].textContent = pokemon.name;
-                    break;
-                }
-            }
+    displayUserDraftTier(
+        uuRoster,
+        data.roster,
+        ['UU', 'RUBL']
+    );
 
-        }
+    displayUserDraftTier(
+        ruRoster,
+        data.roster,
+        ['RU', 'NUBL']
+    );
 
-        else if (['RU', 'NUBL'].includes(pokemon.tier)) {
-
-            for (let i = 0; i < ruRoster.length; i++) {
-                if (ruRoster[i].textContent === '—') {
-                    ruRoster[i].textContent = pokemon.name;
-                    break;
-                }
-            }
-
-        }
-
-        else if (['NU', 'PUBL', 'PU', 'ZUBL', 'ZU'].includes(pokemon.tier)) {
-
-            for (let i = 0; i < nuRoster.length; i++) {
-                if (nuRoster[i].textContent === '—') {
-                    nuRoster[i].textContent = pokemon.name;
-                    break;
-                }
-            }
-
-        }
-    });
+    displayUserDraftTier(
+        nuRoster,
+        data.roster,
+        ['NU', 'PUBL', 'PU', 'ZUBL', 'ZU']
+    );
 
 }
+
+// -----------
+function displayUserDraftTier(list, roster, tiers)
+{
+    const pokemonForTier = roster.filter(pokemon =>
+        tiers.includes(pokemon.tier)
+    );
+
+
+    // ----------------
+    // ADD POKEMON
+    // ----------------
+
+    pokemonForTier.forEach(pokemon => {
+
+        const li = document.createElement('li');
+
+        li.textContent = pokemon.name;
+
+        list.appendChild(li);
+    });
+
+
+    // ----------------
+    // ADD EMPTY SLOTS
+    // ----------------
+
+    for (
+        let i = pokemonForTier.length;
+        i < 3; //Might need to make this dynamic in the future
+        i++
+    )
+    {
+        const li = document.createElement('li');
+
+        li.textContent = '—';
+
+        list.appendChild(li);
+    }
+}
+
 
 
 // --------------- LOAD ALL DRAFTED POKEMON ------------------
 
-async function loadDraftedPokemon()
+async function loadAllDraftedPokemon()
 {
     const response = await fetch('api/draft/get_drafted_pokemon.php');
 
@@ -152,7 +188,59 @@ async function loadDraftedPokemon()
     });
 }
 
-// ------------- LOAD DRAFT PICKS to DISPLAY --------------
+// ------------- CLEAN NAME for PokemonDB ------------------
+
+function formatPokemonDbName(name) {
+    return name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .replace('-galar', '-galarian')
+        .replace('-hisui', '-hisuian')
+        .replace('-paldea', '-paldean')
+        .replace('-alola', '-alolan')
+        .replace('-f', '-female'); // This one might cause problems later
+}
+
+// ------------ CLEAR DRAFT ----------------
+function displayDraftedTier(elementId, roster, tiers)
+{
+    const list = document.getElementById(elementId);
+
+    // IMPORTANT:
+    // Remove everything currently in this list
+    list.replaceChildren();
+
+    // Only get Pokémon belonging to this tier
+    const pokemonForTier = roster.filter(pokemon =>
+        tiers.includes(pokemon.tier)
+    );
+
+    // Add the actual Pokémon
+    pokemonForTier.forEach(pokemon => {
+
+        const li = document.createElement('li');
+
+        li.textContent = pokemon.name;
+
+        list.appendChild(li);
+    });
+
+    // Add placeholders until there are 3 slots
+    for (let i = pokemonForTier.length; i < 3; i++)
+    {
+        const li = document.createElement('li');
+
+        li.textContent = '—';
+
+        list.appendChild(li);
+    }
+}
+
+
+
+// ------------- LOAD MOST RECENT DRAFT PICK to PREVIOUS DRAFT PICK --------------
 
 async function loadDraftedDisplay()
 {
@@ -204,31 +292,132 @@ async function loadDraftedDisplay()
     // IMAGE
     // --------------------
 
+    const cleanName = formatPokemonDbName(currentPick.name); // added to clean up names for pokemondb
+
+
     const image = document.createElement('img');
 
     image.src =
-        `https://img.pokemondb.net/artwork/large/${currentPick.name.toLowerCase()}.jpg`;
+        `https://img.pokemondb.net/artwork/large/${cleanName}.jpg`;
 
     image.alt = currentPick.name;
+
+    image.classList.add('draftPokemonImage'); //unsure what this is just yet
 
     document
         .getElementById('draftPokemonImage')
         .replaceChildren(image);
+
+    // --------------------
+    // GET PICK OWNER ROSTER
+    // --------------------
+
+    const rosterResponse = await fetch(
+        `api/roster/get_roster.php?active_user_id=${currentPick.active_user_id}`
+    );
+
+    const rosterData = await rosterResponse.json();
+
+    if (!rosterData.success)
+    {
+        console.error(rosterData.message);
+        return;
+    }
+
+    console.log("PICK OWNER ROSTER:", rosterData.roster);
+
+    // --------------------
+    // DISPLAY ROSTER
+    // --------------------
+
+    displayDraftedRoster(rosterData.roster);
 }
 
-// -------------------------
-// LOAD DATA WHEN PAGE OPENS
-// -------------------------
+// --------------------
+// DISPLAY DRAFTED ROSTER
+// --------------------
 
-loadDraftRoster();
-loadDraftedPokemon();
+function displayDraftedRoster(roster)
+{
+    displayDraftedTier(
+        'ouDraftDisplayRoster',
+        roster,
+        ['OU', 'UUBL']
+    );
+
+    displayDraftedTier(
+        'uuDraftDisplayRoster',
+        roster,
+        ['UU', 'RUBL']
+    );
+
+    displayDraftedTier(
+        'ruDraftDisplayRoster',
+        roster,
+        ['RU', 'NUBL']
+    );
+
+    displayDraftedTier(
+        'nuDraftDisplayRoster',
+        roster,
+        ['NU', 'PUBL', 'PU', 'ZUBL', 'ZU']
+    );
+}
+
+
+// ----------------------
+// SORT POKEMON into TIER
+// ----------------------
+
+function displayDraftedTier(elementId, roster, tiers)
+{
+    const list = document.getElementById(elementId);
+
+    // Clear existing contents
+    list.replaceChildren();
+
+    // Get only Pokémon belonging to this tier group
+    const pokemonForTier = roster.filter(pokemon =>
+        tiers.includes(pokemon.tier)
+    );
+
+
+    // Add drafted Pokémon
+    pokemonForTier.forEach(pokemon => {
+
+        const li = document.createElement('li');
+
+        li.textContent = pokemon.name;
+
+        list.appendChild(li);
+
+    });
+
+
+    // Fill remaining roster slots
+    for (
+        let i = pokemonForTier.length;
+        i < 3;
+        i++
+    )
+    {
+        const li = document.createElement('li');
+
+        li.textContent = '—';
+
+        list.appendChild(li);
+    }
+}
+
+    
+
+
+
+// --------------LOAD DATA WHEN PAGE OPENS-------------------
+
+loadUserDraftRoster();
+loadAllDraftedPokemon();
 loadDraftedDisplay();
-
-
-
-
-
-
 
 
 
@@ -259,8 +448,10 @@ draftButtons.forEach(button => {
 
             if(data.success) // This might be causing issues with how list gets filled out. Possibly delete later.
             {
-                loadDraftRoster(); 
-                loadDraftedPokemon();
+                loadUserDraftRoster(); 
+                loadAllDraftedPokemon();
+                loadDraftedDisplay();
+
             }
             
         })

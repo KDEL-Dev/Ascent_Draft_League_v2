@@ -224,19 +224,11 @@
                         <button id="randomizeDraft">Randomize Draft</button>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <div class="d-flex justify-content-end">
-                        <button id="startDraft">Start Draft</button>
-                        <button id="pauseDraft">Pause Draft</button>
-                        <button>Skip Pick</button>
-                        <button id="endDraft">End Draft</button>
-                    </div>
-                </div>
             </div>
             <div class="contaier p-3">
                 <div class="row p-3">
-                    <div class="col-sm-12 col-lg-8 p-0">
-                        <h3>Drafted</h3>
+                    <div class="col-sm-12 col-lg-8 p-0 order-sm-2 order-lg-1">
+                        <h3>Previous Draft Pick</h3>
                         <div class="border d-flex justify-content-evenly">
                             <div id="draftPickInfo" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
                                 <p id="draftPickOwner">pick owner</p>
@@ -279,9 +271,8 @@
                                  </div>
                             </div>
                         </div>
-                        </div>
-                        
-                    <div class="col-sm-12 col-lg-4 p-0 ">
+                    </div>
+                    <div class="col-sm-12 col-lg-4 p-0 order-sm-1 order-lg-2">
                         <h3>Your Dashboard</h3>
                         <div class="border d-flex justify-content-evenly">
                             <div class="d-flex flex-column justify-content-center align-items-center">
@@ -332,6 +323,14 @@
                     </div>
                     <div class="col-9 border d-flex align-items-center">
                         <p class="mb-0">sliding display of previous pick</p>
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <div class="d-flex justify-content-end">
+                        <button id="startDraft">Start Draft</button>
+                        <button id="pauseDraft">Pause Draft</button>
+                        <button>Skip Pick</button>
+                        <button id="endDraft">End Draft</button>
                     </div>
                 </div>
             </div>
