@@ -5,20 +5,7 @@
     header('Content-Type: application/json');
 
     $seasonId = 1;
-
-    // Where is this coming from?
-    $activeUserId = isset($_GET['active_user_id'])
-    ? (int) $_GET['active_user_id']
-    : 0;
-
-    if ($activeUserId <= 0) 
-    {
-        echo json_encode([
-            "success" => false,
-            "message" => "Invalid active user ID."
-        ]);
-        exit;
-    }
+    $activeUserId = 6; // Temporary for testing
 
     $sql = "
     SELECT
