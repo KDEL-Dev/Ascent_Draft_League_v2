@@ -27,9 +27,10 @@ const startDraftBtn = document.getElementById("startDraft");
 
 startDraftBtn.addEventListener("click", function(){
     fetch('api/draft/start_draft.php')
-    .then(response => response.text)
+    .then(response => response.text())
     .then(data => {
-        console.log(data)
+        console.log(data);
+
         window.location.reload();
     })
     .catch(error => {
@@ -409,18 +410,6 @@ function displayDraftedTier(elementId, roster, tiers)
     }
 }
 
-    
-
-
-
-// --------------LOAD DATA WHEN PAGE OPENS-------------------
-
-loadUserDraftRoster();
-loadAllDraftedPokemon();
-loadDraftedDisplay();
-
-
-
 
 
 // ---------------Draft Buttons-------------------
@@ -439,7 +428,8 @@ draftButtons.forEach(button => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                pokemon_id: pokemonId
+                pokemon_id: pokemonId,
+                active_user_id: 6 // temp add
             })
         })
         .then(response => response.json())
@@ -451,7 +441,7 @@ draftButtons.forEach(button => {
                 loadUserDraftRoster(); 
                 loadAllDraftedPokemon();
                 loadDraftedDisplay();
-
+                loadDraftState();
             }
             
         })
@@ -462,3 +452,341 @@ draftButtons.forEach(button => {
     })
     
 })
+
+// -------------------
+// DISABLE DRAFT BTNS
+//--------------------
+
+function updateDraftButtons(currentTeam)
+{
+    const draftButtons = document.querySelectorAll(".draftBtn");
+
+    // Draft is not active
+    if (!currentTeam)
+    {
+        draftButtons.forEach(button => {
+            button.disabled = true;
+        });
+
+        return;
+    }
+
+    // Temporary logged-in user
+    const activeUserId = 6;
+
+    const isMyTurn =
+        Number(currentTeam.id) === activeUserId;
+
+    draftButtons.forEach(button => {
+
+        // Don't enable Pokémon that has already been drafted
+        if (button.textContent === "Drafted")
+        {
+            button.disabled = true;
+            return;
+        }
+
+        button.disabled = !isMyTurn;
+    });
+}
+
+// ------------ PAUSE DRAFT ------------
+
+const pauseDraftBtn = document.getElementById("pauseDraft");
+
+pauseDraftBtn.addEventListener("click", function()
+{
+    console.log("Pausing with:", timerRemaining);
+
+    fetch("api/draft/pause_draft.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            timer_remaining: timerRemaining
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        console.log("PAUSE RESPONSE:", data);
+
+        if (data.success)
+        {
+            clearInterval(timer);
+            loadDraftState();
+        }
+        else
+        {
+            console.error(data.message);
+        }
+
+    })
+    .catch(error => {
+        console.error("Pausing draft failed:", error);
+    });
+});
+
+
+
+// ------------ RESUME DRAFT ------------
+
+const resumeDraftBtn = document.getElementById("resumeDraft");
+
+resumeDraftBtn.addEventListener("click", function()
+{
+    fetch("api/draft/resume_draft.php")
+        .then(response => response.json())
+        .then(data => {
+
+            console.log("RESUME RESPONSE:", data);
+
+            if (data.success)
+            {
+                loadDraftState();
+            }
+            else
+            {
+                console.error(data.message);
+            }
+
+        })
+        .catch(error => {
+            console.error("Resuming draft failed:", error);
+        });
+});
+
+
+
+// ----------- SKIP PICK -----------
+
+const skipPickBtn = document.getElementById("skipPick");
+
+skipPickBtn.addEventListener("click", function() {
+
+    fetch("api/draft/skip_pick.php")
+    .then(response => response.json())
+    .then(data => {
+
+        console.log("SKIP RESPONSE:", data);
+
+        if (!data.success)
+        {
+            console.error(data.message);
+            return;
+        }
+
+        loadDraftState();
+        loadDraftedDisplay();
+
+    })
+    .catch(error => {
+        console.error("Skip Pick failed:", error);
+    });
+
+});
+
+
+
+// -------------- TIMER ---------------
+
+let timer;
+let timerRemaining = 60;
+
+const timerDisplay = document.getElementById("draftTimer");
+
+function startTimer(pickStartedAt)
+{
+    clearInterval(timer);
+
+    const duration = 60;
+
+    let skipTriggered = false;
+
+    async function updateTimer()
+    {
+        const startTime = new Date(
+            pickStartedAt.replace(" ", "T")
+        );
+
+        const now = new Date();
+
+        const elapsedSeconds =
+            Math.floor((now - startTime) / 1000);
+
+        const remaining = Math.max(
+            duration - elapsedSeconds,
+            0
+        );
+
+        timerRemaining = remaining;
+        timerDisplay.textContent = remaining;
+
+        if (remaining <= 0 && !skipTriggered)
+        {
+            skipTriggered = true;
+
+            clearInterval(timer);
+
+            await autoSkipPick();
+        }
+    }
+
+    updateTimer();
+
+    timer = setInterval(updateTimer, 250);
+}
+
+// ------------- TIMER -  AUTO SKIP ---------------
+
+async function autoSkipPick()
+{
+    try
+    {
+        const response = await fetch(
+            "api/draft/skip_pick.php"
+        );
+
+        const data = await response.json();
+
+        console.log("AUTO SKIP RESPONSE:", data);
+
+        if (!data.success)
+        {
+            console.error(
+                "Automatic skip failed:",
+                data.message
+            );
+
+            return;
+        }
+
+        // Refresh draft information
+        await loadDraftState();
+
+        // Refresh previous pick display
+        await loadDraftedDisplay();
+
+    }
+    catch (error)
+    {
+        console.error(
+            "Automatic skip failed:",
+            error
+        );
+    }
+}
+
+
+
+// -------------- GET DRAFT STATE ---------------
+
+async function loadDraftState()
+{
+    const response = await fetch('api/draft/get_draft_state.php');
+
+    const data = await response.json();
+
+    if (!data.success)
+    {
+        console.error(data.message);
+        return;
+    }
+
+    const draftState = data.draft_state;
+    const currentTeam = data.current_team;
+
+    // -------------------------
+    // DRAFT BUTTON
+    // -------------------------
+
+    const startDraftBtn = document.getElementById("startDraft");
+
+    if (draftState.status === "pending")
+    {
+        startDraftBtn.textContent = "Start Draft";
+    }
+    else if (draftState.status === "paused")
+    {
+        startDraftBtn.textContent = "Resume Draft";
+    }
+    else if (draftState.status === "active")
+    {
+        startDraftBtn.textContent = "Pause Draft";
+    }
+
+
+    // -------------------------
+    // DRAFT IS NOT ACTIVE
+    // -------------------------
+
+    if (!draftState.is_active)
+    {
+        document.getElementById('onTheClock').textContent = '-';
+        return;
+    }
+
+    // -------------------------
+    // ON THE CLOCK
+    // -------------------------
+
+    if (currentTeam)
+    {
+        document.getElementById('onTheClock').textContent =
+            currentTeam.team_name;
+    }
+    else
+    {
+        document.getElementById('onTheClock').textContent = '-';
+    }
+
+    // -------------------------
+    // UPDATE DRAFT BUTTONS
+    // -------------------------
+
+    updateDraftButtons(currentTeam);
+
+    // -------------------------
+    // TIMER
+    // -------------------------
+
+    startTimer(draftState.pick_started_at);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// --------------LOAD DATA WHEN PAGE OPENS-------------------
+
+loadUserDraftRoster();
+loadDraftedDisplay();
+loadDraftState();
+loadAllDraftedPokemon();
+

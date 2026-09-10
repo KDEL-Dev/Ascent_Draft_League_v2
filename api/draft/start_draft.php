@@ -2,33 +2,52 @@
 
     require_once __DIR__ . '/../../includes/connection.php';
 
+    header('Content-Type: application/json');
+
     $seasonId = 1;
 
     $sql = "
         UPDATE draft_state
         SET
             is_active = 1,
-            started_at = NOW()
+            status = 'active',
+            started_at = NOW(),
+            pick_started_at = NOW()
         WHERE season_id = ?
-        AND is_active = 0
+        AND status = 'pending'
     ";
 
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
-        die("Prepare Failed: " . $conn->error);
+        echo json_encode([
+            "success" => false,
+            "message" => "Prepare failed."
+        ]);
+        exit;
     }
 
     $stmt->bind_param("i", $seasonId);
 
     if (!$stmt->execute()) {
-        die("Execute Failed: " . $stmt->error);
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to start draft."
+        ]);
+        exit;
     }
 
     if ($stmt->affected_rows === 0) {
-        echo "Draft is already active or does not exist.";
-    } else {
-        echo "Draft started successfully.";
+        echo json_encode([
+            "success" => false,
+            "message" => "Draft cannot be started. It may already be active, paused, or ended."
+        ]);
+        exit;
     }
+
+    echo json_encode([
+        "success" => true,
+        "message" => "Draft started successfully."
+    ]);
 
 ?>

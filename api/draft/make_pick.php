@@ -12,7 +12,16 @@
     // Get data from Javascript
     $data = json_decode(file_get_contents("php://input"), true);
 
+    $activeUserId = $data['active_user_id'] ?? null;
     $pokemonId = $data['pokemon_id'] ?? null;
+
+    if (!$activeUserId) {
+        echo json_encode([
+            "success" => false,
+            "message" => "User not identified."
+        ]);
+        exit;
+    }
 
     if(!$pokemonId)
     {
@@ -80,6 +89,14 @@
         echo json_encode([
             "success" => false,
             "message" => "Could not find the current drafter."
+        ]);
+        exit;
+    }
+
+    if ((int)$currentUser['id'] !== (int)$activeUserId) {
+        echo json_encode([
+            "success" => false,
+            "message" => "It is not your turn."
         ]);
         exit;
     }
@@ -229,7 +246,8 @@
         SET
             total_picks = ?,
             draft_position = ?,
-            current_round = ?
+            current_round = ?,
+            pick_started_at = NOW()
         WHERE season_id = ?
     ";
 

@@ -228,7 +228,7 @@
             <div class="contaier p-3">
                 <div class="row p-3">
                     <div class="col-sm-12 col-lg-8 p-0 order-sm-2 order-lg-1">
-                        <h3>Previous Draft Pick</h3>
+                        <h3>Draft Board</h3>
                         <div class="border d-flex justify-content-evenly">
                             <div id="draftPickInfo" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
                                 <p id="draftPickOwner">pick owner</p>
@@ -273,7 +273,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-lg-4 p-0 order-sm-1 order-lg-2">
-                        <h3>Your Dashboard</h3>
+                        <h3>Your Team</h3>
                         <div class="border d-flex justify-content-evenly">
                             <div class="d-flex flex-column justify-content-center align-items-center">
                                 <p>Roster Counter</p>
@@ -281,13 +281,13 @@
                             </div>
                             <div class="d-flex">
                                 <div class="d-flex flex-column">
-                                    <p>OU</p>
+                                    <p class="text-center">OU</p>
                                     <ul id="ouDraftRoster">
                                         <li>—</li>
                                         <li>—</li>
                                         <li>—</li>
                                     </ul>
-                                    <p>UU</p>
+                                    <p class="text-center">UU</p>
                                     <ul id="uuDraftRoster">
                                         <li>—</li>
                                         <li>—</li>
@@ -295,13 +295,13 @@
                                     </ul>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <p>RU</p>
+                                    <p class="text-center">RU</p>
                                     <ul id="ruDraftRoster">
                                         <li>—</li>
                                         <li>—</li>
                                         <li>—</li>
                                     </ul>
-                                    <p>NU</p>
+                                    <p class="text-center">NU</p>
                                     <ul id="nuDraftRoster">
                                         <li>—</li>
                                         <li>—</li>
@@ -315,21 +315,22 @@
                 <div class="row p-3">
                     <div class="border col-1 text-center">
                         <p class="border-bottom">timer</p>
-                        <p class="fs-5">60</p>
+                        <p id="draftTimer" class="fs-5">60</p>
                     </div>
                     <div class="col-2 border text-center">
                         <p class="border-bottom">On the clock</p>
-                        <p>-</p>
+                        <p id="onTheClock">-</p>
                     </div>
                     <div class="col-9 border d-flex align-items-center">
-                        <p class="mb-0">sliding display of previous pick</p>
+                        <p id="draftPrevPickList" class="mb-0">sliding display of previous pick</p>
                     </div>
                 </div>
                 <div class="mt-1">
                     <div class="d-flex justify-content-end">
                         <button id="startDraft">Start Draft</button>
+                        <button id="resumeDraft">Resume Draft</button>
                         <button id="pauseDraft">Pause Draft</button>
-                        <button>Skip Pick</button>
+                        <button id="skipPick">Skip Pick</button>
                         <button id="endDraft">End Draft</button>
                     </div>
                 </div>
