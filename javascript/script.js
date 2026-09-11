@@ -22,21 +22,38 @@ randomizeBtn.addEventListener("click", function() {
     });
 });
 
-// -----------Draft State - Start Draft------------
+// ----------- DRAFT STATE - START DRAFT ------------
+
 const startDraftBtn = document.getElementById("startDraft");
 
-startDraftBtn.addEventListener("click", function(){
-    fetch('api/draft/start_draft.php')
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
+startDraftBtn.addEventListener("click", async function()
+{
+    try
+    {
+        const response = await fetch(
+            "api/draft/start_draft.php"
+        );
 
-        window.location.reload();
-    })
-    .catch(error => {
-        console.error("Starting draft failed:", error)
-    })
-})
+        const data = await response.json();
+
+        console.log("START RESPONSE:", data);
+
+        if (!data.success)
+        {
+            console.error(data.message);
+            return;
+        }
+
+        await loadDraftState();
+    }
+    catch(error)
+    {
+        console.error("Starting draft failed:", error);
+    }
+});
+
+
+
 
 
 // -------------LOADS LOGGED IN USER ROSTER to DRAFT PAGE---------------
@@ -494,67 +511,74 @@ function updateDraftButtons(currentTeam)
 
 const pauseDraftBtn = document.getElementById("pauseDraft");
 
-pauseDraftBtn.addEventListener("click", function()
+pauseDraftBtn.addEventListener("click", async function()
 {
     console.log("Pausing with:", timerRemaining);
 
-    fetch("api/draft/pause_draft.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            timer_remaining: timerRemaining
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
+    try
+    {
+        const response = await fetch(
+            "api/draft/pause_draft.php",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    timer_remaining: timerRemaining
+                })
+            }
+        );
+
+        const data = await response.json();
 
         console.log("PAUSE RESPONSE:", data);
 
-        if (data.success)
-        {
-            clearInterval(timer);
-            loadDraftState();
-        }
-        else
+        if (!data.success)
         {
             console.error(data.message);
+            return;
         }
 
-    })
-    .catch(error => {
-        console.error("Pausing draft failed:", error);
-    });
-});
+        stopTimer();
 
+        await loadDraftState();
+    }
+    catch(error)
+    {
+        console.error("Pausing draft failed:", error);
+    }
+});
 
 
 // ------------ RESUME DRAFT ------------
 
 const resumeDraftBtn = document.getElementById("resumeDraft");
 
-resumeDraftBtn.addEventListener("click", function()
+resumeDraftBtn.addEventListener("click", async function()
 {
-    fetch("api/draft/resume_draft.php")
-        .then(response => response.json())
-        .then(data => {
+    try
+    {
+        const response = await fetch(
+            "api/draft/resume_draft.php"
+        );
 
-            console.log("RESUME RESPONSE:", data);
+        const data = await response.json();
 
-            if (data.success)
-            {
-                loadDraftState();
-            }
-            else
-            {
-                console.error(data.message);
-            }
+        console.log("RESUME RESPONSE:", data);
 
-        })
-        .catch(error => {
-            console.error("Resuming draft failed:", error);
-        });
+        if (!data.success)
+        {
+            console.error(data.message);
+            return;
+        }
+
+        await loadDraftState();
+    }
+    catch(error)
+    {
+        console.error("Resuming draft failed:", error);
+    }
 });
 
 
@@ -596,9 +620,15 @@ let timerRemaining = 60;
 
 const timerDisplay = document.getElementById("draftTimer");
 
-function startTimer(pickStartedAt)
+function stopTimer()
 {
     clearInterval(timer);
+    timer = null;
+}
+
+function startTimer(pickStartedAt)
+{
+    stopTimer();
 
     const duration = 60;
 
@@ -627,7 +657,7 @@ function startTimer(pickStartedAt)
         {
             skipTriggered = true;
 
-            clearInterval(timer);
+            stopTimer();
 
             await autoSkipPick();
         }
@@ -637,6 +667,7 @@ function startTimer(pickStartedAt)
 
     timer = setInterval(updateTimer, 250);
 }
+
 
 // ------------- TIMER -  AUTO SKIP ---------------
 
@@ -697,25 +728,6 @@ async function loadDraftState()
     const draftState = data.draft_state;
     const currentTeam = data.current_team;
 
-    // -------------------------
-    // DRAFT BUTTON
-    // -------------------------
-
-    const startDraftBtn = document.getElementById("startDraft");
-
-    if (draftState.status === "pending")
-    {
-        startDraftBtn.textContent = "Start Draft";
-    }
-    else if (draftState.status === "paused")
-    {
-        startDraftBtn.textContent = "Resume Draft";
-    }
-    else if (draftState.status === "active")
-    {
-        startDraftBtn.textContent = "Pause Draft";
-    }
-
 
     // -------------------------
     // DRAFT IS NOT ACTIVE
@@ -724,8 +736,23 @@ async function loadDraftState()
     if (!draftState.is_active)
     {
         document.getElementById('onTheClock').textContent = '-';
+
+        stopTimer();
+
+        if (draftState.timer_remaining !== null)
+        {
+            timerRemaining = Number(draftState.timer_remaining);
+        }
+
+        timerDisplay.textContent = timerRemaining;
+
+        updateDraftButtons(null);
+
         return;
     }
+
+
+
 
     // -------------------------
     // ON THE CLOCK
@@ -752,6 +779,8 @@ async function loadDraftState()
     // -------------------------
 
     startTimer(draftState.pick_started_at);
+
+
 }
 
 

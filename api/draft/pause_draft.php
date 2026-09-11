@@ -6,12 +6,12 @@
 
     $seasonId = 1;
 
-    // Get timer information from JavaScript
-    $data = json_decode(file_get_contents("php://input"), true);
+    $input = json_decode(file_get_contents("php://input"), true);
 
-    $timerRemaining = $data['timer_remaining'] ?? null;
+    $timerRemaining = $input['timer_remaining'] ?? null;
 
-    if ($timerRemaining === null) {
+    if ($timerRemaining === null)
+    {
         echo json_encode([
             "success" => false,
             "message" => "Timer remaining was not provided."
@@ -19,15 +19,11 @@
         exit;
     }
 
-    // Make sure timer is between 0 and 60
-    $timerRemaining = max(0, min(60, (int)$timerRemaining));
-
     $sql = "
         UPDATE draft_state
         SET
             is_active = 0,
             status = 'paused',
-            paused_at = NOW(),
             timer_remaining = ?
         WHERE season_id = ?
         AND status = 'active'
@@ -35,10 +31,11 @@
 
     $stmt = $conn->prepare($sql);
 
-    if (!$stmt) {
+    if (!$stmt)
+    {
         echo json_encode([
             "success" => false,
-            "message" => "Prepare failed: " . $conn->error
+            "message" => "Prepare failed."
         ]);
         exit;
     }
@@ -49,15 +46,17 @@
         $seasonId
     );
 
-    if (!$stmt->execute()) {
+    if (!$stmt->execute())
+    {
         echo json_encode([
             "success" => false,
-            "message" => "Failed to pause draft: " . $stmt->error
+            "message" => "Failed to pause draft."
         ]);
         exit;
     }
 
-    if ($stmt->affected_rows === 0) {
+    if ($stmt->affected_rows === 0)
+    {
         echo json_encode([
             "success" => false,
             "message" => "Draft is not currently active."
@@ -68,7 +67,7 @@
     echo json_encode([
         "success" => true,
         "message" => "Draft paused successfully.",
-        "timer_remaining" => $timerRemaining
+        "timer_remaining" => (int) $timerRemaining
     ]);
 
 ?>
