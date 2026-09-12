@@ -321,8 +321,9 @@
                         <p class="border-bottom">On the clock</p>
                         <p id="onTheClock">-</p>
                     </div>
-                    <div class="col-9 border d-flex align-items-center">
-                        <p id="draftPrevPickList" class="mb-0">sliding display of previous pick</p>
+                    <div class="col-9 border d-flex align-items-start flex-column">
+                        <p id="draftPrevPickList" class="mb-0 border-bottom">sliding display of previous pick</p>
+                        <p>-</p>
                     </div>
                 </div>
                 <div class="mt-1">
