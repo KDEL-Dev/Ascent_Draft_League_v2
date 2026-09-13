@@ -222,14 +222,33 @@
                             <?php endwhile; ?>
                         </ul>
                         <button id="randomizeDraft">Randomize Draft</button>
+                        <button id="lockDraft">Lock Draft</button>
                     </div>
                 </div>
             </div>
             <div class="contaier p-3">
-                <div class="row p-3">
-                    <div class="col-sm-12 col-lg-8 p-0 order-sm-2 order-lg-1">
+                <div class="row p-3 d-flex align-items-stretch">
+                    <div class="col-lg-1 p-0 order-lg-1 d-flex flex-column">
+                        <h3>Draft Order</h3>
+                        <div class="border d-flex align-items-stretch flex-grow-1">
+                            <div class="d-flex align-items-center">
+                                <p>Down</p>
+                            </div>
+                            <div class="flex-grow-1">
+                                <ul class="h-100 border m-0 p-0 d-flex flex-column justify-content-evenly align-items-center">
+                                    <li>1</li>
+                                    <li>2</li>
+                                    <li>3</li>
+                                    <li>4</li>
+                                    <li>5</li>
+                                    <li>6</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-7 p-0 order-sm-2 order-lg-2 d-flex flex-column">
                         <h3>Draft Board</h3>
-                        <div class="border d-flex justify-content-evenly">
+                        <div class="border d-flex justify-content-evenly flex-grow-1">
                             <div id="draftPickInfo" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
                                 <p id="draftPickOwner">pick owner</p>
                                 
@@ -272,9 +291,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-lg-4 p-0 order-sm-1 order-lg-2">
+                    <div class="col-sm-12 col-lg-4 p-0 order-sm-1 order-lg-3 d-flex flex-column">
                         <h3>Your Team</h3>
-                        <div class="border d-flex justify-content-evenly">
+                        <div class="border d-flex justify-content-evenly flex-grow-1">
                             <div class="d-flex flex-column justify-content-center align-items-center">
                                 <p>Roster Counter</p>
                                 <h4 id="draftRosterCount">0/12</h4>
@@ -321,7 +340,11 @@
                         <p class="border-bottom">On the clock</p>
                         <p id="onTheClock">-</p>
                     </div>
-                    <div class="col-9 border d-flex align-items-start flex-column">
+                    <div class="col-1 border text-center">
+                        <p>Next User</p>
+                        <p>-</p>
+                    </div>
+                    <div class="col-8 border d-flex align-items-start flex-column">
                         <p id="draftPrevPickList" class="mb-0 border-bottom">sliding display of previous pick</p>
                         <p>-</p>
                     </div>
