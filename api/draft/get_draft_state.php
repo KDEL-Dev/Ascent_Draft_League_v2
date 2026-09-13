@@ -49,6 +49,15 @@ if ($result->num_rows === 0) {
 $draftState = $result->fetch_assoc();
 
 // -------------------------
+// GET DRAFT DIRECTION
+// -------------------------
+
+    $draftState['draft_direction'] =
+    ($draftState['current_round'] % 2 === 1)
+        ? 'forward'
+        : 'backward';
+
+// -------------------------
 // GET TEAM ON THE CLOCK
 // -------------------------
 
@@ -83,9 +92,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 $currentTeam = $result->fetch_assoc();
-
-
-
 
 echo json_encode([
     'success' => true,

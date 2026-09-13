@@ -459,6 +459,7 @@ draftButtons.forEach(button => {
                 loadAllDraftedPokemon();
                 loadDraftedDisplay();
                 loadDraftState();
+                loadDraftLog();
             }
             
         })
@@ -669,7 +670,7 @@ function startTimer(pickStartedAt)
 }
 
 
-// ------------- TIMER -  AUTO SKIP ---------------
+// ------------- TIMER - AUTO SKIP ---------------
 
 async function autoSkipPick()
 {
@@ -728,6 +729,21 @@ async function loadDraftState()
     const draftState = data.draft_state;
     const currentTeam = data.current_team;
 
+    // -------------------------
+    // DRAFT DIRECTION
+    // -------------------------
+
+    const draftDirection =
+        document.getElementById('draftDirection');
+
+    if (draftState.draft_direction === 'forward')
+    {
+        draftDirection.textContent = '↓';
+    }
+    else
+    {
+        draftDirection.textContent = '↑';
+    }
 
     // -------------------------
     // DRAFT IS NOT ACTIVE
@@ -751,9 +767,7 @@ async function loadDraftState()
         return;
     }
 
-
-
-    
+ 
     // -------------------------
     // ON THE CLOCK
     // -------------------------
@@ -784,6 +798,58 @@ async function loadDraftState()
 }
 
 
+// -------------- LIVE DRAFT LOG ---------------
+
+async function loadDraftLog()
+{
+    const response = await fetch(
+        'api/draft/get_draft_picks.php'
+    );
+
+    const data = await response.json();
+
+    if (!data.success)
+    {
+        console.error(data.message);
+        return;
+    }
+
+    const draftLog = document.getElementById('draftLog');
+
+    draftLog.replaceChildren();
+
+    const picks = [...data.picks].reverse();
+
+    picks.forEach(pick => {
+
+        const li = document.createElement('li');
+
+        // Pick number
+        const pickNumber = document.createElement('div');
+        pickNumber.classList.add('draft-log-number');
+
+        pickNumber.textContent = pick.pick_number;
+
+        // Team + Pokemon
+        const pickInfo = document.createElement('div');
+        pickInfo.classList.add('draft-log-info');
+
+        const teamName = document.createElement('span');
+        teamName.textContent = pick.team_name;
+
+        const pokemonName = document.createElement('span');
+        pokemonName.textContent = pick.name;
+
+        pickInfo.appendChild(teamName);
+        pickInfo.appendChild(pokemonName);
+
+        // Put everything together
+        li.appendChild(pickNumber);
+        li.appendChild(pickInfo);
+
+        draftLog.appendChild(li);
+    });
+}
 
 
 
@@ -818,4 +884,4 @@ loadUserDraftRoster();
 loadDraftedDisplay();
 loadDraftState();
 loadAllDraftedPokemon();
-
+loadDraftLog();

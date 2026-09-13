@@ -57,6 +57,13 @@
 
     $activeUsersResults = $stmt->get_result();
 
+    $activeUsers = [];
+
+    while ($row = $activeUsersResults->fetch_assoc()) {
+        $activeUsers[] = $row;
+    }
+
+
     if(!$activeUsersResults)
     {
         die("Query Failed: " . $stmt->error);
@@ -209,7 +216,7 @@
                     <h3>Draft Order</h3>
                     <div class="border  d-flex justify-content-between">
                         <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
-                             <?php while ($activeUser = $activeUsersResults->fetch_assoc()): ?>
+                             <?php foreach ($activeUsers as $activeUser): ?>
                                 <li>
                                     <span class="draftPosition">
                                         <?= htmlspecialchars($activeUser['draft_position']) ?>.
@@ -217,9 +224,8 @@
                                     <span>
                                         <?= htmlspecialchars($activeUser['team_name']) ?>
                                     </span>
-                                    
                                 </li>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </ul>
                         <button id="randomizeDraft">Randomize Draft</button>
                         <button id="lockDraft">Lock Draft</button>
@@ -228,25 +234,29 @@
             </div>
             <div class="contaier p-3">
                 <div class="row p-3 d-flex align-items-stretch">
-                    <div class="col-lg-1 p-0 order-lg-1 d-flex flex-column">
-                        <h3>Draft Order</h3>
+                    <div class="col-sm-12 col-md-3 col-lg-2 p-0 order-lg-1 d-flex flex-column">
+                        <h3 class="text-center">Live Draft Order</h3>
                         <div class="border d-flex align-items-stretch flex-grow-1">
                             <div class="d-flex align-items-center">
-                                <p>Down</p>
+                                <span id="draftDirection" class="fs-3">↓</span>
                             </div>
                             <div class="flex-grow-1">
-                                <ul class="h-100 border m-0 p-0 d-flex flex-column justify-content-evenly align-items-center">
-                                    <li>1</li>
-                                    <li>2</li>
-                                    <li>3</li>
-                                    <li>4</li>
-                                    <li>5</li>
-                                    <li>6</li>
+                                <ul id="liveDraftOrder" class="h-100 border m-0 p-0 d-flex flex-column justify-content-evenly align-items-center">
+                                    <?php foreach ($activeUsers as $activeUser): ?>
+                                        <li>
+                                            <span class="draftPosition">
+                                                <?= htmlspecialchars($activeUser['draft_position']) ?>.
+                                            </span>
+                                            <span>
+                                                <?= htmlspecialchars($activeUser['team_name']) ?>
+                                            </span>
+                                        </li>
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-lg-7 p-0 order-sm-2 order-lg-2 d-flex flex-column">
+                    <div class="col-sm-12 col-lg-6 p-0 order-sm-2 order-lg-2 d-flex flex-column">
                         <h3>Draft Board</h3>
                         <div class="border d-flex justify-content-evenly flex-grow-1">
                             <div id="draftPickInfo" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
@@ -291,8 +301,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-lg-4 p-0 order-sm-1 order-lg-3 d-flex flex-column">
-                        <h3>Your Team</h3>
+                    <div class="col-sm-12 col-md-9 col-lg-4 p-0 order-sm-1 order-lg-3 d-flex flex-column">
+                        <h3 class="text-center">Your Team</h3>
                         <div class="border d-flex justify-content-evenly flex-grow-1">
                             <div class="d-flex flex-column justify-content-center align-items-center">
                                 <p>Roster Counter</p>
@@ -344,9 +354,13 @@
                         <p>Next User</p>
                         <p>-</p>
                     </div>
-                    <div class="col-8 border d-flex align-items-start flex-column">
-                        <p id="draftPrevPickList" class="mb-0 border-bottom">sliding display of previous pick</p>
-                        <p>-</p>
+                    <div class="col-8 border d-flex">
+                        <div class="border d-flex align-items-center">
+                            <p class="m-0">Draft Log</p>
+                        </div>
+
+                        <ul id="draftLog" class="m-0 p-0 overflow-x-auto d-flex flex-grow-1">
+                        </ul>
                     </div>
                 </div>
                 <div class="mt-1">
