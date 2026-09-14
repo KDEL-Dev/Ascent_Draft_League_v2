@@ -16,7 +16,7 @@
                         <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="draft.php">Draft</a>
+                        <a class="nav-link" href="draft.php">Draft</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="roster.php">Roster</a>

@@ -350,9 +350,12 @@ async function loadDraftedDisplay()
 
     image.classList.add('draftPokemonImage'); //unsure what this is just yet
 
-    document
-        .getElementById('draftPokemonImage')
-        .replaceChildren(image);
+    const draftPokemonImage = document.getElementById('draftPokemonImage');
+    
+    if(draftPokemonImage)
+    {
+        draftPokemonImage.replaceChildren(image);
+    }
 
     // --------------------
     // GET PICK OWNER ROSTER
@@ -419,39 +422,42 @@ function displayDraftedTier(elementId, roster, tiers)
 {
     const list = document.getElementById(elementId);
 
-    // Clear existing contents
-    list.replaceChildren();
-
-    // Get only Pokémon belonging to this tier group
-    const pokemonForTier = roster.filter(pokemon =>
-        tiers.includes(pokemon.tier)
-    );
-
-
-    // Add drafted Pokémon
-    pokemonForTier.forEach(pokemon => {
-
-        const li = document.createElement('li');
-
-        li.textContent = pokemon.name;
-
-        list.appendChild(li);
-
-    });
-
-
-    // Fill remaining roster slots
-    for (
-        let i = pokemonForTier.length;
-        i < 3;
-        i++
-    )
+    if(list)
     {
-        const li = document.createElement('li');
+        // Clear existing contents
+        list.replaceChildren();
 
-        li.textContent = '—';
+        // Get only Pokémon belonging to this tier group
+        const pokemonForTier = roster.filter(pokemon =>
+            tiers.includes(pokemon.tier)
+        );
 
-        list.appendChild(li);
+
+        // Add drafted Pokémon
+        pokemonForTier.forEach(pokemon => {
+
+            const li = document.createElement('li');
+
+            li.textContent = pokemon.name;
+
+            list.appendChild(li);
+
+        });
+
+
+        // Fill remaining roster slots
+        for (
+            let i = pokemonForTier.length;
+            i < 3;
+            i++
+        )
+        {
+            const li = document.createElement('li');
+
+            li.textContent = '—';
+
+            list.appendChild(li);
+        }
     }
 }
 
@@ -778,26 +784,34 @@ async function loadDraftState()
     // DRAFT DIRECTION
     // -------------------------
 
-    const draftDirection =
-        document.getElementById('draftDirection');
+    const draftDirection = document.getElementById('draftDirection');
 
-    if (draftState.draft_direction === 'forward')
+    if(draftDirection)
     {
-        draftDirection.textContent = '↓';
+        if (draftState.draft_direction === 'forward')
+        {
+            draftDirection.textContent = '↓';
+        }
+        else
+        {
+            draftDirection.textContent = '↑';
+        }
     }
-    else
-    {
-        draftDirection.textContent = '↑';
-    }
-
+    
     // -------------------------
     // DRAFT IS NOT ACTIVE
     // -------------------------
 
     if (!draftState.is_active)
     {
-        document.getElementById('onTheClock').textContent = '-';
-        document.getElementById('nextTeam').textContent = '-';
+        const onTheClock = document.getElementById('onTheClock');
+        const nextTeam = document.getElementById('nextTeam');
+        
+        if(onTheClock && nextTeam)
+        {
+            onTheClock.textContent = '-';
+            nextTeam.textContent = '-';
+        }
 
         stopTimer();
 
@@ -806,7 +820,11 @@ async function loadDraftState()
             timerRemaining = Number(draftState.timer_remaining);
         }
 
-        timerDisplay.textContent = timerRemaining;
+        if(timerDisplay)
+        {
+            timerDisplay.textContent = timerRemaining;
+        }
+        
 
         updateDraftButtons(null);
 
@@ -876,41 +894,44 @@ async function loadDraftLog()
 
     const draftLog = document.getElementById('draftLog');
 
-    draftLog.replaceChildren();
+    if(draftLog)
+    {
+        draftLog.replaceChildren();
+    
+        const picks = [...data.picks].reverse();
 
-    const picks = [...data.picks].reverse();
+        picks.forEach(pick => {
 
-    picks.forEach(pick => {
+            const li = document.createElement('li');
+            li.classList.add('d-flex')
+            li.classList.add('align-items-center')
 
-        const li = document.createElement('li');
-        li.classList.add('d-flex')
-        li.classList.add('align-items-center')
+            // Pick number
+            const pickNumber = document.createElement('div');
+            pickNumber.classList.add('px-1')
+            pickNumber.textContent = pick.pick_number;
 
-        // Pick number
-        const pickNumber = document.createElement('div');
-        pickNumber.classList.add('px-1')
-        pickNumber.textContent = pick.pick_number;
+            // Team + Pokemon
+            const pickInfo = document.createElement('div');
+            pickInfo.classList.add('d-flex');
+            pickInfo.classList.add('flex-column');
 
-        // Team + Pokemon
-        const pickInfo = document.createElement('div');
-        pickInfo.classList.add('d-flex');
-        pickInfo.classList.add('flex-column');
+            const teamName = document.createElement('span');
+            teamName.textContent = pick.team_name;
 
-        const teamName = document.createElement('span');
-        teamName.textContent = pick.team_name;
+            const pokemonName = document.createElement('span');
+            pokemonName.textContent = pick.name;
 
-        const pokemonName = document.createElement('span');
-        pokemonName.textContent = pick.name;
+            pickInfo.appendChild(teamName);
+            pickInfo.appendChild(pokemonName);
 
-        pickInfo.appendChild(teamName);
-        pickInfo.appendChild(pokemonName);
+            // Put everything together
+            li.appendChild(pickNumber);
+            li.appendChild(pickInfo);
 
-        // Put everything together
-        li.appendChild(pickNumber);
-        li.appendChild(pickInfo);
-
-        draftLog.appendChild(li);
-    });
+            draftLog.appendChild(li);
+        });
+    }
 }
 
 
