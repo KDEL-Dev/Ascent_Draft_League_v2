@@ -3,54 +3,63 @@
 // -------------------------------------------------
 
 // -------------Draft Order - Shuffle---------------
-const draftOrder = document.getElementById("draftOrder");
-const randomizeBtn = document.getElementById("randomizeDraft")
+// const draftOrder = document.getElementById("draftOrder");
+const randomizeBtn = document.getElementById("randomizeDraft");
 
-randomizeBtn.addEventListener("click", function() {
-    //Send request to PHP
-    fetch("api/draft/randomize_draft.php")
-    // Wait for PHP Response --which normally is echo"Draft order randomized successfully";
-    .then(response => response.text())
-    .then(data => {
-        // Print the response in the browswer console
-        console.log(data);
-        // Refresh the page
-        window.location.reload();
-    })
-    .catch(error => {
-        console.error("Randomization failed:", error);
+if(randomizeBtn)
+{
+    randomizeBtn.addEventListener("click", function() 
+    {
+        //Send request to PHP
+        fetch("api/draft/randomize_draft.php")
+        // Wait for PHP Response --which normally is echo"Draft order randomized successfully";
+        .then(response => response.text())
+        .then(data => {
+            // Print the response in the browswer console
+            console.log(data);
+            // Refresh the page
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error("Randomization failed:", error);
+        });
     });
-});
+}
+
 
 // ----------- DRAFT STATE - START DRAFT ------------
 
 const startDraftBtn = document.getElementById("startDraft");
 
-startDraftBtn.addEventListener("click", async function()
+if(startDraftBtn)
 {
-    try
+    startDraftBtn.addEventListener("click", async function()
     {
-        const response = await fetch(
-            "../api/draft/start_draft.php"
-        );
-
-        const data = await response.json();
-
-        console.log("START RESPONSE:", data);
-
-        if (!data.success)
+        try
         {
-            console.error(data.message);
-            return;
-        }
+            const response = await fetch(
+                "../api/draft/start_draft.php"
+            );
 
-        await loadDraftState();
-    }
-    catch(error)
-    {
-        console.error("Starting draft failed:", error);
-    }
-});
+            const data = await response.json();
+
+            console.log("START RESPONSE:", data);
+
+            if (!data.success)
+            {
+                console.error(data.message);
+                return;
+            }
+
+            await loadDraftState();
+        }
+        catch(error)
+        {
+            console.error("Starting draft failed:", error);
+        }
+    });
+
+}
 
 
 
@@ -78,10 +87,13 @@ async function loadUserDraftRoster()
     // --------------
     // ROSTER COUNTER
     // --------------
+    const draftRosterCount =    document.getElementById('draftRosterCount');
 
-    document.getElementById('draftRosterCount').textContent =
-    `${data.roster_count}/${data.roster_limit}`;
-
+    if(draftRosterCount)
+    {
+        draftRosterCount.textContent =`${data.roster_count}/${data.roster_limit}`;
+    }
+    
     // ----------------
     // GET ROSTER LISTS
     // ----------------
@@ -91,6 +103,10 @@ async function loadUserDraftRoster()
     const ruRoster = document.getElementById('ruDraftRoster');
     const nuRoster = document.getElementById('nuDraftRoster');
 
+    if(!ouRoster && !uuRoster && !ruRoster && !nuRoster)
+    {
+        return;
+    }
 
     // ----------------
     // CLEAR OLD ROSTER
@@ -101,6 +117,7 @@ async function loadUserDraftRoster()
     ruRoster.replaceChildren();
     nuRoster.replaceChildren();
 
+    
 
     // ----------------
     // DISPLAY ROSTER
@@ -286,25 +303,36 @@ async function loadDraftedDisplay()
     // PICK OWNER
     // --------------------
 
-    document.getElementById('draftPickOwner').textContent =
-        currentPick.team_name;
-
+    const draftPickOwner = document.getElementById('draftPickOwner');
+    
+    if(draftPickOwner)
+    {
+        draftPickOwner.textContent = currentPick.team_name;
+    }
+    
 
     // --------------------
     // POKEMON NAME
     // --------------------
 
-    document.getElementById('draftPokemonName').textContent =
-        currentPick.name;
-
+    const draftPokemonName = document.getElementById('draftPokemonName');
+    
+    if(draftPokemonName)
+    {
+        draftPokemonName.textContent = currentPick.name;
+    }
+    
 
     // --------------------
     // TIER
     // --------------------
 
-    document.getElementById('draftPokemonTier').textContent =
-        currentPick.tier;
-
+    const draftPokemonTier = document.getElementById('draftPokemonTier');
+    
+    if(draftPokemonTier)
+    {
+        draftPokemonTier.textContent = currentPick.tier;
+    }
 
     // --------------------
     // IMAGE
@@ -512,75 +540,83 @@ function updateDraftButtons(currentTeam)
 
 const pauseDraftBtn = document.getElementById("pauseDraft");
 
-pauseDraftBtn.addEventListener("click", async function()
+if(pauseDraftBtn)
 {
-    console.log("Pausing with:", timerRemaining);
-
-    try
+    pauseDraftBtn.addEventListener("click", async function()
     {
-        const response = await fetch(
-            "../api/draft/pause_draft.php",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    timer_remaining: timerRemaining
-                })
-            }
-        );
+        console.log("Pausing with:", timerRemaining);
 
-        const data = await response.json();
-
-        console.log("PAUSE RESPONSE:", data);
-
-        if (!data.success)
+        try
         {
-            console.error(data.message);
-            return;
+            const response = await fetch(
+                "../api/draft/pause_draft.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        timer_remaining: timerRemaining
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            console.log("PAUSE RESPONSE:", data);
+
+            if (!data.success)
+            {
+                console.error(data.message);
+                return;
+            }
+
+            stopTimer();
+
+            await loadDraftState();
         }
+        catch(error)
+        {
+            console.error("Pausing draft failed:", error);
+        }
+    });
 
-        stopTimer();
-
-        await loadDraftState();
-    }
-    catch(error)
-    {
-        console.error("Pausing draft failed:", error);
-    }
-});
+}
 
 
 // ------------ RESUME DRAFT ------------
 
 const resumeDraftBtn = document.getElementById("resumeDraft");
 
-resumeDraftBtn.addEventListener("click", async function()
+if(resumeDraftBtn)
 {
-    try
+    resumeDraftBtn.addEventListener("click", async function()
     {
-        const response = await fetch(
-            "../api/draft/resume_draft.php"
-        );
-
-        const data = await response.json();
-
-        console.log("RESUME RESPONSE:", data);
-
-        if (!data.success)
+        try
         {
-            console.error(data.message);
-            return;
-        }
+            const response = await fetch(
+                "../api/draft/resume_draft.php"
+            );
 
-        await loadDraftState();
-    }
-    catch(error)
-    {
-        console.error("Resuming draft failed:", error);
-    }
-});
+            const data = await response.json();
+
+            console.log("RESUME RESPONSE:", data);
+
+            if (!data.success)
+            {
+                console.error(data.message);
+                return;
+            }
+
+            await loadDraftState();
+        }
+        catch(error)
+        {
+            console.error("Resuming draft failed:", error);
+        }
+    });
+}
+
 
 
 
@@ -588,29 +624,31 @@ resumeDraftBtn.addEventListener("click", async function()
 
 const skipPickBtn = document.getElementById("skipPick");
 
-skipPickBtn.addEventListener("click", function() {
+if(skipPickBtn)
+{
+    skipPickBtn.addEventListener("click", function() 
+    {
+        fetch("../api/draft/skip_pick.php")
+        .then(response => response.json())
+        .then(data => {
 
-    fetch("../api/draft/skip_pick.php")
-    .then(response => response.json())
-    .then(data => {
+            console.log("SKIP RESPONSE:", data);
 
-        console.log("SKIP RESPONSE:", data);
+            if (!data.success)
+            {
+                console.error(data.message);
+                return;
+            }
 
-        if (!data.success)
-        {
-            console.error(data.message);
-            return;
-        }
+            loadDraftState();
+            loadDraftedDisplay();
 
-        loadDraftState();
-        loadDraftedDisplay();
-
-    })
-    .catch(error => {
-        console.error("Skip Pick failed:", error);
+        })
+        .catch(error => {
+            console.error("Skip Pick failed:", error);
+        });
     });
-
-});
+}
 
 
 
@@ -630,6 +668,12 @@ function stopTimer()
 function startTimer(pickStartedAt)
 {
     stopTimer();
+
+    // guard
+    if(!timerDisplay)
+    {
+        return;
+    }
 
     const duration = 60;
 
@@ -872,30 +916,6 @@ async function loadDraftLog()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // --------------LOAD DATA WHEN PAGE OPENS-------------------
 
 loadUserDraftRoster();
@@ -903,3 +923,21 @@ loadDraftedDisplay();
 loadDraftState();
 loadAllDraftedPokemon();
 loadDraftLog();
+
+
+// -------------------------------------------------
+// ---------------- ADMIN SETTINGS ---------------------
+// -------------------------------------------------
+
+const resetDraftBtn = document.getElementById('resetDraft');
+if(resetDraftBtn)
+{
+    resetDraftBtn.addEventListener("click", function()
+    {
+        alert("HELLO!")
+        if(!confirm("Are you sure you want to reset the draft?")) 
+        return;
+    })
+}
+
+

@@ -74,79 +74,70 @@
     // -------------
 
     // Begin by created your query
-    $ouSql = "
-    SELECT showdown_pokemon.id, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
+    $pokemonSql = "
+    SELECT
+        showdown_pokemon.id,
+        showdown_pokemon.name,
+        showdown_pokemon.type1,
+        showdown_pokemon.type2,
+        pokemon_tier_per_season.tier,
+        pokemon_tier_per_season.season_id
     FROM showdown_pokemon
     JOIN pokemon_tier_per_season
-    ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
-    WHERE pokemon_tier_per_season.season_id = 1
-    AND pokemon_tier_per_season.tier IN ('OU', 'UUBL');
+        ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
+    WHERE pokemon_tier_per_season.season_id = ?
     ";
 
-    // Grab the results and place them in a variable
-    $ouResults = $conn->query($ouSql);
+    $stmt = $conn->prepare($pokemonSql);
 
-    // If no results, display error
-    if(!$ouResults)
-    {
-        die("Query Failed: " . $conn->error);
+    if (!$stmt) {
+        die("Prepare Failed: " . $conn->error);
     }
 
-    // This is so easy, just memorize above and how to display data!
+    $stmt->bind_param("i", $seasonId);
+    $stmt->execute();
 
-    //  Return to add placeholders
+    $pokemonResults = $stmt->get_result();
 
-    // Adding rest of the tiers
+    $allPokemon = [];
 
-    $uuSql = "
-    SELECT showdown_pokemon.id, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
-    FROM showdown_pokemon
-    JOIN pokemon_tier_per_season
-    ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
-    WHERE pokemon_tier_per_season.season_id = 1
-    AND pokemon_tier_per_season.tier IN ('UU', 'RUBL');
-    ";
-
-    $uuResults = $conn->query($uuSql);
-
-    if(!$uuResults)
-    {
-        die("Query Failed: " . $conn->error);
+    while ($pokemon = $pokemonResults->fetch_assoc()) {
+        $allPokemon[] = $pokemon;
     }
 
-    // RU + NUBL POKEMON
+    // SPLIT INTO DIFFERENT TIERS
 
-     $ruSql = "
-    SELECT showdown_pokemon.id, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
-    FROM showdown_pokemon
-    JOIN pokemon_tier_per_season
-    ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
-    WHERE pokemon_tier_per_season.season_id = 1
-    AND pokemon_tier_per_season.tier IN ('RU', 'NUBL');
-    ";
+    $tierGroups = 
+    [
+        'OU' => ['OU', 'UUBL'],
+        'UU' => ['UU', 'RUBL'],
+        'RU' => ['RU', 'NUBL'],
+        'NU' => ['NU', 'PUBL', 'PU', 'ZUBL', 'ZU']
+    ];
 
-    $ruResults = $conn->query($ruSql);
 
-    if(!$ruResults)
-    {
-        die("Query Failed: " . $conn->error);
+    $groupedPokemon = 
+    [
+        'OU' => [],
+        'UU' => [],
+        'RU' => [],
+        'NU' => []
+    ];
+
+    foreach ($allPokemon as $pokemon) {
+
+        foreach ($tierGroups as $group => $tiers) {
+
+            if (in_array($pokemon['tier'], $tiers)) {
+                $groupedPokemon[$group][] = $pokemon;
+                break;
+            }
+        }
     }
 
-    $nuSql = "
-    SELECT showdown_pokemon.id, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.season_id
-    FROM showdown_pokemon
-    JOIN pokemon_tier_per_season
-    ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
-    WHERE pokemon_tier_per_season.season_id = 1
-    AND pokemon_tier_per_season.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU');
-    ";
 
-    $nuResults = $conn->query($nuSql);
 
-    if(!$nuResults)
-    {
-        die("Query Failed: " . $conn->error);
-    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -161,54 +152,10 @@
     <title>Draft</title>
 </head>
 <body>
-    <header>
-        <div class="seasonBanner d-flex justify-content-center align-items-center">
-            <!-- Website Banner -->
-             <h2>Future - Season Banner</h2>
-        </div>
-        <!-- navbar -->
-         <nav class=" navbar navbar-expand-lg bg-dark-subtle">
-            <!-- NavBar Toggle Icon -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> 
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Nav bar -->
-                <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-evenly">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="">Draft</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Roster</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Matchups</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Standings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Statistics</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Draft Recap</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">League Information</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Admin Settings</a>
-                    </li>
-                </ul>
-             </div>
-        </nav>
-    </header>
+    
+    <!-- header and navbar -->
+    <?php include '../includes/header.php' ?>
+
     <main class="p-3" id="draft">
         <div class="row border mb-3" id="draftDashboard">
             <div>
@@ -380,96 +327,96 @@
                 OU Pokemon
                 <span class="badge text-bg-secondary">UUBL</span>
             </h2>
-            <?php while($ouPokemon = $ouResults->fetch_assoc()): ?>
+            <?php foreach ($groupedPokemon['OU'] as $pokemon): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
                         <div>
                             <span class="me-1">
-                                <?=  htmlspecialchars($ouPokemon['name']) ?>
+                                <?=  htmlspecialchars($pokemon['name']) ?>
                             </span>
                             <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ouPokemon['type1'])) ?>">
-                                <?= htmlspecialchars($ouPokemon['type1']) ?>
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                <?= htmlspecialchars($pokemon['type1']) ?>
                             </span>
-                            <?php if (!empty($ouPokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ouPokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($ouPokemon['type2']) ?>
+                            <?php if (!empty($pokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type2']) ?>
                                 </span>
                             <?php endif; ?>
                         </div>
                         <button 
                             class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $ouPokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($ouPokemon['name']) ?>">
+                            data-pokemon-id="<?= $pokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
                             Draft 
                         </button>
                     </div>
                 </div>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </div>
         <div class="row">
             <h2>
                 UU Pokemon
                 <span class="badge text-bg-secondary">RUBL</span>
             </h2>
-            <?php while($uuPokemon = $uuResults->fetch_assoc()): ?>
+            <?php foreach ($groupedPokemon['UU'] as $pokemon): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
                         <div>
                             <span class="me-1">
-                                <?=  htmlspecialchars($uuPokemon['name']) ?>
+                                <?=  htmlspecialchars($pokemon['name']) ?>
                             </span>
                             <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($uuPokemon['type1'])) ?>">
-                                <?= htmlspecialchars($uuPokemon['type1']) ?>
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                <?= htmlspecialchars($pokemon['type1']) ?>
                             </span>
-                            <?php if (!empty($uuPokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($uuPokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($uuPokemon['type2']) ?>
+                            <?php if (!empty($pokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type2']) ?>
                                 </span>
                             <?php endif; ?>
                         </div>
                         <button 
                             class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $uuPokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($uuPokemon['name']) ?>">
+                            data-pokemon-id="<?= $pokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
                             Draft 
                         </button>
                     </div>
                 </div>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </div>
         <div class="row">
             <h2>
                 RU Pokemon
                 <span class="badge text-bg-secondary">NUBL</span>
             </h2>
-            <?php while($ruPokemon = $ruResults->fetch_assoc()): ?>
+            <?php foreach ($groupedPokemon['RU'] as $pokemon): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
                         <div>
                             <span class="me-1">
-                                <?=  htmlspecialchars($ruPokemon['name']) ?>
+                                <?=  htmlspecialchars($pokemon['name']) ?>
                             </span>
                             <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ruPokemon['type1'])) ?>">
-                                <?= htmlspecialchars($ruPokemon['type1']) ?>
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                <?= htmlspecialchars($pokemon['type1']) ?>
                             </span>
-                            <?php if (!empty($ruPokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($ruPokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($ruPokemon['type2']) ?>
+                            <?php if (!empty($pokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type2']) ?>
                                 </span>
                             <?php endif; ?>
                         </div>
                         <button 
                             class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $ruPokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($ruPokemon['name']) ?>">
+                            data-pokemon-id="<?= $pokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
                             Draft 
                         </button>
                     </div>
                 </div>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </div>
         <div class="row">
             <h2>
@@ -479,32 +426,32 @@
                 <span class="badge text-bg-secondary">ZUBL</span>
                 <span class="badge text-bg-secondary">ZU</span>
             </h2>
-            <?php while($nuPokemon = $nuResults->fetch_assoc()): ?>
+            <?php foreach ($groupedPokemon['NU'] as $pokemon): ?>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
                     <div class="border rounded p-2 d-flex justify-content-between align-items-center">
                         <div>
                             <span class="me-1">
-                                <?=  htmlspecialchars($nuPokemon['name']) ?>
+                                <?=  htmlspecialchars($pokemon['name']) ?>
                             </span>
                             <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($nuPokemon['type1'])) ?>">
-                                <?= htmlspecialchars($nuPokemon['type1']) ?>
+                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                <?= htmlspecialchars($pokemon['type1']) ?>
                             </span>
-                            <?php if (!empty($nuPokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($nuPokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($nuPokemon['type2']) ?>
+                            <?php if (!empty($pokemon['type2'])): ?>
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type2']) ?>
                                 </span>
                             <?php endif; ?>
                         </div>
                         <button 
                             class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $nuPokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($nuPokemon['name']) ?>">
+                            data-pokemon-id="<?= $pokemon['id'] ?>"
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
                             Draft 
                         </button>
                     </div>
                 </div>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </div>
     </main>
     <!-- Bootstrap Script and My Script -->
