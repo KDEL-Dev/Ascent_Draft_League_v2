@@ -2,7 +2,7 @@
     // error_reporting(E_ALL);
     // ini_set('display_errors',1);
 
-    require_once __DIR__ . '/includes/connection.php';
+    require_once __DIR__ . '/../includes/connection.php';
 
     $seasonId = 1;
 
@@ -155,7 +155,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     
     <title>Draft</title>
@@ -182,10 +182,10 @@
                         <a class="nav-link active" aria-current="page" href="">Draft</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Matchups</a>
+                        <a class="nav-link" href="#">Roster</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Roster</a>
+                        <a class="nav-link" href="#">Matchups</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Standings</a>
@@ -203,7 +203,7 @@
                         <a class="nav-link" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Log Out</a>
+                        <a class="nav-link" href="#">Admin Settings</a>
                     </li>
                 </ul>
              </div>
@@ -351,15 +351,16 @@
                         <p id="onTheClock">-</p>
                     </div>
                     <div class="col-1 border text-center">
-                        <p>Next User</p>
-                        <p>-</p>
+                        <p>Next Team:</p>
+                        <p id="nextTeam">-</p>
                     </div>
-                    <div class="col-8 border d-flex">
+                    <div class="col-8 p-0 border d-flex">
                         <div class="border d-flex align-items-center">
-                            <p class="m-0">Draft Log</p>
+                            <p class="m-0 text-center">Draft Log</p>
                         </div>
 
                         <ul id="draftLog" class="m-0 p-0 overflow-x-auto d-flex flex-grow-1">
+                            <!-- Dynamically Added -->
                         </ul>
                     </div>
                 </div>
@@ -507,7 +508,7 @@
         </div>
     </main>
     <!-- Bootstrap Script and My Script -->
-    <script src="javascript/script.js"></script>
+    <script src="../javascript/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

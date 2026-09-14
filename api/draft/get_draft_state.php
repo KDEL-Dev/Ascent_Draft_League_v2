@@ -6,6 +6,8 @@ require_once __DIR__ . '/../../includes/connection.php';
 
 $seasonId = 1;
 
+
+
 $sql = "
     SELECT
         is_active,
@@ -93,8 +95,62 @@ $result = $stmt->get_result();
 
 $currentTeam = $result->fetch_assoc();
 
+
+// -------------------------
+// GET NEXT TEAM
+// -------------------------
+
+$currentPosition = (int) $draftState['draft_position']; // ADDED
+
+
+if ($draftState['draft_direction'] === 'forward') {
+    $nextPosition = $currentPosition + 1;
+} else {
+    $nextPosition = $currentPosition - 1;
+}
+
+$sql = "
+    SELECT
+        id,
+        team_name,
+        draft_position
+    FROM active_users
+    WHERE season_id = ?
+    AND draft_position = ?
+";
+
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Prepare failed when finding next drafter'
+    ]);
+    exit;
+}
+
+$stmt->bind_param(
+    "ii",
+    $seasonId,
+    $nextPosition
+);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$nextTeam = $result->fetch_assoc();
+
+
+
+
+
+
+
+
 echo json_encode([
     'success' => true,
     'draft_state' => $draftState,
-    'current_team' => $currentTeam
+    'current_team' => $currentTeam,
+    'future_team' => $nextTeam
 ]);

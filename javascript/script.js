@@ -31,7 +31,7 @@ startDraftBtn.addEventListener("click", async function()
     try
     {
         const response = await fetch(
-            "api/draft/start_draft.php"
+            "../api/draft/start_draft.php"
         );
 
         const data = await response.json();
@@ -62,7 +62,7 @@ async function loadUserDraftRoster()
 {
     const activeUserId = 6; // temp: grab active user from loggedin person later
     const response = await fetch(
-        `api/roster/get_roster.php?active_user_id=${activeUserId}`
+        `../api/roster/get_roster.php?active_user_id=${activeUserId}`
     );
 
     // const response = await fetch('api/roster/get_roster.php');
@@ -178,7 +178,7 @@ function displayUserDraftTier(list, roster, tiers)
 
 async function loadAllDraftedPokemon()
 {
-    const response = await fetch('api/draft/get_drafted_pokemon.php');
+    const response = await fetch('../api/draft/get_drafted_pokemon.php');
 
     const data = await response.json();
 
@@ -262,7 +262,7 @@ function displayDraftedTier(elementId, roster, tiers)
 
 async function loadDraftedDisplay()
 {
-    const response = await fetch('api/draft/get_draft_picks.php');
+    const response = await fetch('../api/draft/get_draft_picks.php');
 
     const data = await response.json();
 
@@ -331,7 +331,7 @@ async function loadDraftedDisplay()
     // --------------------
 
     const rosterResponse = await fetch(
-        `api/roster/get_roster.php?active_user_id=${currentPick.active_user_id}`
+        `../api/roster/get_roster.php?active_user_id=${currentPick.active_user_id}`
     );
 
     const rosterData = await rosterResponse.json();
@@ -439,7 +439,7 @@ draftButtons.forEach(button => {
     button.addEventListener("click", () => {
         const pokemonId = button.dataset.pokemonId;
 
-        fetch("api/draft/make_pick.php", {
+        fetch("../api/draft/make_pick.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -519,7 +519,7 @@ pauseDraftBtn.addEventListener("click", async function()
     try
     {
         const response = await fetch(
-            "api/draft/pause_draft.php",
+            "../api/draft/pause_draft.php",
             {
                 method: "POST",
                 headers: {
@@ -561,7 +561,7 @@ resumeDraftBtn.addEventListener("click", async function()
     try
     {
         const response = await fetch(
-            "api/draft/resume_draft.php"
+            "../api/draft/resume_draft.php"
         );
 
         const data = await response.json();
@@ -590,7 +590,7 @@ const skipPickBtn = document.getElementById("skipPick");
 
 skipPickBtn.addEventListener("click", function() {
 
-    fetch("api/draft/skip_pick.php")
+    fetch("../api/draft/skip_pick.php")
     .then(response => response.json())
     .then(data => {
 
@@ -716,7 +716,7 @@ async function autoSkipPick()
 
 async function loadDraftState()
 {
-    const response = await fetch('api/draft/get_draft_state.php');
+    const response = await fetch('../api/draft/get_draft_state.php');
 
     const data = await response.json();
 
@@ -728,6 +728,7 @@ async function loadDraftState()
 
     const draftState = data.draft_state;
     const currentTeam = data.current_team;
+    const futureTeam = data.future_team;
 
     // -------------------------
     // DRAFT DIRECTION
@@ -752,6 +753,7 @@ async function loadDraftState()
     if (!draftState.is_active)
     {
         document.getElementById('onTheClock').textContent = '-';
+        document.getElementById('nextTeam').textContent = '-';
 
         stopTimer();
 
@@ -783,6 +785,20 @@ async function loadDraftState()
     }
 
     // -------------------------
+    // ON THE CLOCK - NEXT TEAM
+    // -------------------------
+
+    if(futureTeam)
+    {
+        document.getElementById('nextTeam').textContent = 
+        futureTeam.team_name;
+    }
+    else
+    {
+        document.getElementById('nextTeam').textContent = '-';
+    }
+
+    // -------------------------
     // UPDATE DRAFT BUTTONS
     // -------------------------
 
@@ -803,7 +819,7 @@ async function loadDraftState()
 async function loadDraftLog()
 {
     const response = await fetch(
-        'api/draft/get_draft_picks.php'
+        '../api/draft/get_draft_picks.php'
     );
 
     const data = await response.json();
@@ -823,16 +839,18 @@ async function loadDraftLog()
     picks.forEach(pick => {
 
         const li = document.createElement('li');
+        li.classList.add('d-flex')
+        li.classList.add('align-items-center')
 
         // Pick number
         const pickNumber = document.createElement('div');
-        pickNumber.classList.add('draft-log-number');
-
+        pickNumber.classList.add('px-1')
         pickNumber.textContent = pick.pick_number;
 
         // Team + Pokemon
         const pickInfo = document.createElement('div');
-        pickInfo.classList.add('draft-log-info');
+        pickInfo.classList.add('d-flex');
+        pickInfo.classList.add('flex-column');
 
         const teamName = document.createElement('span');
         teamName.textContent = pick.team_name;
