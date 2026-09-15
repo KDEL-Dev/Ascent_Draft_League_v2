@@ -5,6 +5,7 @@
     require_once __DIR__ . '/../includes/connection.php';
 
     $seasonId = 1;
+    $activeUserId = 6;
 
     // ---------------
     // DRAFT STATE
@@ -143,7 +144,53 @@
     }
     unset($pokemonGroup);
 
+    // -------------
+    // COUNT TIER
+    // -------------
 
+    $tierCountSql = "
+        SELECT
+            CASE
+                WHEN pt.tier IN ('OU', 'UUBL') THEN 'OU'
+                WHEN pt.tier IN ('UU', 'RUBL') THEN 'UU'
+                WHEN pt.tier IN ('RU', 'NUBL') THEN 'RU'
+                WHEN pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU') THEN 'NU'
+            END AS tier_group,
+            COUNT(*) AS tier_count
+        FROM draft_picks dp
+        JOIN pokemon_tier_per_season pt
+            ON pt.showdown_pokemon_id = dp.showdown_pokemon_id
+            AND pt.season_id = dp.season_id
+        WHERE dp.season_id = ?
+        AND dp.active_user_id = ?
+        GROUP BY tier_group
+    ";
+
+    $tierCounts = 
+    [
+        'OU' => 0,
+        'UU' => 0,
+        'RU' => 0,
+        'NU' => 0
+    ];
+
+    $stmt = $conn->prepare($tierCountSql);
+
+    $stmt->bind_param(
+        "ii",
+        $seasonId,
+        $activeUserId
+    );
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        if ($row['tier_group'] !== null) {
+            $tierCounts[$row['tier_group']] = (int)$row['tier_count'];
+        }
+    }
 
 
     
@@ -420,7 +467,8 @@
                         <button 
                             class="draftBtn btn btn-primary" 
                             data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                            data-tier="OU">
                             Draft 
                         </button>
                     </div>
@@ -452,7 +500,8 @@
                         <button 
                             class="draftBtn btn btn-primary" 
                             data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                            data-tier="UU">
                             Draft 
                         </button>
                     </div>
@@ -484,7 +533,8 @@
                         <button 
                             class="draftBtn btn btn-primary" 
                             data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                            data-tier="RU">
                             Draft 
                         </button>
                     </div>
@@ -519,7 +569,8 @@
                         <button 
                             class="draftBtn btn btn-primary" 
                             data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>">
+                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                            data-tier="NU">
                             Draft 
                         </button>
                     </div>

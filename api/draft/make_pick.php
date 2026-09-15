@@ -151,6 +151,111 @@
         exit;
     }
 
+    // -------------------------
+    // GET POKEMON TIER
+    // -------------------------
+
+    $sql = "
+        SELECT tier
+        FROM pokemon_tier_per_season
+        WHERE season_id = ?
+        AND showdown_pokemon_id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param(
+        "ii",
+        $seasonId,
+        $pokemonId
+    );
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $pokemonTierData = $result->fetch_assoc();
+
+    if (!$pokemonTierData) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Could not find Pokémon tier."
+        ]);
+        exit;
+    }
+
+    $pokemonTier = $pokemonTierData['tier'];
+
+    // -------------------------
+    // DETERMINE TIER GROUP
+    // -------------------------
+
+    if (in_array($pokemonTier, ['OU', 'UUBL'])) {
+        $tierGroup = 'OU';
+    }
+    elseif (in_array($pokemonTier, ['UU', 'RUBL'])) {
+        $tierGroup = 'UU';
+    }
+    elseif (in_array($pokemonTier, ['RU', 'NUBL'])) {
+        $tierGroup = 'RU';
+    }
+    elseif (in_array($pokemonTier, ['NU', 'PUBL', 'PU', 'ZUBL', 'ZU'])) {
+        $tierGroup = 'NU';
+    }
+    else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid Pokémon tier."
+        ]);
+        exit;
+    }
+
+    // -------------------------
+    // CHECK TIER LIMIT
+    // -------------------------
+
+    $tierCountSql = "
+        SELECT COUNT(*) AS tier_count
+        FROM draft_picks dp
+        JOIN pokemon_tier_per_season pt
+            ON pt.showdown_pokemon_id = dp.showdown_pokemon_id
+            AND pt.season_id = dp.season_id
+        WHERE dp.season_id = ?
+        AND dp.active_user_id = ?
+        AND (
+            (? = 'OU' AND pt.tier IN ('OU', 'UUBL'))
+            OR
+            (? = 'UU' AND pt.tier IN ('UU', 'RUBL'))
+            OR
+            (? = 'RU' AND pt.tier IN ('RU', 'NUBL'))
+            OR
+            (? = 'NU' AND pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU'))
+        )
+    ";
+
+    $stmt = $conn->prepare($tierCountSql);
+
+    $stmt->bind_param(
+        "iissss",
+        $seasonId,
+        $activeUserId,
+        $tierGroup,
+        $tierGroup,
+        $tierGroup,
+        $tierGroup
+    );
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $tierCount = (int)$result->fetch_assoc()['tier_count'];
+
+    if ($tierCount >= 3) {
+        echo json_encode([
+            "success" => false,
+            "message" => "You already have 3 Pokémon from the {$tierGroup} tier."
+        ]);
+        exit;
+    }
 
     // --------------
     // INSERT into dB
@@ -189,8 +294,6 @@
         ]);
         exit;
     }
-
-    
 
 
 

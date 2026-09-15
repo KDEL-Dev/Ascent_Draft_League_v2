@@ -524,7 +524,16 @@ draftButtons.forEach(button => {
         .then(data => {
             console.log("PHP RESPONSE:", data);
 
-            if(data.success) // This might be causing issues with how list gets filled out. Possibly delete later.
+            // -------------------------
+            // PICK FAILED
+            // -------------------------
+
+            if (!data.success)
+            {
+                alert(data.message);
+                return;
+            }
+            else // This might be causing issues with how list gets filled out. Possibly delete later.
             {
                 loadUserDraftRoster(); 
                 loadAllDraftedPokemon();
@@ -578,6 +587,7 @@ function updateDraftButtons(currentTeam)
         button.disabled = !isMyTurn;
     });
 }
+
 
 // ------------ PAUSE DRAFT ------------
 
