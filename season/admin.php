@@ -18,7 +18,9 @@
     <?php include '../includes/header.php' ?>
 
     <main class="p-3">
+        <h1>Admin Settings</h1>
         <div id="admin_settings_cont" class="d-flex">
+            
             <div class="mx-3 p-3 border">
                 <h2>Pre-Draft Settings</h2>
                 <div class="d-flex justify-content-center">
