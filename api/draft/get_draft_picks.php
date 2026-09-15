@@ -18,6 +18,15 @@
             showdown_pokemon.name,
             showdown_pokemon.type1,
             showdown_pokemon.type2,
+            showdown_pokemon.hp,
+            showdown_pokemon.attack,
+            showdown_pokemon.defense,
+            showdown_pokemon.sp_attack,
+            showdown_pokemon.sp_defense,
+            showdown_pokemon.speed,
+            showdown_pokemon.ability_1,
+            showdown_pokemon.ability_2,
+            showdown_pokemon.hidden_ability,
 
             pokemon_tier_per_season.tier
 
@@ -69,7 +78,16 @@
             "name" => $row["name"],
             "type1" => $row["type1"],
             "type2" => $row["type2"],
-            "tier" => $row["tier"]
+            "tier" => $row["tier"],
+            "hp" => (int) $row["hp"],
+            "attack" => (int) $row["attack"],
+            "defense" => (int) $row["defense"],
+            "sp_attack" => (int) $row["sp_attack"],
+            "sp_defense" => (int) $row["sp_defense"],
+            "speed" => (int) $row["speed"],
+            "ability_1" => $row["ability_1"],
+            "ability_2" =>  $row["ability_2"],
+            "hidden_ability" =>  $row["hidden_ability"]
         ];
     }
 

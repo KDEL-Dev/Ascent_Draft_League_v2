@@ -335,6 +335,43 @@ async function loadDraftedDisplay()
     }
 
     // --------------------
+    // ABILITY
+    // --------------------
+
+    const draftAbility1 = document.getElementById('draftAbility1');
+    const draftAbility2 = document.getElementById('draftAbility2');
+    const draftHiddenAbility = document.getElementById('draftHiddenAbility');
+    
+    if(draftAbility1 && draftAbility2 && draftHiddenAbility)
+    {
+        draftAbility1.textContent = currentPick.ability_1;
+        draftAbility2.textContent = currentPick.ability_2;
+        draftHiddenAbility.textContent = currentPick.hidden_ability;
+    }
+
+    // --------------------
+    // STATS
+    // --------------------
+
+    const draftedPkmnHp = document.getElementById('draftedPkmnHp');
+    const draftedPkmnAtk = document.getElementById('draftedPkmnAtk');
+    const draftedPkmnDef = document.getElementById('draftedPkmnDef');
+    const draftedPkmnSpa = document.getElementById('draftedPkmnSpa');
+    const draftedPkmnSpd = document.getElementById('draftedPkmnSpd');
+    const draftedPkmnSpe = document.getElementById('draftedPkmnSpe');
+
+    if(draftedPkmnHp && draftedPkmnDef && draftedPkmnSpa && draftedPkmnAtk && draftedPkmnSpd && draftedPkmnSpe)
+    {
+        draftedPkmnHp.textContent = currentPick.hp;
+        draftedPkmnAtk.textContent = currentPick.attack;
+        draftedPkmnDef.textContent = currentPick.defense;
+        draftedPkmnSpa.textContent = currentPick.sp_attack;
+        draftedPkmnSpd.textContent = currentPick.sp_defense;
+        draftedPkmnSpe.textContent = currentPick.speed;
+    }
+
+
+    // --------------------
     // IMAGE
     // --------------------
 
@@ -727,7 +764,7 @@ async function autoSkipPick()
     try
     {
         const response = await fetch(
-            "api/draft/skip_pick.php"
+            "../api/draft/skip_pick.php"
         );
 
         const data = await response.json();
@@ -934,6 +971,48 @@ async function loadDraftLog()
     }
 }
 
+// -------------- DRAFT LIST TOGGLING ---------------
+
+const tierButtons = document.querySelectorAll(".tierButton");
+const tierSections = document.querySelectorAll(".tier-section");
+
+function showTier(tier) {
+
+    if(!tierButtons && tierSections)
+    {
+        return;
+    }
+
+    // Hide all tier sections
+    tierSections.forEach(section => {
+        section.style.display = "none";
+    });
+
+    // Show selected tier
+    const selectedSection = document.getElementById(`${tier}DraftList`);
+
+    if (selectedSection) {
+        selectedSection.style.display = "flex";
+    }
+
+    // Update button styling
+    tierButtons.forEach(button => {
+        if (button.dataset.tier === tier) {
+            button.classList.remove("btn-outline-primary");
+            button.classList.add("btn-primary");
+        } else {
+            button.classList.remove("btn-primary");
+            button.classList.add("btn-outline-primary");
+        }
+    });
+}
+
+// Button click events
+tierButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        showTier(button.dataset.tier);
+    });
+});
 
 
 
@@ -944,7 +1023,7 @@ loadDraftedDisplay();
 loadDraftState();
 loadAllDraftedPokemon();
 loadDraftLog();
-
+showTier("ou");
 
 // -------------------------------------------------
 // ---------------- ADMIN SETTINGS ---------------------

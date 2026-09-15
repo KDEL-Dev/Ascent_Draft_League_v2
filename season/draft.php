@@ -135,6 +135,15 @@
         }
     }
 
+    // Sort each tier alphabetically by Pokemon name
+    foreach ($groupedPokemon as &$pokemonGroup) {
+        usort($pokemonGroup, function ($a, $b) {
+            return strcasecmp($a['name'], $b['name']);
+        });
+    }
+    unset($pokemonGroup);
+
+
 
 
     
@@ -152,7 +161,6 @@
     <title>Draft</title>
 </head>
 <body>
-    
     <!-- header and navbar -->
     <?php include '../includes/header.php' ?>
 
@@ -210,8 +218,43 @@
                                 <p id="draftPickOwner">pick owner</p>
                                 
                                 <p id="draftPokemonStats">pokemon stats</p>
+                                <div>
+                                    <div id="draftPkmnStats1" class="d-flex justify-content-between">
+                                        <div>
+                                            <p>hp</p>
+                                            <p id="draftedPkmnHp">-</p>
+                                        </div>
+                                        <div>
+                                            <p>atk</p>
+                                            <p id="draftedPkmnAtk">-</p>
+                                        </div>
+                                        <div>
+                                            <p>def</p>
+                                            <p id="draftedPkmnDef">-</p>
+                                        </div>
+                                    </div>
+                                    <div id="draftPkmnStats2" class="d-flex justify-content-between">
+                                        <div>
+                                            <p>sp.atk</p>
+                                            <p id=draftedPkmnSpa>-</p>
+                                        </div>
+                                        <div>
+                                            <p>sp.def</p>
+                                            <p id="draftedPkmnSpd">-</p>
+                                        </div>
+                                        <div>
+                                            <p>spe</p>
+                                            <p id="draftedPkmnSpe">-</p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <p id="draftPokemonName">pokemon name</p>
-                                <p id="draftPokemonAbility">pokemon abilities</p>                            </div>
+                                <ul id="draftPokemonAbility">
+                                    <li id="draftAbility1">-</li>
+                                    <li id="draftAbility2">-</li>
+                                    <li id="draftHiddenAbility">-</li>
+                                </ul>                          
+                            </div>
                             <div class="d-flex flex-column flex-grow-1">
                                 <div id="draftPokemonImage"></div>
                                 <p id="draftPokemonTier">tier</p>
@@ -322,7 +365,37 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="btn-group mb-3" role="group">
+            <button 
+                type="button" 
+                class="btn btn-primary tierButton"
+                data-tier="ou">
+                OU
+            </button>
+
+            <button 
+                type="button" 
+                class="btn btn-outline-primary tierButton"
+                data-tier="uu">
+                UU
+            </button>
+
+            <button 
+                type="button" 
+                class="btn btn-outline-primary tierButton"
+                data-tier="ru">
+                RU
+            </button>
+
+            <button 
+                type="button" 
+                class="btn btn-outline-primary tierButton"
+                data-tier="nu">
+                NU
+            </button>
+        </div>
+
+        <div class="row tier-section" id="ouDraftList">
             <h2>
                 OU Pokemon
                 <span class="badge text-bg-secondary">UUBL</span>
@@ -354,7 +427,7 @@
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="row">
+        <div class="row tier-section" id="uuDraftList">
             <h2>
                 UU Pokemon
                 <span class="badge text-bg-secondary">RUBL</span>
@@ -386,7 +459,7 @@
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="row">
+        <div class="row tier-section" id="ruDraftList">
             <h2>
                 RU Pokemon
                 <span class="badge text-bg-secondary">NUBL</span>
@@ -418,7 +491,7 @@
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="row">
+        <div class="row tier-section" id="nuDraftList">
             <h2>
                 NU Pokemon
                 <span class="badge text-bg-secondary">PUBL</span>

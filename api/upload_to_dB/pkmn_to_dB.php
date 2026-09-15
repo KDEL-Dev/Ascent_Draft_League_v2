@@ -42,10 +42,19 @@ $stmt = $conn->prepare("
             form,
             type1,
             type2,
+            hp,
+            attack,
+            defense, 
+            sp_attack,
+            sp_defense,
+            speed,
+            ability_1,
+            ability_2,
+            hidden_ability,
             created_at
         )
     VALUES
-        (?, ?, ?, ?, ?, ?, NOW())
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
 
     ON DUPLICATE KEY UPDATE
         showdown_id = VALUES(showdown_id),
@@ -53,6 +62,15 @@ $stmt = $conn->prepare("
         form = VALUES(form),
         type1 = VALUES(type1),
         type2 = VALUES(type2),
+        hp = VALUES(hp),
+        attack = VALUES(attack),
+        defense = VALUES(defense),
+        sp_attack = VALUES(sp_attack),
+        sp_defense = VALUES(sp_defense),
+        speed = VALUES(speed),
+        ability_1 = VALUES(ability_1),
+        ability_2 = VALUES(ability_2),
+        hidden_ability = VALUES(hidden_ability),
         updated_at = NOW()
 ");
 
@@ -152,19 +170,45 @@ foreach ($showdownData as $pkmnKey => $pkmn) {
 
     $type2 = $pkmn['types'][1] ?? null;
 
+    $hp = $pkmn['baseStats']['hp'] ?? null;
+
+    $attack = $pkmn['baseStats']['atk'] ?? null;
+
+    $defense = $pkmn['baseStats']['def'] ?? null;
+
+    $sp_attack = $pkmn['baseStats']['spa'] ?? null;
+
+    $sp_defense = $pkmn['baseStats']['spd'] ?? null;
+
+    $speed = $pkmn['baseStats']['spe'] ?? null;
+
+    $ability_1 = $pkmn['abilities']['0'] ?? null;
+
+    $ability_2 = $pkmn['abilities']['1'] ?? null;
+
+    $hidden_ability = $pkmn['abilities']['H'] ?? null;
 
     // ----------------------------------------------
     // Insert / update Pokémon
     // ----------------------------------------------
 
     $stmt->bind_param(
-        "sissss",
+        "sissssiiiiiisss",
         $showdownKey,
         $showdownId,
         $name,
         $form,
         $type1,
-        $type2
+        $type2,
+        $hp,
+        $attack,
+        $defense,
+        $sp_attack,
+        $sp_defense,
+        $speed,
+        $ability_1,
+        $ability_2,
+        $hidden_ability
     );
 
 
