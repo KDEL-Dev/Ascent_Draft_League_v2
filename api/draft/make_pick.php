@@ -296,6 +296,40 @@
     }
 
 
+    // -------------------------
+    // INSERT INTO ROSTER
+    // -------------------------
+
+    $sql = "
+        INSERT INTO roster_pkmn
+        (
+            season_id,
+            active_user_id,
+            showdown_pokemon_id,
+            status
+        )
+        VALUES (?, ?, ?, 'active')
+    ";
+
+    $rosterStmt = $conn->prepare($sql);
+
+    $rosterStmt->bind_param(
+        "iii",
+        $seasonId,
+        $currentUser['id'],
+        $pokemonId
+    );
+
+    if (!$rosterStmt->execute()) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Pick was saved, but roster Pokémon failed to save: " . $rosterStmt->error
+        ]);
+        exit;
+    }
+
+    $rosterStmt->close();
+
 
     // -------------------
     // Advance Draft State

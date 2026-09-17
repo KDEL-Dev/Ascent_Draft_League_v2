@@ -13,7 +13,7 @@
                 <!-- Nav bar -->
                 <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-evenly">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="#">Overview</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="draft.php">Draft</a>
