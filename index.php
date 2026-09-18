@@ -1,5 +1,30 @@
 <?php 
-    $_SESSION['user_id'];
+    session_start();
+
+    require_once __DIR__ . '/includes/connection.php';
+
+    $userId = $_SESSION['user_id'];
+
+    //---------------------------------------------
+    //----- Retrieve team name of active user -----
+    //---------------------------------------------
+
+    $sql = " SELECT default_team_name 
+        FROM users
+        WHERE users.id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt-> bind_param("i",$userId);
+    $stmt->execute();
+
+    $teamNameResult = $stmt->get_result();
+
+    $teamName = $teamNameResult->fetch_assoc()['default_team_name'];
+
+    // Must I close the connection here?
+
+
 ?>
 
 
@@ -33,7 +58,7 @@
                         <a class="nav-link" href="#">Settings</a>                        
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Log Out</a>
+                        <a class="nav-link" href="logout.php">Log Out</a>
                     </li>
                 </ul>
             </div>
@@ -42,7 +67,7 @@
     <main class="container p-3">
         <div class="row">
             <div class="col-12">
-                <p>Welcome,</p>        
+                <p>Welcome,<b><?= htmlspecialchars($teamName) ?></b></p>        
             </div>
             <div class="col-12">
                 <h2>Current Season</h2>
@@ -50,9 +75,11 @@
             </div>
             <div class="col-12">
                 <h2>Statistics</h2>
+                <button>Go to Stats</button>
             </div>
             <div class="col-12">
                 <h2>Previous Seasons</h2>
+                
             </div>
         </div>
     </main>

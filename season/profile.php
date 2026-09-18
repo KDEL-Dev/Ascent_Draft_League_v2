@@ -17,7 +17,7 @@
         <div class="row">
             <h1>Profile</h1>
             <div class="col p-3 border">
-                <button id="logOutBtn">Log Out</button>
+                <button id="logOutBtn"><a href="logout.php">Log Out</a></button>
             </div>
             
         </div>
