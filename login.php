@@ -1,3 +1,74 @@
+<?php
+    session_start();
+
+    require_once __DIR__ . '/includes/connection.php';
+
+    $login_error = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+    {
+
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        if (empty($email) || empty($password)) {
+
+            $login_error = "Please enter your email and password.";
+
+        } else {
+
+            // We'll query the database here.
+
+            $sql = "
+            SELECT id, email, password_hash
+            FROM users
+            WHERE email = ?
+        ";
+
+        $stmt = $conn->prepare($sql);
+
+        if (!$stmt) 
+        {
+
+            $login_error = "Database query error.";
+
+        } 
+        else 
+        {
+
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
+
+            // We'll verify the password here.
+            if ($user && password_verify($password, $user['password_hash'])) 
+            {
+
+                session_regenerate_id(true);
+
+                $_SESSION['user_id'] = $user['id'];
+
+                header("Location: index.php");
+                exit;
+            } 
+            else 
+            {
+                $login_error = "Invalid email or password.";
+            }
+
+
+            $stmt->close();
+        }
+
+        }
+    }
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

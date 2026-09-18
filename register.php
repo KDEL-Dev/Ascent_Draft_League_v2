@@ -35,7 +35,8 @@ sort($pokemonList);
 |--------------------------------------------------------------------------
 */
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+{
 
     $email           = trim($_POST['email'] ?? '');
     $password        = $_POST['password'] ?? '';
@@ -117,9 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $teamMascot
             );
 
-            if (mysqli_stmt_execute($stmt)) {
-
-                $_SESSION['user_email'] = $email;
+            if (mysqli_stmt_execute($stmt)) 
+            {
 
                 mysqli_stmt_close($stmt);
 

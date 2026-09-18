@@ -37,7 +37,7 @@
                         <a class="nav-link" href="#">League Information</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
+                        <a class="nav-link" href="profile.php">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="admin.php">Admin Settings</a>

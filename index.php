@@ -1,3 +1,8 @@
+<?php 
+    $_SESSION['user_id'];
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +14,11 @@
     
     <title>Ascent Draft League</title>
 </head>
-<body class="">
+<body class="min-vh-100 d-flex flex-column justify-content-between">
     <header class="border-bottom">
+        <div>
+            <img src="img/Ascent Horizontal Text.svg" alt="ascent main logo" class="">
+        </div>
         <nav class="navbar navbar-expand-lg">
             <a class="navbar-brand" href="/">Ascent Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,24 +38,27 @@
                 </ul>
             </div>
         </nav>
-        <div>
-            <img src="img/Ascent Horizontal Text.svg" alt="ascent main logo">
-        </div>
     </header>
-    <main>
-        <div>
-            <!-- Futre Active Leagues -->
-        </div>
-        <div>
-            <!-- Past Seasons -->
-             <a href="season.html">Season</a>
-        </div>
-        <div>
-            <!-- Legacy Statistics -->
+    <main class="container p-3">
+        <div class="row">
+            <div class="col-12">
+                <p>Welcome,</p>        
+            </div>
+            <div class="col-12">
+                <h2>Current Season</h2>
+                <button>Season-Test</button>
+            </div>
+            <div class="col-12">
+                <h2>Statistics</h2>
+            </div>
+            <div class="col-12">
+                <h2>Previous Seasons</h2>
+            </div>
         </div>
     </main>
-    <footer>
+    <footer class="container">
         <!-- Footer Content -->
+         <p>Ascent Draft League</p>
     </footer>
     <script src="javascript/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

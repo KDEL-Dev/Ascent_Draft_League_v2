@@ -229,10 +229,32 @@
                         <?php endforeach; ?>
                     </ul>
                     <button id="randomizeDraft">Randomize Draft</button>
-                    <button id="lockDraft">Lock Draft</button>
                 </div>
             </div>
             <div class="contaier p-3">
+                <div class="row p-3">
+                    <div class="border col-1 text-center">
+                        <p class="border-bottom">timer</p>
+                        <p id="draftTimer" class="fs-5">60</p>
+                    </div>
+                    <div class="col-2 border text-center">
+                        <p class="border-bottom">On the clock</p>
+                        <p id="onTheClock">-</p>
+                    </div>
+                    <div class="col-1 border text-center">
+                        <p>Next Team:</p>
+                        <p id="nextTeam">-</p>
+                    </div>
+                    <div class="col-8 p-0 border d-flex">
+                        <div class="border d-flex align-items-center">
+                            <p class="m-0 text-center">Draft Log</p>
+                        </div>
+
+                        <ul id="draftLog" class="m-0 p-0 overflow-x-auto d-flex flex-grow-1">
+                            <!-- Dynamically Added -->
+                        </ul>
+                    </div>
+                </div>
                 <div class="row p-3 d-flex align-items-stretch">
                     <div class="col-sm-12 col-md-3 col-lg-2 p-0 order-lg-1 d-flex flex-column">
                         <h3 class="text-center">Live Draft Order</h3>
@@ -376,29 +398,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row p-3">
-                    <div class="border col-1 text-center">
-                        <p class="border-bottom">timer</p>
-                        <p id="draftTimer" class="fs-5">60</p>
-                    </div>
-                    <div class="col-2 border text-center">
-                        <p class="border-bottom">On the clock</p>
-                        <p id="onTheClock">-</p>
-                    </div>
-                    <div class="col-1 border text-center">
-                        <p>Next Team:</p>
-                        <p id="nextTeam">-</p>
-                    </div>
-                    <div class="col-8 p-0 border d-flex">
-                        <div class="border d-flex align-items-center">
-                            <p class="m-0 text-center">Draft Log</p>
-                        </div>
-
-                        <ul id="draftLog" class="m-0 p-0 overflow-x-auto d-flex flex-grow-1">
-                            <!-- Dynamically Added -->
-                        </ul>
-                    </div>
-                </div>
+                
                 <div class="mt-1">
                     <div class="d-flex justify-content-end">
                         <button id="startDraft">Start Draft</button>
