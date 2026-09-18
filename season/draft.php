@@ -214,24 +214,22 @@
     <main class="p-3" id="draft">
         <div class="row border mb-3" id="draftDashboard">
             <div>
-                <div>
-                    <h3>Draft Order</h3>
-                    <div class="border  d-flex justify-content-between">
-                        <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
-                             <?php foreach ($activeUsers as $activeUser): ?>
-                                <li>
-                                    <span class="draftPosition">
-                                        <?= htmlspecialchars($activeUser['draft_position']) ?>.
-                                    </span>
-                                    <span>
-                                        <?= htmlspecialchars($activeUser['team_name']) ?>
-                                    </span>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                        <button id="randomizeDraft">Randomize Draft</button>
-                        <button id="lockDraft">Lock Draft</button>
-                    </div>
+                <h3>Draft Order</h3>
+                <div class="border  d-flex justify-content-between">
+                    <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
+                            <?php foreach ($activeUsers as $activeUser): ?>
+                            <li>
+                                <span class="draftPosition">
+                                    <?= htmlspecialchars($activeUser['draft_position']) ?>.
+                                </span>
+                                <span>
+                                    <?= htmlspecialchars($activeUser['team_name']) ?>
+                                </span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <button id="randomizeDraft">Randomize Draft</button>
+                    <button id="lockDraft">Lock Draft</button>
                 </div>
             </div>
             <div class="contaier p-3">
@@ -259,7 +257,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-lg-6 p-0 order-sm-2 order-lg-2 d-flex flex-column">
-                        <h3>Draft Board</h3>
+                        <h3 class="text-center">Draft Board</h3>
                         <div class="border d-flex justify-content-evenly flex-grow-1">
                             <div id="draftPickInfo" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
                                 <p id="draftPickOwner">pick owner</p>
