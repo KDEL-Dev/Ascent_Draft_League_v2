@@ -3,16 +3,47 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 1);    
 
+    session_start();
+
+    $userId = $_SESSION['user_id'] ?? null;
+
     require_once __DIR__ . '/../../includes/connection.php';
 
     header('Content-Type: application/json');
 
     $seasonId = 1;
 
-    // Get data from Javascript
-    $data = json_decode(file_get_contents("php://input"), true);
+    //-------------------
+    // GET ACTIVE USER ID
+    //-------------------
 
-    $activeUserId = $data['active_user_id'] ?? null;
+    $sql = "SELECT id
+        FROM active_users
+        WHERE user_id = ?
+        AND season_id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $userId, $seasonId);
+    $stmt->execute();
+
+    $row = $stmt->get_result()->fetch_assoc();
+
+    if (!$row) {
+        echo json_encode([
+            "success" => false,
+            "message" => "You are not active in this season."
+        ]);
+        exit;
+    }
+
+    $activeUserId = $row['id'];
+
+    //-------------------------
+    // Get data from Javascript
+    //-------------------------
+    
+    $data = json_decode(file_get_contents("php://input"), true);
     $pokemonId = $data['pokemon_id'] ?? null;
 
     if (!$activeUserId) {

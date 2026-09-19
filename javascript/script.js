@@ -1,3 +1,7 @@
+let myActiveUserId = null; 
+
+
+
 // -------------------------------------------------
 // ---------------- REGISTER PAGE ------------------
 // -------------------------------------------------
@@ -18,7 +22,7 @@ if(randomizeBtn)
     randomizeBtn.addEventListener("click", function() 
     {
         //Send request to PHP
-        fetch("api/draft/randomize_draft.php")
+        fetch("../api/draft/randomize_draft.php")
         // Wait for PHP Response --which normally is echo"Draft order randomized successfully";
         .then(response => response.text())
         .then(data => {
@@ -76,9 +80,8 @@ if(startDraftBtn)
 
 async function loadUserDraftRoster()
 {
-    const activeUserId = 6; // temp: grab active user from loggedin person later
     const response = await fetch(
-        `../api/roster/get_roster.php?active_user_id=${activeUserId}`
+        `../api/roster/get_roster.php`
     );
 
     // const response = await fetch('api/roster/get_roster.php');
@@ -524,7 +527,6 @@ draftButtons.forEach(button => {
             },
             body: JSON.stringify({
                 pokemon_id: pokemonId,
-                active_user_id: 6 // temp add
             })
         })
         .then(response => response.json())
@@ -576,11 +578,8 @@ function updateDraftButtons(currentTeam)
         return;
     }
 
-    // Temporary logged-in user
-    const activeUserId = 6;
-
     const isMyTurn =
-        Number(currentTeam.id) === activeUserId;
+        Number(currentTeam.id) === myActiveUserId;
 
     draftButtons.forEach(button => {
 
@@ -821,7 +820,6 @@ async function autoSkipPick()
 async function loadDraftState()
 {
     const response = await fetch('../api/draft/get_draft_state.php');
-
     const data = await response.json();
 
     if (!data.success)
@@ -829,6 +827,10 @@ async function loadDraftState()
         console.error(data.message);
         return;
     }
+
+    myActiveUserId = Number(data.my_active_user.id); // ADDED
+    console.log("MY ACTIVE USER ID:", myActiveUserId);
+
 
     const draftState = data.draft_state;
     const currentTeam = data.current_team;

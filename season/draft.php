@@ -2,10 +2,50 @@
     // error_reporting(E_ALL);
     // ini_set('display_errors',1);
 
+    session_start();
+
+    $userId = $_SESSION['user_id'];
+
     require_once __DIR__ . '/../includes/connection.php';
 
     $seasonId = 1;
-    $activeUserId = 6;
+    // $activeUserId = 6;
+
+
+    // ------------------
+    // GET ACTIVE USER ID
+    // ------------------
+
+    $sql = "SELECT active_users.id
+        FROM active_users
+        JOIN users
+        ON active_users.user_id = users.id
+        WHERE active_users.season_id = ?
+        AND users.id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii",$seasonId,$userId);
+    $stmt->execute();
+
+    $activeUserResult = $stmt->get_result();
+    $activeUserId = $activeUserResult->fetch_assoc()['id'];
+        
+    // -------------
+    // GET TEAM NAME
+    // -------------
+    
+    $sql = "SELECT users.default_team_name
+    FROM users
+    WHERE users.id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i",$userId);
+    $stmt->execute();
+
+    $teamNameResult = $stmt->get_result();
+    $teamName = $teamNameResult->fetch_assoc()['default_team_name'];
 
     // ---------------
     // DRAFT STATE
@@ -359,7 +399,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-9 col-lg-4 p-0 order-sm-1 order-lg-3 d-flex flex-column">
-                        <h3 class="text-center">Your Team</h3>
+                        <h3 class="text-center">Your Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
                         <div class="border d-flex justify-content-evenly flex-grow-1">
                             <div class="d-flex flex-column justify-content-center align-items-center">
                                 <p>Roster Counter</p>

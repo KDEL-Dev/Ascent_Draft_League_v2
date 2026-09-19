@@ -1,10 +1,57 @@
 <?php
 
-header('Content-Type: application/json');
+    session_start();
 
-require_once __DIR__ . '/../../includes/connection.php';
+    header('Content-Type: application/json');
 
-$seasonId = 1;
+    require_once __DIR__ . '/../../includes/connection.php';
+
+    $userId = $_SESSION['user_id'] ?? null;
+    $seasonId = 1;
+
+    if (!$userId) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'User is not logged in'
+        ]);
+        exit;
+    }
+
+    // -------------------------
+    // GET LOGGED-IN ACTIVE USER
+    // -------------------------
+
+    $sql = "
+        SELECT id, team_name, draft_position
+        FROM active_users
+        WHERE user_id = ?
+        AND season_id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Prepare failed when finding active user'
+        ]);
+        exit;
+    }
+
+    $stmt->bind_param("ii", $userId, $seasonId);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $myActiveUser = $result->fetch_assoc();
+
+    if (!$myActiveUser) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'You are not an active user for this season'
+        ]);
+        exit;
+    }
 
 
 
@@ -152,5 +199,6 @@ echo json_encode([
     'success' => true,
     'draft_state' => $draftState,
     'current_team' => $currentTeam,
-    'future_team' => $nextTeam
+    'future_team' => $nextTeam,
+    'my_active_user' => $myActiveUser
 ]);
