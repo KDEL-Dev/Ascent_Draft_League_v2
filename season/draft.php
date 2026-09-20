@@ -79,11 +79,12 @@
     // ---------------
 
     // Retrieve in order, randomized draft order
-    $activeUsersSql = "
-        SELECT id, team_name, draft_position
+    $activeUsersSql = "SELECT active_users.id, users.default_team_name, active_users.draft_position
         FROM active_users
-        WHERE season_id = ?
-        ORDER BY draft_position ASC
+        JOIN users
+        ON active_users.user_id = users.id
+        WHERE active_users.season_id = ?
+        ORDER BY active_users.draft_position ASC;
     ";
     
     $stmt = $conn->prepare($activeUsersSql);
@@ -263,7 +264,7 @@
                                     <?= htmlspecialchars($activeUser['draft_position']) ?>.
                                 </span>
                                 <span>
-                                    <?= htmlspecialchars($activeUser['team_name']) ?>
+                                    <?= htmlspecialchars($activeUser['default_team_name']) ?>
                                 </span>
                             </li>
                         <?php endforeach; ?>
@@ -310,7 +311,7 @@
                                                 <?= htmlspecialchars($activeUser['draft_position']) ?>.
                                             </span>
                                             <span>
-                                                <?= htmlspecialchars($activeUser['team_name']) ?>
+                                                <?= htmlspecialchars($activeUser['default_team_name']) ?>
                                             </span>
                                         </li>
                                     <?php endforeach; ?>

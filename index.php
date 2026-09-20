@@ -71,7 +71,7 @@
             </div>
             <div class="col-12">
                 <h2>Current Season</h2>
-                <button>Season-Test</button>
+                <button><a href="season/draft.php">Season-Test</a></button>
             </div>
             <div class="col-12">
                 <h2>Statistics</h2>
