@@ -31,7 +31,7 @@
                         <a class="nav-link" href="#">Statistics</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Draft Recap</a>
+                        <a class="nav-link" href="draft-recap.php">Draft Recap</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">League Information</a>
