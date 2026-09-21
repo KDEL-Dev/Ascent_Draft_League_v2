@@ -4,7 +4,7 @@
              <h2>Future - Season Banner</h2>
         </div>
         <!-- navbar -->
-         <nav class=" navbar navbar-expand-lg bg-dark-subtle">
+         <nav class=" navbar navbar-expand-lg px-3">
             <!-- NavBar Toggle Icon -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> 
                 <span class="navbar-toggler-icon"></span>

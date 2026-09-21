@@ -252,50 +252,75 @@
     <!-- header and navbar -->
     <?php include '../includes/header.php' ?>
 
-    <main class="p-3" id="draft">
-        <div class="row border mb-3" id="draftDashboard">
-            <div>
-                <h3>Draft Order</h3>
-                <div class="border  d-flex justify-content-between">
-                    <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
-                            <?php foreach ($activeUsers as $activeUser): ?>
-                            <li>
-                                <span class="draftPosition">
-                                    <?= htmlspecialchars($activeUser['draft_position']) ?>.
-                                </span>
-                                <span>
-                                    <?= htmlspecialchars($activeUser['default_team_name']) ?>
-                                </span>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <button id="randomizeDraft">Randomize Draft</button>
-                </div>
+    <main id="draft">
+        <div id="draftOrderCont" class="draftPanel m-3 p-3 border rounded-1 d-flex flex-column flex-lg-row">
+            <h3 class="mb-lg-0 me-3 d-flex align-items-lg-center">Draft Order:</h3>
+            <div class="border flex-grow-1 bg-white d-flex justify-content-between flex-column flex-lg-row">
+                <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
+                        <?php foreach ($activeUsers as $activeUser): ?>
+                        <li class="p-2">
+                            <span class="draftPosition">
+                                <?= htmlspecialchars($activeUser['draft_position']) ?>.
+                            </span>
+                            <span>
+                                <?= htmlspecialchars($activeUser['default_team_name']) ?>
+                            </span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+                <button id="randomizeDraft" class="btn border rounded-0">Randomize Draft</button>
             </div>
-            <div class="contaier p-3">
-                <div class="row p-3">
-                    <div class="border col-1 text-center">
-                        <p class="border-bottom">timer</p>
-                        <p id="draftTimer" class="fs-5">60</p>
-                    </div>
-                    <div class="col-2 border text-center">
-                        <p class="border-bottom">On the clock</p>
-                        <p id="onTheClock">-</p>
-                    </div>
-                    <div class="col-1 border text-center">
-                        <p>Next Team:</p>
-                        <p id="nextTeam">-</p>
-                    </div>
-                    <div class="col-8 p-0 border d-flex">
-                        <div class="border d-flex align-items-center">
-                            <p class="m-0 text-center">Draft Log</p>
+        </div>
+
+        <div id="draftUpdate" class="container-fluid mb-3 p-0 sticky-top bg-white">
+            <div class="row">
+
+                <!-- Timer -->
+                <div class="col-2 col-md-2 col-lg-1 border p-0 bg-danger text-white">
+                    <div class="d-flex flex-column h-100">
+
+                        <p class="m-0 text-center border-bottom">
+                            Timer
+                        </p>
+
+                        <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+                            <p id="draftTimer" class="fs-1 fw-bold m-0">
+                                60
+                            </p>
                         </div>
 
-                        <ul id="draftLog" class="m-0 p-0 overflow-x-auto d-flex flex-grow-1">
-                            <!-- Dynamically Added -->
-                        </ul>
                     </div>
                 </div>
+
+                <!-- Current picker -->
+                <div class="col-5 col-md-5 col-lg-2 p-0 border text-center">
+                    <p class="border-bottom">On the clock</p>
+                    <p id="onTheClock">-</p>
+                </div>
+
+                <!-- Next team -->
+                <div class="col-5 col-md-5 col-lg-2 p-0 border text-center">
+                    <p class="border-bottom">Next Team:</p>
+                    <p id="nextTeam">-</p>
+                </div>
+
+                <!-- Draft log -->
+                <div class="col-md-12 col-lg-7 p-0 border  d-flex">
+                    <div id="draftLogTitle" class="border d-flex align-items-center">
+                        <p class="m-0 px-4 py-2 text-center">Draft Log</p>
+                    </div>
+
+                    <ul id="draftLog" class="m-0 p-0 overflow-x-auto d-flex flex-grow-1">
+                        <!-- Dynamically Added -->
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container-fluid" id="draftDashboard">
+            <div class="p-3">
+                
                 <div class="row p-3 d-flex align-items-stretch">
                     <div class="col-sm-12 col-md-3 col-lg-2 p-0 order-lg-1 d-flex flex-column">
                         <h3 class="text-center">Live Draft Order</h3>
@@ -442,11 +467,11 @@
                 
                 <div class="mt-1">
                     <div class="d-flex justify-content-end">
-                        <button id="startDraft">Start Draft</button>
-                        <button id="resumeDraft">Resume Draft</button>
-                        <button id="pauseDraft">Pause Draft</button>
-                        <button id="skipPick">Skip Pick</button>
-                        <button id="endDraft">End Draft</button>
+                        <button id="startDraft" class="btn btn-outline-secondary">Start Draft</button>
+                        <button id="resumeDraft" class="btn btn-outline-secondary">Resume Draft</button>
+                        <button id="pauseDraft" class="btn btn-outline-secondary">Pause Draft</button>
+                        <button id="skipPick" class="btn btn-outline-secondary">Skip Pick</button>
+                        <button id="endDraft" class="btn btn-outline-secondary">End Draft</button>
                     </div>
                 </div>
             </div>
@@ -481,140 +506,142 @@
             </button>
         </div>
 
-        <div class="row tier-section" id="ouDraftList">
-            <h2>
-                OU Pokemon
-                <span class="badge text-bg-secondary">UUBL</span>
-            </h2>
-            <?php foreach ($groupedPokemon['OU'] as $pokemon): ?>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                    <div class="border rounded p-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="me-1">
-                                <?=  htmlspecialchars($pokemon['name']) ?>
-                            </span>
-                            <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
-                                <?= htmlspecialchars($pokemon['type1']) ?>
-                            </span>
-                            <?php if (!empty($pokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($pokemon['type2']) ?>
+        <div class="m-3">
+            <div class="row tier-section" id="ouDraftList">
+                <h2>
+                    OU Pokemon
+                    <span class="badge text-bg-secondary">UUBL</span>
+                </h2>
+                <?php foreach ($groupedPokemon['OU'] as $pokemon): ?>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
+                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="me-1">
+                                    <?=  htmlspecialchars($pokemon['name']) ?>
                                 </span>
-                            <?php endif; ?>
-                        </div>
-                        <button 
-                            class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
-                            data-tier="OU">
-                            Draft 
-                        </button>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="row tier-section" id="uuDraftList">
-            <h2>
-                UU Pokemon
-                <span class="badge text-bg-secondary">RUBL</span>
-            </h2>
-            <?php foreach ($groupedPokemon['UU'] as $pokemon): ?>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                    <div class="border rounded p-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="me-1">
-                                <?=  htmlspecialchars($pokemon['name']) ?>
-                            </span>
-                            <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
-                                <?= htmlspecialchars($pokemon['type1']) ?>
-                            </span>
-                            <?php if (!empty($pokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($pokemon['type2']) ?>
+                                <!-- Remove Tier and see if in the future you can display owners name -->
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type1']) ?>
                                 </span>
-                            <?php endif; ?>
+                                <?php if (!empty($pokemon['type2'])): ?>
+                                    <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                        <?= htmlspecialchars($pokemon['type2']) ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <button 
+                                class="draftBtn btn btn-primary" 
+                                data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                                data-tier="OU">
+                                Draft 
+                            </button>
                         </div>
-                        <button 
-                            class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
-                            data-tier="UU">
-                            Draft 
-                        </button>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="row tier-section" id="ruDraftList">
-            <h2>
-                RU Pokemon
-                <span class="badge text-bg-secondary">NUBL</span>
-            </h2>
-            <?php foreach ($groupedPokemon['RU'] as $pokemon): ?>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                    <div class="border rounded p-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="me-1">
-                                <?=  htmlspecialchars($pokemon['name']) ?>
-                            </span>
-                            <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
-                                <?= htmlspecialchars($pokemon['type1']) ?>
-                            </span>
-                            <?php if (!empty($pokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($pokemon['type2']) ?>
+                <?php endforeach; ?>
+            </div>
+            <div class="row tier-section" id="uuDraftList">
+                <h2>
+                    UU Pokemon
+                    <span class="badge text-bg-secondary">RUBL</span>
+                </h2>
+                <?php foreach ($groupedPokemon['UU'] as $pokemon): ?>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
+                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="me-1">
+                                    <?=  htmlspecialchars($pokemon['name']) ?>
                                 </span>
-                            <?php endif; ?>
-                        </div>
-                        <button 
-                            class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
-                            data-tier="RU">
-                            Draft 
-                        </button>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="row tier-section" id="nuDraftList">
-            <h2>
-                NU Pokemon
-                <span class="badge text-bg-secondary">PUBL</span>
-                <span class="badge text-bg-secondary">PU</span>
-                <span class="badge text-bg-secondary">ZUBL</span>
-                <span class="badge text-bg-secondary">ZU</span>
-            </h2>
-            <?php foreach ($groupedPokemon['NU'] as $pokemon): ?>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                    <div class="border rounded p-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="me-1">
-                                <?=  htmlspecialchars($pokemon['name']) ?>
-                            </span>
-                            <!-- Remove Tier and see if in the future you can display owners name -->
-                            <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
-                                <?= htmlspecialchars($pokemon['type1']) ?>
-                            </span>
-                            <?php if (!empty($pokemon['type2'])): ?>
-                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
-                                    <?= htmlspecialchars($pokemon['type2']) ?>
+                                <!-- Remove Tier and see if in the future you can display owners name -->
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type1']) ?>
                                 </span>
-                            <?php endif; ?>
+                                <?php if (!empty($pokemon['type2'])): ?>
+                                    <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                        <?= htmlspecialchars($pokemon['type2']) ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <button 
+                                class="draftBtn btn btn-primary" 
+                                data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                                data-tier="UU">
+                                Draft 
+                            </button>
                         </div>
-                        <button 
-                            class="draftBtn btn btn-primary" 
-                            data-pokemon-id="<?= $pokemon['id'] ?>"
-                            data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
-                            data-tier="NU">
-                            Draft 
-                        </button>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
+            <div class="row tier-section" id="ruDraftList">
+                <h2>
+                    RU Pokemon
+                    <span class="badge text-bg-secondary">NUBL</span>
+                </h2>
+                <?php foreach ($groupedPokemon['RU'] as $pokemon): ?>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
+                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="me-1">
+                                    <?=  htmlspecialchars($pokemon['name']) ?>
+                                </span>
+                                <!-- Remove Tier and see if in the future you can display owners name -->
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type1']) ?>
+                                </span>
+                                <?php if (!empty($pokemon['type2'])): ?>
+                                    <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                        <?= htmlspecialchars($pokemon['type2']) ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <button 
+                                class="draftBtn btn btn-primary" 
+                                data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                                data-tier="RU">
+                                Draft 
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="row tier-section" id="nuDraftList">
+                <h2>
+                    NU Pokemon
+                    <span class="badge text-bg-secondary">PUBL</span>
+                    <span class="badge text-bg-secondary">PU</span>
+                    <span class="badge text-bg-secondary">ZUBL</span>
+                    <span class="badge text-bg-secondary">ZU</span>
+                </h2>
+                <?php foreach ($groupedPokemon['NU'] as $pokemon): ?>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
+                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="me-1">
+                                    <?=  htmlspecialchars($pokemon['name']) ?>
+                                </span>
+                                <!-- Remove Tier and see if in the future you can display owners name -->
+                                <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                    <?= htmlspecialchars($pokemon['type1']) ?>
+                                </span>
+                                <?php if (!empty($pokemon['type2'])): ?>
+                                    <span class="badge typeBadge-<?=  strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                        <?= htmlspecialchars($pokemon['type2']) ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <button 
+                                class="draftBtn btn btn-primary" 
+                                data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
+                                data-tier="NU">
+                                Draft 
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
     </main>
     <!-- Bootstrap Script and My Script -->

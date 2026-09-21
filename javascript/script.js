@@ -959,8 +959,8 @@ async function loadDraftLog()
         picks.forEach(pick => {
 
             const li = document.createElement('li');
-            li.classList.add('d-flex')
-            li.classList.add('align-items-center')
+            li.classList.add('draftLogSelection')
+            
 
             // Pick number
             const pickNumber = document.createElement('div');
