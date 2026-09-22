@@ -245,15 +245,16 @@
 
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
+    <script src="https://kit.fontawesome.com/4a4034fc29.js" crossorigin="anonymous"></script>
+
     <title>Draft</title>
 </head>
-<body>
+<body class="bg-body-secondary">
     <!-- header and navbar -->
     <?php include '../includes/header.php' ?>
 
     <main id="draft">
-        <div id="draftOrderCont" class="draftPanel m-3 p-3 border rounded-1 d-flex flex-column flex-lg-row">
+        <div id="draftOrderCont" class="draftPanel m-3 p-3 bg-white border rounded-1 d-flex flex-column flex-lg-row">
             <h3 class="mb-lg-0 me-3 d-flex align-items-lg-center">Draft Order:</h3>
             <div class="border flex-grow-1 bg-white d-flex justify-content-between flex-column flex-lg-row">
                 <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
@@ -272,44 +273,48 @@
             </div>
         </div>
 
-        <div id="draftUpdate" class="container-fluid mb-3 p-0 sticky-top bg-white">
+        <div id="draftTickerPanel" class="container-fluid mb-3 p-0 sticky-top bg-white">
             <div class="row">
 
                 <!-- Timer -->
-                <div class="col-2 col-md-2 col-lg-1 border p-0 bg-danger text-white">
-                    <div class="d-flex flex-column h-100">
-
-                        <p class="m-0 text-center border-bottom">
-                            Timer
-                        </p>
-
-                        <div class="flex-grow-1 d-flex align-items-center justify-content-center">
-                            <p id="draftTimer" class="fs-1 fw-bold m-0">
-                                60
-                            </p>
-                        </div>
-
+                <div id="draftTimerCont" class="col-2 col-md-2 col-lg-1 border p-0 bg-danger text-white d-flex flex-column">
+                    <div class="border-bottom d-flex justify-content-center align-items-center">
+                        <i class="fa-regular fa-clock mx-1"></i>
+                        <p class="mb-0">Timer</p>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center flex-grow-1">
+                        <p id="draftTimer" class="m-0">60</p>
                     </div>
                 </div>
 
                 <!-- Current picker -->
-                <div class="col-5 col-md-5 col-lg-2 p-0 border text-center">
-                    <p class="border-bottom">On the clock</p>
-                    <p id="onTheClock">-</p>
+                <div id="draftCurrentPickCont" class="col-5 col-md-5 col-lg-2 p-0 border text-center d-flex flex-column">
+                    <div class="border-bottom d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-circle-down mx-1"></i>
+                        <p class="m-0">On the clock</p>
+                    </div>
+                    <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                        <p id="onTheClock" class="mb-0">-</p>
+                    </div>
                 </div>
 
                 <!-- Next team -->
-                <div class="col-5 col-md-5 col-lg-2 p-0 border text-center">
-                    <p class="border-bottom">Next Team:</p>
-                    <p id="nextTeam">-</p>
+                <div id="draftNextPickCont" class="col-5 col-md-5 col-lg-2 p-0 border text-center d-flex flex-column">
+                    <div class="border-bottom d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-circle-right mx-1"></i>
+                        <p class="m-0">Next Team:</p>
+                    </div>
+                    <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+                        <p id="nextTeam" class="mb-0">-</p>
+                    </div>
+                    
                 </div>
 
                 <!-- Draft log -->
-                <div class="col-md-12 col-lg-7 p-0 border  d-flex">
-                    <div id="draftLogTitle" class="border d-flex align-items-center">
-                        <p class="m-0 px-4 py-2 text-center">Draft Log</p>
-                    </div>
-
+                 <div id="draftLogTitle" class="col-2 col-lg-1 border d-flex align-items-center justify-content-center">
+                    <p class="m-0 text-center">Draft Log</p>
+                </div>
+                <div id="draftLogCont" class="col-10 col-lg-6 p-0 border-bottom border-top d-flex">
                     <ul id="draftLog" class="m-0 p-0 overflow-x-auto d-flex flex-grow-1">
                         <!-- Dynamically Added -->
                     </ul>
@@ -318,15 +323,15 @@
             </div>
         </div>
 
-        <div class="container-fluid" id="draftDashboard">
-            <div class="p-3">
+        <div class="container-fluid mb-4" id="draftDashboard">
+            <div class="p-3 bg-white">
                 
                 <div class="row p-3 d-flex align-items-stretch">
                     <div class="col-sm-12 col-md-3 col-lg-2 p-0 order-lg-1 d-flex flex-column">
                         <h3 class="text-center">Live Draft Order</h3>
                         <div class="border d-flex align-items-stretch flex-grow-1">
-                            <div class="d-flex align-items-center">
-                                <span id="draftDirection" class="fs-3">↓</span>
+                            <div id="draftDirection" class="d-flex align-items-center justify-content-center">
+                                <span id="draftDirection">↓</span> <!-- Change this with font awesome -->
                             </div>
                             <div class="flex-grow-1">
                                 <ul id="liveDraftOrder" class="h-100 border m-0 p-0 d-flex flex-column justify-content-evenly align-items-center">
@@ -347,91 +352,109 @@
                     <div class="col-sm-12 col-lg-6 p-0 order-sm-2 order-lg-2 d-flex flex-column">
                         <h3 class="text-center">Draft Board</h3>
                         <div class="border d-flex justify-content-evenly flex-grow-1">
-                            <div id="draftPickInfo" class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
-                                <p id="draftPickOwner">pick owner</p>
+                            <div id="draftPickInfo" class="m-3 p-3 border rounded-3 d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+                                
                                 
                                 <p id="draftPokemonStats">pokemon stats</p>
-                                <div>
-                                    <div id="draftPkmnStats1" class="d-flex justify-content-between">
+                                <div class="w-100">
+                                    <div id="draftPkmnStats1" class=" mb-2 text-center d-flex justify-content-around">
                                         <div>
-                                            <p>hp</p>
+                                            <p>HP</p>
                                             <p id="draftedPkmnHp">-</p>
                                         </div>
                                         <div>
-                                            <p>atk</p>
+                                            <p>ATK</p>
                                             <p id="draftedPkmnAtk">-</p>
                                         </div>
                                         <div>
-                                            <p>def</p>
+                                            <p>DEF</p>
                                             <p id="draftedPkmnDef">-</p>
                                         </div>
                                     </div>
-                                    <div id="draftPkmnStats2" class="d-flex justify-content-between">
+                                    <div id="draftPkmnStats2" class="mb-2 text-center d-flex justify-content-around">
                                         <div>
-                                            <p>sp.atk</p>
+                                            <p>SP.ATK</p>
                                             <p id=draftedPkmnSpa>-</p>
                                         </div>
                                         <div>
-                                            <p>sp.def</p>
+                                            <p>SP.DEF</p>
                                             <p id="draftedPkmnSpd">-</p>
                                         </div>
                                         <div>
-                                            <p>spe</p>
+                                            <p>SPE</p>
                                             <p id="draftedPkmnSpe">-</p>
                                         </div>
                                     </div>
                                 </div>
-                                <p id="draftPokemonName">pokemon name</p>
-                                <ul id="draftPokemonAbility">
+                                
+                                <p class="mb-0">Abilities</p>
+                                <ul id="draftPokemonAbility" class="w-100 p-0 d-flex justify-content-between">
                                     <li id="draftAbility1">-</li>
                                     <li id="draftAbility2">-</li>
                                     <li id="draftHiddenAbility">-</li>
                                 </ul>                          
                             </div>
-                            <div class="d-flex flex-column flex-grow-1">
-                                <div id="draftPokemonImage"></div>
-                                <p id="draftPokemonTier">tier</p>
+                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                <p id="draftPokemonName">pokemon name</p>
+                                <div id="draftPokemonImage" class="p-3" ></div>
+                                <div class="d-flex">
+                                    <p id="draftPickOwner">pick owner</p>
+                                    <p id="draftPokemonTier">tier</p>
+                                </div>
+                                
                             </div>
-                            <div id="draftDisplayTeamRoster" class="d-flex flex-grow-1">
-                                 <div class=" d-flex flex-column flex-grow-1">
-                                    <p>ou</p>
-                                    <ul id="ouDraftDisplayRoster" class="p-0">
-                                        <li>-</li>
-                                        <li>-</li>
-                                        <li>-</li>
-                                    </ul>
-                                    <p>uu</p>
-                                    <ul id="uuDraftDisplayRoster" class="p-0">
-                                        <li>-</li>
-                                        <li>-</li>
-                                        <li>-</li>
-                                    </ul>
-                                 </div>
-                                 <div class="d-flex flex-column flex-grow-1">
-                                    <p>ru</p>
-                                    <ul id="ruDraftDisplayRoster" class="p-0">
-                                        <li>-</li>
-                                        <li>-</li>
-                                        <li>-</li>
-                                    </ul>
-                                    <p>nu</p>
-                                    <ul id="nuDraftDisplayRoster" class="p-0">
-                                        <li>-</li>
-                                        <li>-</li>
-                                        <li>-</li>
-                                    </ul>
-                                 </div>
+                            <div id="draftDisplayTeamRoster" class="m-3 p-3 border rounded-3 d-flex flex-grow-1 align-items-center flex-column">
+                                <h2 class="text-white">Roster</h2>
+                                <div class="w-100 d-flex justify-content-around">
+                                    <div class="d-flex flex-column">
+                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">ou</p>
+                                        </div>
+                                        <ul id="ouDraftDisplayRoster" class="p-0 flex-grow-1">
+                                            <li>-</li>
+                                            <li>-</li>
+                                            <li>-</li>
+                                        </ul>
+                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">uu</p>
+                                        </div>
+                                        <ul id="uuDraftDisplayRoster" class="p-0">
+                                            <li>-</li>
+                                            <li>-</li>
+                                            <li>-</li>
+                                        </ul>
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">ru</p>
+                                        </div>
+                                        <ul id="ruDraftDisplayRoster" class="p-0">
+                                            <li>-</li>
+                                            <li>-</li>
+                                            <li>-</li>
+                                        </ul>
+                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">nu</p>
+                                        </div>
+                                        <ul id="nuDraftDisplayRoster" class="p-0">
+                                            <li>-</li>
+                                            <li>-</li>
+                                            <li>-</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-9 col-lg-4 p-0 order-sm-1 order-lg-3 d-flex flex-column">
+                    <div id="draftYourTeamCont" class="col-sm-12 col-md-9 col-lg-4 p-0 order-sm-1 order-lg-3 d-flex flex-column">
                         <h3 class="text-center">Your Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
                         <div class="border d-flex justify-content-evenly flex-grow-1">
-                            <div class="d-flex flex-column justify-content-center align-items-center">
+                            <div id="draftYourTeamInfo" class="d-flex flex-column justify-content-center align-items-center">
                                 <p>Roster Counter</p>
                                 <h4 id="draftRosterCount">0/12</h4>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex flex-grow-1 justify-content-evenly align-items-center">
                                 <div class="d-flex flex-column">
                                     <p class="text-center">OU</p>
                                     <ul id="ouDraftRoster">
@@ -514,7 +537,7 @@
                 </h2>
                 <?php foreach ($groupedPokemon['OU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                        <div class="border rounded p-2 bg-white d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="me-1">
                                     <?=  htmlspecialchars($pokemon['name']) ?>

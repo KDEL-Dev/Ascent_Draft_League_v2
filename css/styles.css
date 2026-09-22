@@ -1,8 +1,18 @@
 
 /* Website Wide */
+
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap');
+
 :root
 {
     --main-color: #168664;
+    --main-color-hover: #0d4937;
+}
+
+
+p,span
+{
+    font-family: "jura";
 }
 
 button
@@ -54,22 +64,11 @@ li
     max-width: 500px;
 }
 
-/***********************/
-/***** DRAFT  PAGE *****/
-/***********************/
+/* -----------------------------------------------------------------------
+----------------------------- DRAFT PAGE --------------------------------
+-------------------------------------------------------------------------*/
 
-/********** Draft Information *********/
-
-.draftPanel
-{
-    background-color: var(--main-color);
-}
-
-#draftDashboard
-{
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, .2);
-}
-
+/*------ Draft Order ------*/
 #draftOrder li
 {
     flex: 1;
@@ -82,38 +81,173 @@ li
     border: none;
 }
 
-/* Return to this - incomplete! */
-.draftLogSelection
-{
-    
-    padding: 8px;
-
-    border-right: rgba(0, 0, 0, 0.25) 1px solid;
-
-    display: flex;
-    align-items: center;
-}
-
-/* Draft Image */
-#draftPokemonImage img
-{
-    max-width: 100px;
-}
-
-
-.draftBtn
-{
-    cursor: pointer;
-}
-
-#draftLogTitle
+#randomizeDraft 
 {
     background-color: var(--main-color);
     color: white;
 }
 
+#randomizeDraft:hover
+{
+    background-color: var(--main-color-hover);
+}
 
-/********** Badge Colors for every type ***********/
+
+/*------ Draft Ticker ------*/
+
+#draftTickerPanel 
+{
+    /* Let the contents determine the height */
+    max-height: none;
+}
+
+#draftTickerPanel > .row 
+{
+    align-items: stretch;
+}
+
+#draftTimerCont,
+#draftCurrentPickCont,
+#draftNextPickCont,
+#draftLogTitle,
+#draftLogCont 
+{
+    min-height: 85px;
+    height: auto;
+}
+
+#draftTimer
+{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#draftLogTitle
+{
+    background-color: rgb(148, 148, 148);
+    color: white;
+}
+
+
+#draftLogCont
+{
+
+}
+
+.draftLogSelection
+{
+    
+    /* padding: 8px; */
+
+    border-right: rgba(0, 0, 0, 0.25) 1px solid;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.draftLogSelection div:first-child
+{
+    width: 100%;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: rgb(70, 70, 70);
+    color: white;
+
+    display: flex;
+    justify-content: center;
+}
+
+.draftLogSelection div:last-child
+{
+    padding: 8px;
+    flex: 1;
+
+    background-color: white;
+}
+
+.draftLogSelection div:last-child span:last-child
+{
+    font-weight: bold;
+}
+
+
+/*------ Draft Board ------*/
+
+
+#draftDirection
+{
+    min-width: 50px;
+}
+
+#draftPickInfo
+{
+    background-color: var(--main-color);
+    color: white;
+}
+
+#draftPkmnStats1>div p,
+#draftPkmnStats2>div p
+{
+    margin-bottom: 0;
+}
+
+#draftPkmnStats1>div p:first-child,
+#draftPkmnStats2>div p:first-child
+{
+    /* text-decoration: underline; */
+}
+
+#draftPkmnStats1>div p:last-child,
+#draftPkmnStats2>div p:last-child
+{    
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#draftPokemonImage
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#draftPokemonImage img
+{
+    flex: 1;
+    max-width: 200px;
+}
+
+#draftDisplayTeamRoster
+{
+    background-color: var(--main-color);
+}
+
+.draftTierTitle
+{
+    background-color: rgb(70, 70, 70);
+    color: white;
+}
+
+#draftDisplayTeamRoster li
+{
+    color: white;
+}
+
+#draftYourTeamInfo
+{
+    padding: 8px;
+    background-color: var(--main-color);
+    color: white;
+}
+
+/*------ Draft Pokemon Buttons ------*/
+.draftBtn
+{
+    cursor: pointer;
+}
+
+/*--- Badge Colors for every type ---*/
 
 .typeBadge-normal {
     background-color: #A8A77A;

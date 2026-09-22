@@ -6,13 +6,12 @@
 
     $seasonId = 1;
 
-    $sql = "
-        SELECT
+    $sql = "SELECT
             draft_picks.pick_number,
             draft_picks.round_number,
             draft_picks.active_user_id,
 
-            active_users.team_name,
+            users.default_team_name,
 
             showdown_pokemon.id AS pokemon_id,
             showdown_pokemon.name,
@@ -43,6 +42,8 @@
             draft_picks.showdown_pokemon_id
 
             AND pokemon_tier_per_season.season_id = draft_picks.season_id
+        JOIN users
+        ON active_users.user_id = users.id 
 
         WHERE draft_picks.season_id = ?
 
@@ -73,7 +74,7 @@
             "pick_number" => (int) $row["pick_number"],
             "round_number" => (int) $row["round_number"],
             "active_user_id" => (int) $row["active_user_id"],
-            "team_name" => $row["team_name"],
+            "team_name" => $row["default_team_name"],
             "pokemon_id" => (int) $row["pokemon_id"],
             "name" => $row["name"],
             "type1" => $row["type1"],
