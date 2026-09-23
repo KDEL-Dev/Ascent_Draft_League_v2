@@ -7,6 +7,11 @@
 {
     --main-color: #168664;
     --main-color-hover: #0d4937;
+
+    --info-header: rgb(70, 70, 70);
+    --nav-color: rgb(48, 48, 48);
+
+    --pkmn-red: rgb(131, 18, 18);
 }
 
 
@@ -42,7 +47,14 @@ li
 
 .navbar
 {
-    background-color: var(--main-color);
+    background-color: var(--nav-color);
+   z-index: 1100;
+}
+
+#navbarSupportedContent
+{
+    
+    z-index: 1101;
 }
 
 
@@ -99,6 +111,8 @@ li
 {
     /* Let the contents determine the height */
     max-height: none;
+    top: 56px;
+    z-index: 1000;
 }
 
 #draftTickerPanel > .row 
@@ -112,19 +126,19 @@ li
 #draftLogTitle,
 #draftLogCont 
 {
-    min-height: 85px;
+    min-height: 60px;
     height: auto;
 }
 
 #draftTimer
 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
 #draftLogTitle
 {
-    background-color: rgb(148, 148, 148);
+    background-color: var(--main-color);
     color: white;
 }
 
@@ -152,7 +166,7 @@ li
     width: 100%;
 
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    background-color: rgb(70, 70, 70);
+    background-color: var(--info-header);
     color: white;
 
     display: flex;
@@ -165,6 +179,11 @@ li
     flex: 1;
 
     background-color: white;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
 }
 
 .draftLogSelection div:last-child span:last-child
@@ -175,15 +194,39 @@ li
 
 /*------ Draft Board ------*/
 
+#draftDashboard > div
+{
+    background-color: var(--info-header);
+    border-radius: 16px;
+}
+
+
+/* Direction and Order */
 
 #draftDirection
 {
-    min-width: 50px;
+    min-width: 25px;
+    background-color: white;
 }
+
+.draftPosition
+{
+    height: 100%;
+    min-width: 20px;
+
+    background-color: var(--main-color);
+    color: white;
+    border-right: 1px solid white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 #draftPickInfo
 {
-    background-color: var(--main-color);
+    background-color: var(--pkmn-red);
     color: white;
 }
 
@@ -197,6 +240,7 @@ li
 #draftPkmnStats2>div p:first-child
 {
     /* text-decoration: underline; */
+    
 }
 
 #draftPkmnStats1>div p:last-child,
@@ -205,6 +249,39 @@ li
     font-weight: bold;
     font-size: 1.5rem;
 }
+
+#draftAbility1,
+#draftAbility2,
+#draftHiddenAbility
+{
+    padding: 8px;
+
+    background-color: white;
+    color: black;
+    border-radius: 16px;
+}
+
+/* IMAGE SECTION */
+
+#draftPkmnNameTitleCard
+{
+    
+    border-radius: 16px;
+    background-color: var(--main-color);
+
+    display: flex;
+    align-items: center;
+}
+
+#draftPkmnNameTitleCard p
+{
+    margin-bottom: 0;
+    padding: 4px 24px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
 
 #draftPokemonImage
 {
@@ -218,27 +295,72 @@ li
     max-width: 200px;
 }
 
+#draftPkmnOwnerTier
+{
+    padding: 8px 24px;
+    gap: 20px;
+
+    border-radius: 16px;
+    background-color: var(--main-color);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#draftPkmnOwnerTier p
+{
+    margin-bottom: 0;
+}
+
+#draftPokemonTier
+{
+    padding: 8px;
+    background-color: white;
+    border-radius: 24px;
+}
+
 #draftDisplayTeamRoster
 {
-    background-color: var(--main-color);
+    color: black;
 }
 
 .draftTierTitle
 {
-    background-color: rgb(70, 70, 70);
+    background-color: var(--info-header);
+    border-radius: 16px;
     color: white;
+}
+
+.draftTierTitle p
+{
+    margin-bottom: 0;
 }
 
 #draftDisplayTeamRoster li
 {
-    color: white;
+    color: black;
+    text-align: center;
 }
 
 #draftYourTeamInfo
 {
     padding: 8px;
-    background-color: var(--main-color);
-    color: white;
+    background-color: white;
+    color: black;
+}
+
+.draftYourTeam
+{
+    background-color: white;
+
+}
+
+/* Tier Buttons */
+#draftTierPageBtn .btn-primary
+{
+    background-color: var(--main-color) !important;
+    border: none !important;
 }
 
 /*------ Draft Pokemon Buttons ------*/

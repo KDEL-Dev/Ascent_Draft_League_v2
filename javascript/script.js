@@ -969,8 +969,6 @@ async function loadDraftLog()
 
             // Team + Pokemon
             const pickInfo = document.createElement('div');
-            pickInfo.classList.add('d-flex');
-            pickInfo.classList.add('flex-column');
 
             const teamName = document.createElement('span');
             teamName.textContent = pick.team_name;

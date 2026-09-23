@@ -11,8 +11,16 @@
     <title>Profile</title>
 </head>
 <body>
-    <!-- header and navbar -->
-    <?php include '../includes/header.php' ?>
+    
+    <!-- For now just banner image -->
+    <header>
+        <?php include '../includes/banner.php' ?>
+    </header>
+
+    <!-- Navbar Sticky -->
+    <nav class="px-3 sticky-top navbar navbar-expand-lg" data-bs-theme="dark">
+        <?php include '../includes/nav.php' ?>
+    </nav>
     <main class="container p-3">
         <div class="row">
             <h1>Profile</h1>
