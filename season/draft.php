@@ -263,8 +263,9 @@
 
     <!-- Main Draft Content -->
     <main id="draft">
+        <h1 class="px-3 text-center">Draft</h1>
         <div id="draftOrderCont" class="draftPanel m-3 p-3 bg-dark-subtle border border-light rounded-1 d-flex flex-column flex-lg-row">
-            <h3 class="mb-lg-0 me-3 d-flex align-items-lg-center">Draft Order:</h3>
+            <p class="mb-lg-0 me-3 d-flex align-items-lg-center">Draft Order:</p>
             <div class="border flex-grow-1 bg-white d-flex justify-content-between flex-column flex-lg-row">
                 <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
                         <?php foreach ($activeUsers as $activeUser): ?>
@@ -321,6 +322,7 @@
 
                 <!-- Draft log -->
                  <div id="draftLogTitle" class="col-2 col-lg-1 border d-flex align-items-center justify-content-center">
+                    <i class="fa-regular fa-pen-to-square"></i>
                     <p class="m-0 text-center">Draft Log</p>
                 </div>
                 <div id="draftLogCont" class="col-10 col-lg-6 p-0 border-bottom border-top border-end d-flex">
@@ -336,7 +338,7 @@
             <div class="p-3">
                 
                 <div class="row p-3 d-flex align-items-stretch">
-                    <div class="col-sm-12 col-md-3 col-lg-1 p-0 order-lg-1 d-flex flex-column">
+                    <div class="col-sm-12 col-md-3 col-xl-1 p-0 order-xl-1 d-flex flex-column">
                         <div class="border bg-white ">
                             <h3 class="text-center">Order</h3>
                         </div>
@@ -360,65 +362,82 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-lg-8 p-0 order-sm-2 order-lg-2 d-flex flex-column">
+                    <div class="col-sm-12 col-xl-8 p-0 order-sm-2 order-xl-2 d-flex flex-column">
                         <div class="bg-white">
                             <h3 class="text-center">Draft Board</h3>
                         </div>
                         <div class="border bg-white d-flex justify-content-evenly flex-grow-1">
-                            <div id="draftPickInfo" class="m-3 p-3 border rounded-3 d-flex flex-column flex-grow-1 justify-content-center align-items-center">
-                                
-                                
-                                <p id="draftPokemonStats">pokemon stats</p>
-                                <div class="w-100  text-white border rounded-3">
-                                    <div id="draftPkmnStats1" class=" mb-2 text-center d-flex justify-content-around">
+                            
+                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                <div id="draftPkmnOwnerTier" class="d-flex">
+                                    <p id="draftPickOwner">pick owner</p>
+                                    
+                                </div>
+                                <div id="draftPokemonImage"></div>
+                            </div>
+
+                            <div id="draftPickInfo" class="m-3 p-3 bg-light border border-2 rounded-3 d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+                                <div id="draftPkmnNameTitleCard">
+                                    <p id="draftPokemonName">pokemon name</p>
+                                    <p id="draftPokemonTier" class="mb-0 badge rounded-pill text-bg-secondary">tier</p>
+                                </div>
+                                <div id="draftPokemonStats" class="w-100">
+                                    <div id="draftPkmnStats1" class=" mb-2 px-3 text-center d-flex justify-content-between">
                                         <div>
                                             <p>HP</p>
-                                            <p id="draftedPkmnHp">-</p>
+                                            <div class="rayquazaCircle">
+                                                <p id="draftedPkmnHp">-</p>
+                                            </div>
+                                            
                                         </div>
                                         <div>
                                             <p>ATK</p>
-                                            <p id="draftedPkmnAtk">-</p>
+                                            <div class="rayquazaCircle">
+                                                <p id="draftedPkmnAtk">-</p>
+                                            </div>
+                                            
                                         </div>
                                         <div>
-                                            <p>DEF</p>
-                                            <p id="draftedPkmnDef">-</p>
+                                            <p>DEF</p>                                            
+                                            <div class="rayquazaCircle">
+                                                <p id="draftedPkmnDef">-</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div id="draftPkmnStats2" class="mb-2 text-center d-flex justify-content-around">
+                                    <div id="draftPkmnStats2" class="mb-2 px-3 text-center d-flex justify-content-between">
                                         <div>
                                             <p>SP.ATK</p>
-                                            <p id=draftedPkmnSpa>-</p>
+                                            <div class="rayquazaCircle">
+                                                <p id=draftedPkmnSpa>-</p>
+                                            </div>                                            
                                         </div>
                                         <div>
                                             <p>SP.DEF</p>
-                                            <p id="draftedPkmnSpd">-</p>
+                                            
+                                            <div class="rayquazaCircle">
+                                                <p id="draftedPkmnSpd">-</p>
+                                            </div> 
                                         </div>
                                         <div>
                                             <p>SPE</p>
-                                            <p id="draftedPkmnSpe">-</p>
+                                            
+                                            <div class="rayquazaCircle">
+                                                <p id="draftedPkmnSpe">-</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <p class="mb-0">Abilities</p>
-                                <ul id="draftPokemonAbility" class="w-100 p-0 m-0 d-flex justify-content-between">
-                                    <li id="draftAbility1">-</li>
-                                    <li id="draftAbility2">-</li>
-                                    <li id="draftHiddenAbility">-</li>
-                                </ul>                          
+                                <div id="draftPokemonAbility" class="w-100 p-0 m-0 d-flex justify-content-between">
+                                    <div id="draftAbility1" class="draftAbilities">-</div>
+                                    <div id="draftAbility2" class="draftAbilities">-</div>
+                                </div>      
+                                <p class="mb-0">Hidden Ability:</p>
+                                <div id="draftHiddenAbility" class="draftAbilities">-</div>                    
                             </div>
-                            <div class="d-flex flex-column justify-content-center align-items-center">
-                                <div id="draftPkmnNameTitleCard">
-                                    <p id="draftPokemonName">pokemon name</p>
-                                </div>
-                                <div id="draftPokemonImage" class="p-3" ></div>
-                                <div id="draftPkmnOwnerTier" class="d-flex">
-                                    <p id="draftPickOwner">pick owner</p>
-                                    <p id="draftPokemonTier">tier</p>
-                                </div>
-                                
-                            </div>
-                            <div id="draftDisplayTeamRoster" class="m-3 p-3 border rounded-3 d-flex flex-grow-1 align-items-center flex-column">
+
+                            <div id="draftDisplayTeamRoster" class="m-3 p-3 border border-2 rounded-3 d-flex flex-grow-1 align-items-center flex-column">
                                 <p>Roster</p>
                                 <div class="w-100 d-flex justify-content-around">
                                     <div class="d-flex flex-column">
@@ -462,7 +481,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="draftYourTeamCont" class="col-sm-12 col-md-9 col-lg-3 p-0 order-sm-1 order-lg-3 bg-white d-flex flex-column">
+                    <div id="draftYourTeamCont" class="col-sm-12 col-md-9 col-xl-3 p-0 order-sm-1 order-xl-3 bg-white d-flex flex-column">
                         <div class="bg-white">
                             <h3 class="text-center">Your Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
                         </div>
@@ -516,13 +535,15 @@
                     </div>
                 </div>
                 
-                <div class="mt-1">
-                    <div class="d-flex justify-content-end">
-                        <button id="startDraft" class="btn btn-secondary">Start Draft</button>
-                        <button id="resumeDraft" class="btn btn-secondary">Resume Draft</button>
-                        <button id="pauseDraft" class="btn btn-secondary">Pause Draft</button>
-                        <button id="skipPick" class="btn btn-secondary">Skip Pick</button>
-                        <button id="endDraft" class="btn btn-secondary">End Draft</button>
+                <div id="draftControls" class="mt-1 d-flex justify-content-between">
+                    <div>
+                        <button id="startDraft" class=" me-3 btn btn-secondary ">Start Draft</button>
+                    </div>
+                    <div>
+                        <button id="resumeDraft" class="mx-1 btn btn-secondary">Resume Draft</button>
+                        <button id="pauseDraft" class="mx-1 btn btn-secondary">Pause Draft</button>
+                        <button id="skipPick" class="mx-1 btn btn-secondary">Skip Pick</button>
+                        <button id="endDraft" class="mx-1 btn btn-secondary">End Draft</button>
                     </div>
                 </div>
             </div>
