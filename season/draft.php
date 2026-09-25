@@ -565,7 +565,7 @@
                                 <button id="pauseDraft" type="button" class="dropdown-item">Pause Draft</button>
                             </li>
                             <li>
-                                <button id="pauseDraft" type="button" class="dropdown-item">Pause Draft</button>
+                                <button id="skipPick" type="button" class="dropdown-item">Skip Pick</button>
                             </li>
                             <li>
                                 <button id="endDraft" type="button" class="dropdown-item">End Draft</button>

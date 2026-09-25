@@ -1,0 +1,30 @@
+2026-09-25 17:25:09 BROADCAST CALLED
+{"type":"draft_pick","pick_number":37,"round_number":13,"active_user_id":12,"team_name":null,"pokemon_id":"160"}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":37,"round_number":13,"active_user_id":12,"team_name":null,"pokemon_id":"160"}}
+
+2026-09-25 17:30:38 BROADCAST CALLED
+{"type":"draft_pick","pick_number":38,"round_number":13,"active_user_id":11,"team_name":null,"pokemon_id":"360"}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":38,"round_number":13,"active_user_id":11,"team_name":null,"pokemon_id":"360"}}
+
+2026-09-25 17:33:54 BROADCAST CALLED
+{"type":"draft_pick","pick_number":41,"round_number":14,"active_user_id":11,"team_name":"FAKE","pokemon_id":"858"}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":41,"round_number":14,"active_user_id":11,"team_name":"FAKE","pokemon_id":"858"}}
+
+2026-09-25 17:38:05 BROADCAST CALLED
+{"type":"draft_pick","pick_number":43,"round_number":15,"active_user_id":12,"team_name":"DZN","pokemon_id":"868"}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":43,"round_number":15,"active_user_id":12,"team_name":"DZN","pokemon_id":"868"}}
+
+2026-09-25 17:38:24 BROADCAST CALLED
+{"type":"draft_pick","pick_number":44,"round_number":15,"active_user_id":11,"team_name":"FAKE","pokemon_id":"221"}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":44,"round_number":15,"active_user_id":11,"team_name":"FAKE","pokemon_id":"221"}}
+

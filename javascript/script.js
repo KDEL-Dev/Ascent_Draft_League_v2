@@ -575,32 +575,33 @@ draftButtons.forEach(button => {
                 pokemon_id: pokemonId,
             })
         })
-        .then(response => response.json())
+        .then(async response => {
+            const text = await response.text();
+
+            console.log("HTTP STATUS:", response.status);
+            console.log("RAW PHP RESPONSE:");
+            console.log(text);
+
+            return JSON.parse(text);
+        })
         .then(data => {
             console.log("PHP RESPONSE:", data);
 
-            // -------------------------
-            // PICK FAILED
-            // -------------------------
-
-            if (!data.success)
-            {
+            if (!data.success) {
                 alert(data.message);
                 return;
             }
-            else // This might be causing issues with how list gets filled out. Possibly delete later.
-            {
-                loadUserDraftRoster(); 
-                loadAllDraftedPokemon();
-                loadDraftedDisplay();
-                loadDraftState();
-                loadDraftLog();
-            }
-            
+
+            loadUserDraftRoster(); 
+            loadAllDraftedPokemon();
+            loadDraftedDisplay();
+            loadDraftState();
+            loadDraftLog();
         })
         .catch(error => {
             console.error("Draft Failed:", error);
         });
+
         
     })
     
@@ -1103,4 +1104,44 @@ if(resetDraftBtn)
     })
 }
 
+
+// -------------------------------------------------
+// ---------------- WEB SOCKET ---------------------
+// -------------------------------------------------
+
+const socket = new WebSocket('ws://localhost:8080');
+
+socket.onopen = function() {
+    console.log('WebSocket connected');
+
+};
+
+socket.onmessage = async function(event) {
+    const data = JSON.parse(event.data);
+
+    console.log("DRAFT EVENT RECEIVED:", data);
+
+    if (data.type === "draft_pick") {
+        console.log("Pokemon drafted:", data.pokemon_id);
+        console.log("Team:", data.team_name);
+        console.log("Pick number:", data.pick_number);
+
+        // Refresh draft information
+        await loadUserDraftRoster();
+        await loadAllDraftedPokemon();
+        await loadDraftedDisplay();
+        await loadDraftState();
+        await loadDraftLog();
+    }
+};
+
+
+
+socket.onclose = function() {
+    console.log('WebSocket disconnected');
+};
+
+socket.onerror = function(error) {
+    console.error('WebSocket error:', error);
+};
 

@@ -11,6 +11,50 @@
 
     header('Content-Type: application/json');
 
+    // BROADCAST TEST
+    function broadcastDraftEvent(array $data): void
+    {
+        file_put_contents(
+            __DIR__ . '/broadcast_debug.txt',
+            date('Y-m-d H:i:s') . " BROADCAST CALLED\n" .
+            json_encode($data) . "\n\n",
+            FILE_APPEND
+        );
+
+        $url = 'http://localhost/ascent_draft_league_v2/api/draft/broadcast.php';
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        file_put_contents(
+            __DIR__ . '/broadcast_debug.txt',
+            "HTTP CODE: " . curl_getinfo($ch, CURLINFO_HTTP_CODE) . "\n" .
+            "RESPONSE: " . $response . "\n\n",
+            FILE_APPEND
+        );
+
+        if ($response === false) {
+            file_put_contents(
+                __DIR__ . '/broadcast_debug.txt',
+                "CURL ERROR: " . curl_error($ch) . "\n\n",
+                FILE_APPEND
+            );
+        }
+
+        curl_close($ch);
+    }
+
+
+
+
     $seasonId = 1;
 
     //-------------------
@@ -96,12 +140,15 @@
 
     // Get Current Draft User
 
-    $sql = "
-    SELECT id, team_name, draft_position
-    FROM active_users
-    WHERE season_id = ?
-    AND draft_position = ?
-    ";
+    $sql = "SELECT
+            active_users.id,
+            users.default_team_name,
+            active_users.draft_position
+        FROM active_users
+        JOIN users ON active_users.user_id = users.id
+        WHERE season_id = ?
+        AND draft_position = ?
+        ";
 
     $stmt = $conn->prepare($sql);
 
@@ -437,9 +484,37 @@
         exit;
     }
 
+
+    // -------------------------
+    // BROADCAST DRAFT PICK
+    // -------------------------
+
+    $draftEvent = [
+        "type" => "draft_pick",
+        "pick_number" => $pickNumber,
+        "round_number" => $roundNumber,
+        "active_user_id" => $currentUser['id'],
+        "team_name" => $currentUser['default_team_name'],
+        "pokemon_id" => $pokemonId
+    ];
+
+    // broadcastDraftEvent($draftEvent);
+    error_log("ABOUT TO BROADCAST: " . json_encode($draftEvent));
+
+    broadcastDraftEvent($draftEvent);
+
+    error_log("BROADCAST FUNCTION FINISHED");
+
+
+
+    // -------------------------
+    // API RESPONSE
+    // -------------------------
+
     echo json_encode([
         "success" => true,
         "message" => "Pick saved successfully."
     ]);
+
 
 ?>
