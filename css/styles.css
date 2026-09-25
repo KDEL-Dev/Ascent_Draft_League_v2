@@ -27,6 +27,7 @@ button
 {
     background-color: var(--main-color);
     color: white;
+    font-family: "jura";
 }
 
 li
@@ -50,6 +51,10 @@ li
     background-color: grey;
 }
 
+/*****************************/
+/***** NAVIGATION BAR *****/
+/*****************************/
+
 .navbar
 {
     background-color: var(--nav-color);
@@ -61,6 +66,9 @@ li
     
     z-index: 1101;
 }
+
+
+
 
 
 /*****************************/
@@ -278,7 +286,7 @@ li
 
 #draftPickInfo
 {
-    max-width: 276px;
+    max-width: 300px;
     
     /* background-color: var(--pkmn-red); */
 }
@@ -418,6 +426,13 @@ li
 #draftControls .btn-secondary
 {
     background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+#draftControls .btn-secondary:hover
+{
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
 }
 
 /* Tier Buttons */
@@ -447,7 +462,9 @@ li
     cursor: pointer;
 }
 
-#ouDraftList .btn:not(:disabled)
+#ouDraftList .btn:not(:disabled),
+#uuDraftList .btn:not(:disabled),
+#ruDraftList .btn:not(:disabled)
 {
     background-color: var(--main-color);
     border-color: var(--main-color);

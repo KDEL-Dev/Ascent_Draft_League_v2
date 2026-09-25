@@ -498,9 +498,9 @@
                     </div>
                     <div id="draftYourTeamCont" class="col-sm-12 col-md-9 col-xl-3 p-0 order-sm-1 order-xl-3 bg-white d-flex flex-column">
                         
-                        <div class="p-3 border d-flex flex-column justify-content-evenly flex-grow-1">
-                            <h3 class="text-center">Your Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
-                            <div class="draftYourTeam d-flex flex-grow-1 justify-content-around align-items-center flex-wrap">
+                        <div class="p-3 border d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                            <h3 class="text-center">My Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
+                            <div class="draftYourTeam w-100 d-flex justify-content-around align-items-center flex-wrap">
                                 <div class="d-flex flex-column">
                                     <div class="draftTierTitle">
                                         <p class="text-center">OU</p>
@@ -540,7 +540,7 @@
                                 </div>
                                 
                             </div>
-                            <div id="draftYourTeamInfo" class="border-top d-flex flex-column justify-content-center align-items-center">
+                            <div id="draftYourTeamInfo" class="w-100 border-top border-bottom d-flex flex-column justify-content-center align-items-center">
                                 <p class="m-0">Roster Counter</p>
                                 <h4 id="draftRosterCount" class="m-0">0/12</h4>
                             </div>
@@ -548,15 +548,29 @@
                     </div>
                 </div>
                 
-                <div id="draftControls" class="mt-1 d-flex justify-content-between">
-                    <div>
-                        <button id="startDraft" class=" me-3 btn btn-secondary ">Start Draft</button>
-                    </div>
-                    <div>
-                        <button id="resumeDraft" class="mx-1 btn btn-secondary">Resume Draft</button>
-                        <button id="pauseDraft" class="mx-1 btn btn-secondary">Pause Draft</button>
-                        <button id="skipPick" class="mx-1 btn btn-secondary">Skip Pick</button>
-                        <button id="endDraft" class="mx-1 btn btn-secondary">End Draft</button>
+                <div id="draftControls" class="mt-1 d-flex justify-content-end">
+                    <div class="dropdown" data-bs-theme="dark">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"  aria-expanded="false">
+                            Draft Menu
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button id="startDraft" type="button" class="dropdown-item">Start Draft</button>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <button id="resumeDraft" type="button" class="dropdown-item">Resume Draft</button>
+                            </li>
+                            <li>
+                                <button id="pauseDraft" type="button" class="dropdown-item">Pause Draft</button>
+                            </li>
+                            <li>
+                                <button id="pauseDraft" type="button" class="dropdown-item">Pause Draft</button>
+                            </li>
+                            <li>
+                                <button id="endDraft" type="button" class="dropdown-item">End Draft</button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -592,7 +606,7 @@
         </div>
 
         <div class="m-3">
-            <div class="row tier-section" id="ouDraftList">
+            <div id="ouDraftList" class="row tier-section">
                 <h2>
                     OU Pokemon
                     <span class="badge text-bg-secondary">UUBL</span>
@@ -648,7 +662,7 @@
                                 <?php endif; ?>
                             </div>
                             <button 
-                                class="draftBtn btn btn-primary" 
+                                class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="UU">
@@ -681,7 +695,7 @@
                                 <?php endif; ?>
                             </div>
                             <button 
-                                class="draftBtn btn btn-primary" 
+                                class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="RU">
@@ -717,7 +731,7 @@
                                 <?php endif; ?>
                             </div>
                             <button 
-                                class="draftBtn btn btn-primary" 
+                                class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="NU">
