@@ -12,6 +12,7 @@
             draft_picks.active_user_id,
 
             users.default_team_name,
+            users.default_team_mascot,
 
             showdown_pokemon.id AS pokemon_id,
             showdown_pokemon.name,
@@ -75,6 +76,7 @@
             "round_number" => (int) $row["round_number"],
             "active_user_id" => (int) $row["active_user_id"],
             "team_name" => $row["default_team_name"],
+            "team_mascot" => $row["default_team_mascot"],
             "pokemon_id" => (int) $row["pokemon_id"],
             "name" => $row["name"],
             "type1" => $row["type1"],

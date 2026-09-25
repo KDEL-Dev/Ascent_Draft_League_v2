@@ -263,15 +263,14 @@
 
     <!-- Main Draft Content -->
     <main id="draft">
-        <h1 class="px-3 text-center">Draft</h1>
         <div id="draftOrderCont" class="draftPanel m-3 p-3 bg-dark-subtle border border-light rounded-1 d-flex flex-column flex-lg-row">
             <p class="mb-lg-0 me-3 d-flex align-items-lg-center">Draft Order:</p>
             <div class="border flex-grow-1 bg-white d-flex justify-content-between flex-column flex-lg-row">
                 <ul class="w-100 mb-0 list-unstyled d-flex justify-content-evenly align-items-center" id="draftOrder">
                         <?php foreach ($activeUsers as $activeUser): ?>
-                        <li class="p-2">
+                        <li>
                             <span class="draftPosition">
-                                <?= htmlspecialchars($activeUser['draft_position']) ?>.
+                                <?= htmlspecialchars($activeUser['draft_position']) ?>
                             </span>
                             <span>
                                 <?= htmlspecialchars($activeUser['default_team_name']) ?>
@@ -342,14 +341,14 @@
                         <div class="border bg-white ">
                             <h3 class="text-center">Order</h3>
                         </div>
-                        <div class="border d-flex align-items-stretch flex-grow-1">
+                        <div class="d-flex align-items-stretch flex-grow-1">
                             <div id="draftDirection" class="d-flex align-items-center justify-content-center">
                                 <span id="draftDirection">↓</span> <!-- Change this with font awesome -->
                             </div>
                             <div class="flex-grow-1">
-                                <ul id="liveDraftOrder" class="h-100 border m-0 p-0 flex-grow-1 d-flex flex-column justify-content-evenly align-items-center">
+                                <ul id="liveDraftOrder" class="h-100 border-end m-0 p-0 flex-grow-1 d-flex flex-column justify-content-evenly align-items-center">
                                     <?php foreach ($activeUsers as $activeUser): ?>
-                                        <li class="w-100 text-black bg-white border flex-grow-1 d-flex justify-content-between align-items-center">
+                                        <li class="w-100 text-black bg-white border-bottom flex-grow-1 d-flex justify-content-between align-items-center">
                                             <span class="draftPosition">
                                                 <?= htmlspecialchars($activeUser['draft_position']) ?>
                                             </span>
@@ -363,17 +362,18 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-8 p-0 order-sm-2 order-xl-2 d-flex flex-column">
-                        <div class="bg-white">
+                        <div class="bg-white border-bottom">
                             <h3 class="text-center">Draft Board</h3>
                         </div>
-                        <div class="border bg-white d-flex justify-content-evenly flex-grow-1">
+                        <div class=" bg-white d-flex justify-content-evenly flex-grow-1 flex-wrap">
                             
                             <div class="d-flex flex-column justify-content-center align-items-center">
-                                <div id="draftPkmnOwnerTier" class="d-flex">
-                                    <p id="draftPickOwner">pick owner</p>
-                                    
+                                <div id="draftPkmnOwnerTier">
+                                    <p id="draftPickOwner"></p>
+                                    <p id="draftPickOwnerMasc"></p>
                                 </div>
                                 <div id="draftPokemonImage"></div>
+                                
                             </div>
 
                             <div id="draftPickInfo" class="m-3 p-3 bg-light border border-2 rounded-3 d-flex flex-column flex-grow-1 justify-content-center align-items-center">
@@ -381,6 +381,15 @@
                                     <p id="draftPokemonName">pokemon name</p>
                                     <p id="draftPokemonTier" class="mb-0 badge rounded-pill text-bg-secondary">tier</p>
                                 </div>
+                                <div class="d-flex">
+                                    <div class="mx-1 mb-1">
+                                        <span id="draftPokemonType1" class="fs-6">-</p>
+                                    </div>
+                                    <div class="mx-1 mb-1">
+                                        <span id="draftPokemonType2" class="fs-6">-</p>
+                                    </div>
+                                </div>
+                                
                                 <div id="draftPokemonStats" class="w-100">
                                     <div id="draftPkmnStats1" class=" mb-2 px-3 text-center d-flex justify-content-between">
                                         <div>
@@ -430,16 +439,22 @@
                                 
                                 <p class="mb-0">Abilities</p>
                                 <div id="draftPokemonAbility" class="w-100 p-0 m-0 d-flex justify-content-between">
-                                    <div id="draftAbility1" class="draftAbilities">-</div>
-                                    <div id="draftAbility2" class="draftAbilities">-</div>
+                                    <div class="draftAbilities">
+                                        <span id="draftAbility1"></span>
+                                    </div>
+                                    <div class="draftAbilities">
+                                        <span id="draftAbility2"></span>
+                                    </div>
                                 </div>      
                                 <p class="mb-0">Hidden Ability:</p>
-                                <div id="draftHiddenAbility" class="draftAbilities">-</div>                    
+                                <div class="draftAbilities w-100 d-flex align-items-center">
+                                    <span id="draftHiddenAbility"></span>
+                                </div>                    
                             </div>
 
-                            <div id="draftDisplayTeamRoster" class="m-3 p-3 border border-2 rounded-3 d-flex flex-grow-1 align-items-center flex-column">
-                                <p>Roster</p>
-                                <div class="w-100 d-flex justify-content-around">
+                            <div id="draftDisplayTeamRoster" class="m-3 p-3 bg-light border border-2 rounded-3 d-flex flex-grow-1 align-items-center flex-column">
+                                <p class="fs-5">Roster</p>
+                                <div class="w-100 p-3 bg-white border rounded-3 d-flex justify-content-around flex-wrap">
                                     <div class="d-flex flex-column">
                                         <div class="draftTierTitle d-flex align-items-center justify-content-center">
                                             <p class="mb-0">ou</p>
@@ -482,12 +497,10 @@
                         </div>
                     </div>
                     <div id="draftYourTeamCont" class="col-sm-12 col-md-9 col-xl-3 p-0 order-sm-1 order-xl-3 bg-white d-flex flex-column">
-                        <div class="bg-white">
-                            <h3 class="text-center">Your Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
-                        </div>
+                        
                         <div class="p-3 border d-flex flex-column justify-content-evenly flex-grow-1">
-                            
-                            <div class="draftYourTeam d-flex flex-grow-1 justify-content-evenly align-items-center">
+                            <h3 class="text-center">Your Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
+                            <div class="draftYourTeam d-flex flex-grow-1 justify-content-around align-items-center flex-wrap">
                                 <div class="d-flex flex-column">
                                     <div class="draftTierTitle">
                                         <p class="text-center">OU</p>
@@ -602,7 +615,7 @@
                                 <?php endif; ?>
                             </div>
                             <button 
-                                class="draftBtn btn btn-primary" 
+                                class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="OU">
@@ -619,7 +632,7 @@
                 </h2>
                 <?php foreach ($groupedPokemon['UU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                        <div class="border rounded p-2 bg-white d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="me-1">
                                     <?=  htmlspecialchars($pokemon['name']) ?>
@@ -652,7 +665,7 @@
                 </h2>
                 <?php foreach ($groupedPokemon['RU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                        <div class="border rounded p-2 bg-white d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="me-1">
                                     <?=  htmlspecialchars($pokemon['name']) ?>
@@ -688,7 +701,7 @@
                 </h2>
                 <?php foreach ($groupedPokemon['NU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
-                        <div class="border rounded p-2 d-flex justify-content-between align-items-center">
+                        <div class="border rounded p-2 bg-white d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="me-1">
                                     <?=  htmlspecialchars($pokemon['name']) ?>

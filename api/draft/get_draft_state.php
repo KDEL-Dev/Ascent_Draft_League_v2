@@ -45,7 +45,8 @@
 
     $myActiveUser = $result->fetch_assoc();
 
-    if (!$myActiveUser) {
+    if (!$myActiveUser) 
+    {
         echo json_encode([
             'success' => false,
             'message' => 'You are not an active user for this season'
@@ -110,14 +111,15 @@ $draftState = $result->fetch_assoc();
 // GET TEAM ON THE CLOCK
 // -------------------------
 
-$sql = "
-    SELECT
-        id,
-        team_name,
-        draft_position
-    FROM active_users
-    WHERE season_id = ?
-    AND draft_position = ?
+$sql = "SELECT
+            active_users.id,
+            users.default_team_name,
+            active_users.draft_position
+        FROM active_users
+        JOIN users
+        ON active_users.user_id = users.id
+        WHERE season_id = ?
+        AND draft_position = ?
 ";
 
 $stmt = $conn->prepare($sql);
@@ -156,15 +158,16 @@ if ($draftState['draft_direction'] === 'forward') {
     $nextPosition = $currentPosition - 1;
 }
 
-$sql = "
-    SELECT
-        id,
-        team_name,
-        draft_position
-    FROM active_users
-    WHERE season_id = ?
-    AND draft_position = ?
-";
+$sql = "SELECT
+            active_users.id,
+            users.default_team_name,
+            active_users.draft_position
+        FROM active_users
+        JOIN users
+        ON active_users.user_id = users.id
+        WHERE season_id = ?
+        AND draft_position = ?
+    ";
 
 $stmt = $conn->prepare($sql);
 

@@ -283,6 +283,30 @@ function displayDraftedTier(elementId, roster, tiers)
     }
 }
 
+// ----- HELPER - POKEMON TYPE FOR DRAFT CARD ------
+function setPokemonType(element, type)
+{
+    if (!element) return;
+
+    // Remove previous type badge classes
+    [...element.classList]
+        .filter(className => className.startsWith('typeBadge-'))
+        .forEach(className => element.classList.remove(className));
+
+    if (!type)
+    {
+        element.textContent = '';
+        return;
+    }
+
+    element.classList.add(
+        'badge',
+        `typeBadge-${type.toLowerCase()}`
+    );
+
+    element.textContent = type;
+}
+
 
 
 // ------------- LOAD MOST RECENT DRAFT PICK to PREVIOUS DRAFT PICK --------------
@@ -320,6 +344,16 @@ async function loadDraftedDisplay()
         draftPickOwner.textContent = currentPick.team_name;
     }
     
+    // --------------------
+    // PICK OWNER MASCOT
+    // --------------------
+
+    const draftPickOwnerMasc = document.getElementById('draftPickOwnerMasc');
+    
+    if(draftPickOwnerMasc)
+    {
+        draftPickOwnerMasc.textContent = currentPick.team_mascot;
+    }
 
     // --------------------
     // POKEMON NAME
@@ -343,6 +377,18 @@ async function loadDraftedDisplay()
     {
         draftPokemonTier.textContent = currentPick.tier;
     }
+
+    // --------------------
+    // TYPE
+    // --------------------
+
+    const draftPokemonType1 = document.getElementById('draftPokemonType1');
+    const draftPokemonType2 = document.getElementById('draftPokemonType2');
+
+    setPokemonType(draftPokemonType1, currentPick.type1);
+    setPokemonType(draftPokemonType2, currentPick.type2);
+
+
 
     // --------------------
     // ABILITY
@@ -895,7 +941,7 @@ async function loadDraftState()
     if (currentTeam)
     {
         document.getElementById('onTheClock').textContent =
-            currentTeam.team_name;
+            currentTeam.default_team_name;
     }
     else
     {
@@ -909,7 +955,7 @@ async function loadDraftState()
     if(futureTeam)
     {
         document.getElementById('nextTeam').textContent = 
-        futureTeam.team_name;
+        futureTeam.default_team_name;
     }
     else
     {
