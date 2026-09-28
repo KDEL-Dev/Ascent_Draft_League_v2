@@ -52,8 +52,8 @@
 
     <title>Draft Recap</title>
 </head>
-<body>
-    
+<body class="bg-body-secondary">
+
     <!-- For now just banner image -->
     <header>
         <?php include '../includes/banner.php' ?>
@@ -64,11 +64,11 @@
         <?php include '../includes/nav.php' ?>
     </nav>
 
-    <main class="container">
-        <h1>Draft Recap</h1>
-        <div class="row">
+    <main class="container p-3">
+        <div class="row p-3 bg-white">
+            <h1>Draft Recap</h1>
             <?php foreach ($round as $roundNumber => $picks): ?>
-            <div class="mt-3 col-sm-12 col-md-4 col-lg-3">
+            <div class="mt-3 col-sm-12 col-md-6 col-lg-4 col-xl-3">
                 <h2>Round <?= htmlspecialchars($roundNumber) ?></h2>
                 <?php foreach ($picks as $pick): ?>
                     <ul class="ps-0 list-group">

@@ -6,7 +6,7 @@
 
     $seasonId = 1;
 
-    $rosterSql = "SELECT users.default_team_name, showdown_pokemon.name
+    $rosterSql = "SELECT users.default_team_name, users.default_team_mascot, showdown_pokemon.name, pokemon_tier_per_season.tier
     FROM roster_pkmn
     JOIN active_users
     ON roster_pkmn.active_user_id = active_users.id
@@ -14,6 +14,8 @@
     ON active_users.user_id = users.id
     JOIN showdown_pokemon
     ON showdown_pokemon.id = roster_pkmn.showdown_pokemon_id
+    JOIN pokemon_tier_per_season
+    ON roster_pkmn.showdown_pokemon_id = pokemon_tier_per_season.showdown_pokemon_id
     WHERE roster_pkmn.season_id = ?
     AND roster_pkmn.status = 'active'
     ORDER BY users.default_team_name, showdown_pokemon.name 
@@ -38,12 +40,22 @@
 
     $rosters = [];
 
+
+
     // Here is how I sort each pokemon into seperate roster arrays
     while ($row = $rosterResults->fetch_assoc()) 
     {
         $teamName = $row['default_team_name'];
-        $rosters[$teamName][] = $row['name'];
+        $teamMascot = $row['default_team_mascot'];
+
+        $rosters[$teamName]['mascot'] = $teamMascot;
+
+        $rosters[$teamName]['pokemon'][] = [
+            'name' => $row['name'],
+            'tier' => $row['tier']
+        ];
     }
+
 
 
 ?>
@@ -57,9 +69,9 @@
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    <title>Roster</title>
+    <title>Roster - Ascent</title>
 </head>
-<body>
+<body class="bg-body-secondary">
 
     <!-- For now just banner image -->
     <header>
@@ -72,25 +84,46 @@
     </nav>
     
     <main class="container p-3">
-        <h1>Roster</h1>
-        <div class="row">
+        
+        <div class="p-3 row bg-white">
+            <h1>Roster</h1>
+            <?php foreach ($rosters as $teamName => $roster): ?>
 
-            <?php foreach ($rosters as $teamName => $pokemon): ?>
+                <div class="mb-3 col-12 col-md-6 col-lg-3">
 
-                <div class="col"> <!-- Edit this later to add styling to whole div -->
-                    <h3>
-                        <?php echo htmlspecialchars($teamName); ?>
-                    </h3>
-                    <ul class="list-group">
-                        <?php foreach ($pokemon as $name): ?>
-                            <li class="list-group-item">
-                                <?php echo htmlspecialchars($name) ?>
-                            </li>
-                        <?php endforeach ?>
-                    </ul>
+                    <div class="rosterCard card">
+
+                        <div class="card-header">
+                            <h2>
+                                <?php echo htmlspecialchars($teamName); ?>
+                                <?php echo htmlspecialchars($roster['mascot']); ?>
+                            </h2>
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+
+                            <?php foreach ($roster['pokemon'] as $pokemon): ?>
+
+                                <li class="list-group-item">
+                                    <div class="rosterCardTier">
+                                        <p><?php echo htmlspecialchars($pokemon['tier']); ?></p>
+                                    </div>
+
+                                    <div class="rosterCardPkmn">
+                                        <p><?php echo htmlspecialchars($pokemon['name']); ?></p>
+                                    </div>
+                                </li>
+
+                            <?php endforeach; ?>
+
+                        </ul>
+
+                    </div>
+
                 </div>
 
             <?php endforeach; ?>
+
 
         </div>
     </main>

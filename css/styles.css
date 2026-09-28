@@ -30,6 +30,13 @@ button
     font-family: "jura";
 }
 
+a,
+a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+
 li
 {
     list-style: none;
@@ -472,7 +479,8 @@ li
 
 #ouDraftList .btn:not(:disabled),
 #uuDraftList .btn:not(:disabled),
-#ruDraftList .btn:not(:disabled)
+#ruDraftList .btn:not(:disabled),
+#nuDraftList .btn:not(:disabled)
 {
     background-color: var(--main-color);
     border-color: var(--main-color);
@@ -551,5 +559,62 @@ li
 
 .typeBadge-fairy {
     background-color: #D685AD;
+}
+
+
+
+
+/* -----------------------------------------------------------------------
+----------------------------- ROSTER PAGE --------------------------------
+-------------------------------------------------------------------------*/
+
+.rosterCard .card-header
+{
+    background-color: var(--main-color);
+    color: white;
+}
+
+.rosterCard .card-header h2
+{
+    margin-bottom: 0;
+
+    font-size: 1.5rem;
+}
+
+.rosterCard div
+{
+    display: flex;
+    align-items: center;
+}
+
+.rosterCard li
+{
+    padding: 0;
+
+    display: flex;
+    
+}
+
+.rosterCard p
+{
+    margin: 0;
+}
+
+.rosterCardTier
+{
+    padding: 4px;
+
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+
+    border-right: solid rgba(0, 0, 0, 0.2) 1px;
+}
+
+.rosterCardPkmn
+{
+    padding-left: 8px;
+    flex: 1;
+
+    font-weight: bold;
 }
 

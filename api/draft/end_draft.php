@@ -33,10 +33,7 @@
             return false;
         }
 
-
-        // ---------------------------------------------
         // WebSocket handshake
-        // ---------------------------------------------
 
         $key = base64_encode(random_bytes(16));
 
@@ -52,9 +49,7 @@
         fwrite($socket, $headers);
 
 
-        // ---------------------------------------------
         // Read handshake response
-        // ---------------------------------------------
 
         $response = '';
 
@@ -75,7 +70,6 @@
             }
         }
 
-
         if (strpos($response, '101') === false)
         {
             fclose($socket);
@@ -88,23 +82,18 @@
         }
 
 
-        // ---------------------------------------------
         // Encode message
-        // ---------------------------------------------
 
         $message = json_encode($data);
 
         if ($message === false)
         {
             fclose($socket);
-
             return false;
         }
 
 
-        // ---------------------------------------------
         // Create masked WebSocket frame
-        // ---------------------------------------------
 
         $length = strlen($message);
 
@@ -148,9 +137,7 @@
         }
 
 
-        // ---------------------------------------------
         // Send frame
-        // ---------------------------------------------
 
         $result = fwrite($socket, $frame);
 
@@ -161,21 +148,16 @@
 
 
     // =====================================================
-    // RESUME DRAFT
+    // END DRAFT
     // =====================================================
 
-    $sql = "
-        UPDATE draft_state
+    $sql = " UPDATE draft_state
         SET
-            is_active = 1,
-            status = 'active',
-            pick_started_at = DATE_SUB(
-                NOW(),
-                INTERVAL (60 - timer_remaining) SECOND
-            ),
+            is_active = 0,
+            status = 'ended',
             timer_remaining = NULL
         WHERE season_id = ?
-        AND status = 'paused'
+        AND status IN ('active', 'paused')
     ";
 
     $stmt = $conn->prepare($sql);
@@ -196,7 +178,7 @@
     {
         echo json_encode([
             "success" => false,
-            "message" => "Failed to resume draft."
+            "message" => "Failed to end draft."
         ]);
 
         exit;
@@ -206,7 +188,7 @@
     {
         echo json_encode([
             "success" => false,
-            "message" => "Draft is not paused."
+            "message" => "Draft is not currently active or paused."
         ]);
 
         exit;
@@ -214,13 +196,13 @@
 
 
     // =====================================================
-    // BROADCAST RESUME EVENT
+    // BROADCAST END EVENT
     // =====================================================
 
     $broadcasted = broadcastDraftEvent([
-        "type" => "draft_resumed",
+        "type" => "draft_ended",
         "season_id" => $seasonId,
-        "status" => "active"
+        "status" => "ended"
     ]);
 
 
@@ -230,8 +212,7 @@
 
     echo json_encode([
         "success" => true,
-        "message" => "Draft resumed successfully.",
+        "message" => "Draft ended successfully.",
         "broadcasted" => $broadcasted
     ]);
 
-?>

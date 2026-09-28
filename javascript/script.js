@@ -62,7 +62,7 @@ if(startDraftBtn)
                 return;
             }
 
-            await loadDraftState();
+            // await loadDraftState();
         }
         catch(error)
         {
@@ -757,6 +757,52 @@ if(skipPickBtn)
 }
 
 
+// ------------ END DRAFT ------------
+
+const endDraftBtn = document.getElementById("endDraft");
+
+if (endDraftBtn)
+{
+    endDraftBtn.addEventListener("click", async function()
+    {
+        const confirmed = confirm(
+            "Are you sure you want to end the draft?"
+        );
+
+        if (!confirmed)
+        {
+            return;
+        }
+
+        try
+        {
+            const response = await fetch(
+                "../api/draft/end_draft.php"
+            );
+
+            const data = await response.json();
+
+            console.log("END DRAFT RESPONSE:", data);
+
+            if (!data.success)
+            {
+                console.error(data.message);
+                return;
+            }
+
+            // The WebSocket event will handle
+            // redirecting every browser.
+
+        }
+        catch(error)
+        {
+            console.error("Ending draft failed:", error);
+        }
+    });
+}
+
+
+
 
 // -------------- TIMER ---------------
 
@@ -1116,12 +1162,55 @@ socket.onopen = function() {
 
 };
 
-socket.onmessage = async function(event) {
+socket.onmessage = async function(event) 
+{
     const data = JSON.parse(event.data);
 
     console.log("DRAFT EVENT RECEIVED:", data);
 
-    if (data.type === "draft_pick") {
+    //----- DRAFT STARTED -----
+
+    if (data.type === "draft_started")
+    {
+        console.log("DRAFT HAS STARTED!");
+
+        await loadDraftState();
+        await loadUserDraftRoster();
+        await loadAllDraftedPokemon();
+        await loadDraftedDisplay();
+        await loadDraftLog();
+    }
+
+    // -----DRAFT PAUSED -----
+
+     if (data.type === "draft_paused")
+    {
+        console.log("DRAFT PAUSED!");
+
+        console.log(
+            "Timer remaining:",
+            data.timer_remaining
+        );
+
+        // Stop timer on THIS browser
+        stopTimer();
+
+        // Load paused state from database
+        await loadDraftState();
+    }
+
+    //----- DRAFT RESUMED -----
+    if (data.type === "draft_resumed")
+    {
+        console.log("DRAFT RESUMED");
+
+        await loadDraftState();
+    }
+
+    //----- DRAFT PICK ------
+
+    if (data.type === "draft_pick") 
+    {
         console.log("Pokemon drafted:", data.pokemon_id);
         console.log("Team:", data.team_name);
         console.log("Pick number:", data.pick_number);
@@ -1133,7 +1222,32 @@ socket.onmessage = async function(event) {
         await loadDraftState();
         await loadDraftLog();
     }
+
+    // -----SKIP PICK ------
+
+    if (data.type === "draft_skipped")
+    {
+        console.log("DRAFT PICK SKIPPED");
+
+        await loadDraftState();
+        await loadDraftedDisplay();
+        await loadDraftLog();
+    }
+
+    //----- DRAFT ENDED -----
+
+    if (data.type === "draft_ended")
+    {
+        console.log("DRAFT HAS ENDED!");
+
+        stopTimer();
+
+        window.location.href = "roster.php";
+    }
+
+
 };
+
 
 
 
