@@ -391,7 +391,7 @@
                                 </div>
                                 
                                 <div id="draftPokemonStats" class="w-100">
-                                    <div id="draftPkmnStats1" class=" mb-2 px-3 text-center d-flex justify-content-between">
+                                    <div id="draftPkmnStats1" class=" mb-2 text-center d-flex justify-content-between">
                                         <div>
                                             <p>HP</p>
                                             <div class="rayquazaCircle">
@@ -413,7 +413,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="draftPkmnStats2" class="mb-2 px-3 text-center d-flex justify-content-between">
+                                    <div id="draftPkmnStats2" class="mb-2 text-center d-flex justify-content-evenly">
                                         <div>
                                             <p>SP.ATK</p>
                                             <div class="rayquazaCircle">
@@ -567,6 +567,7 @@
                             <li>
                                 <button id="skipPick" type="button" class="dropdown-item">Skip Pick</button>
                             </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <button id="endDraft" type="button" class="dropdown-item">End Draft</button>
                             </li>

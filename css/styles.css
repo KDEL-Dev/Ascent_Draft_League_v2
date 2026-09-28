@@ -1,7 +1,7 @@
 
 /* Website Wide */
 
-@import url('https://fonts.googleapis.com/css2?family=Aldrich&family=Jura:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&family=Jura:wght@300..700&display=swap');
 
 :root
 {
@@ -147,6 +147,8 @@ li
 {
     font-size: 1.5rem;
     font-weight: bold;
+    font-family: 'electrolize';
+
 }
 
 #draftLogTitle
@@ -315,12 +317,11 @@ li
     align-items: center;
 }
 
-
 #draftPkmnStats1>div p,
 #draftPkmnStats2>div p
 {
     margin-bottom: 0;
-    font-family: 'aldrich';
+    font-family: 'electrolize';
 }
 
 
@@ -420,6 +421,12 @@ li
 {
     background-color: white;
 
+}
+
+#draftRosterCount
+{
+    font-family: 'electrolize';
+    font-weight: bold;
 }
 
 /*----- Draft Controls -----*/
