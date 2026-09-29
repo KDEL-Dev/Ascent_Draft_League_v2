@@ -17,7 +17,7 @@
                 <a class="nav-link" href="roster.php">Roster</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Matchups</a>
+                <a class="nav-link" href="matchups.php">Matchups</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Standings</a>
