@@ -1,3 +1,30 @@
+<?php
+
+    error_reporting(E_ALL);
+    ini_set('display_errors',1);
+
+    require_once __DIR__ . '/../includes/connection.php';
+
+    $seasonId = 1;
+
+    $sql = "SELECT active_users.id, users.default_team_name, users.default_team_mascot
+        FROM active_users
+        JOIN users 
+        ON active_users.user_id = users.id
+        WHERE active_users.season_id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i",$seasonId);
+    $stmt->execute();
+
+    $stmt->execute();
+
+    $teamResults = $stmt->get_result();
+    $teamList = $teamResults->fetch_all(MYSQLI_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +54,52 @@
                 <a href="matchups.php" class="btn btn-primary">Return to Matchups</a>
             </div>
             <div class="row">
-                
+                <form method="POST" action="">
+                    <div id="newMatchTeamSelect1" class="col-12 col-lg-6">
+                        <label for="team1" class="form-label">Team 1</label>
+
+                        <select name="team1" id="team1" class="form-select">
+                            <option value="">Select Team 1</option>
+
+                            <?php foreach ($teamList as $team): ?>
+                                <option value="<?= $team['id'] ?>">
+                                    <?= htmlspecialchars($team['default_team_name']) ?>
+                                    <?= htmlspecialchars($team['default_team_mascot']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div id="newMatchTeamSelect2" class="col-12 col-lg-6">
+                        <label for="team2" class="form-label">Team 2</label>
+
+                        <select name="team2" id="team2" class="form-select">
+                            <option value="">Select Team 2</option>
+
+                            <?php foreach ($teamList as $team): ?>
+                                <option value="<?= $team['id'] ?>">
+                                    <?= htmlspecialchars($team['default_team_name']) ?>
+                                    <?= htmlspecialchars($team['default_team_mascot']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="pt-3 mt-3 border-top">
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="row">
+                <div id="newMatchRoster1" class="col-12 col-lg-6">
+
+                </div>
+                <div id="newMatchRoster2" class="col-12 col-lg-6">
+
+                </div>
             </div>  
             <div id="newMatchAddStats" class="row">
                 <p class="text-danger">*Record the Kill/Deaths from Match</p>
@@ -97,6 +169,9 @@
                         </table>
                     </div>
                 </div>
+            </div>
+            <div class="pt-3 border-top">
+                <input type="submit" value="Submit" class="btn btn-primary">
             </div>
         </div>
         
