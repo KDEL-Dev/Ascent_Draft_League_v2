@@ -85,7 +85,7 @@
                         </select>
                     </div>
 
-                    <div class="pt-3 mt-3 border-top">
+                    <div class="pt-3 my-3 border-top">
                         <button type="submit" class="btn btn-primary">
                             Submit
                         </button>
@@ -94,14 +94,30 @@
 
             </div>
             <div class="row">
-                <div id="newMatchRoster1" class="col-12 col-lg-6">
-
+                <div id="newMatchRoster1" class="col-12 col-lg-6 my-3">
+                    <div class="list-group">
+                        <div class="list-group-item">TEAM 1</div>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn1</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn2</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn3</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn4</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn5</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn6</button>
+                    </div>  
                 </div>
-                <div id="newMatchRoster2" class="col-12 col-lg-6">
-
+                <div id="newMatchRoster2" class="col-12 col-lg-6 my-3">
+                    <div class="list-group">
+                        <div class="list-group-item">TEAM 2</div>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn1</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn2</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn3</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn4</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn5</button>
+                        <button type="button" class="list-group-item list-group-item-action">Pkmn6</button>
+                    </div>
                 </div>
             </div>  
-            <div id="newMatchAddStats" class="row">
+            <div id="newMatchAddStats" class="row my-3">
                 <p class="text-danger">*Record the Kill/Deaths from Match</p>
                 <div class="col-12 col-lg-6 p-3">
                     <div class="table-responsive">
