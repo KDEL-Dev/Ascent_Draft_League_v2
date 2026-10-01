@@ -452,7 +452,7 @@
                                 </div>                    
                             </div>
 
-                            <div id="draftDisplayTeamRoster" class="m-3 p-3 bg-light border border-2 rounded-3 d-flex flex-grow-1 align-items-center flex-column">
+                            <div id="draftDisplayTeamRoster" class="m-3 p-3 bg-light border border-2 rounded-3 d-none d-md-flex flex-grow-1 align-items-center flex-column">
                                 <p class="fs-5">Roster</p>
                                 <div class="w-100 p-3 bg-white border rounded-3 d-flex justify-content-around flex-wrap">
                                     <div class="d-flex flex-column">

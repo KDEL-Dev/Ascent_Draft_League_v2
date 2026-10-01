@@ -18,8 +18,6 @@
     $stmt->bind_param("i",$seasonId);
     $stmt->execute();
 
-    $stmt->execute();
-
     $teamResults = $stmt->get_result();
     $teamList = $teamResults->fetch_all(MYSQLI_ASSOC);
 
@@ -34,7 +32,7 @@
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     
-    <title>New Matchup</title>
+    <title>New Matchup - Ascent</title>
 </head>
 <body class="bg-body-secondary">
 
@@ -51,145 +49,117 @@
     <main class="container p-3">
         <div class="p-3 bg-white">
             <div class="my-3 pb-3 border-bottom">
-                <a href="matchups.php" class="btn btn-primary">Return to Matchups</a>
+                <a href="matchups.php" class="btn btn-secondary">Return to Matchups</a>
             </div>
-            <div class="row">
-                <form method="POST" action="">
-                    <div id="newMatchTeamSelect1" class="col-12 col-lg-6">
-                        <label for="team1" class="form-label">Team 1</label>
+            <!-- TEAM SELECT -->
+            <div id="newMatchTeamSelection" class="row">
+                <div id="newMatchTeamSelect1" class="col-12 col-lg-6">
+                    <label for="team1" class="form-label">Team 1</label>
+                    <select name="team1" id="team1" class="form-select">
+                        <option value="">Select Team 1</option>
 
-                        <select name="team1" id="team1" class="form-select">
-                            <option value="">Select Team 1</option>
+                        <?php foreach ($teamList as $team): ?>
+                            <option value="<?= $team['id'] ?>">
+                                <?= htmlspecialchars($team['default_team_name']) ?>
+                                <?= htmlspecialchars($team['default_team_mascot']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-                            <?php foreach ($teamList as $team): ?>
-                                <option value="<?= $team['id'] ?>">
-                                    <?= htmlspecialchars($team['default_team_name']) ?>
-                                    <?= htmlspecialchars($team['default_team_mascot']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                <div id="newMatchTeamSelect2" class="col-12 col-lg-6">
+                    <label for="team2" class="form-label">Team 2</label>
 
-                    <div id="newMatchTeamSelect2" class="col-12 col-lg-6">
-                        <label for="team2" class="form-label">Team 2</label>
+                    <select name="team2" id="team2" class="form-select">
+                        <option value="">Select Team 2</option>
 
-                        <select name="team2" id="team2" class="form-select">
-                            <option value="">Select Team 2</option>
-
-                            <?php foreach ($teamList as $team): ?>
-                                <option value="<?= $team['id'] ?>">
-                                    <?= htmlspecialchars($team['default_team_name']) ?>
-                                    <?= htmlspecialchars($team['default_team_mascot']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="pt-3 my-3 border-top">
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
-                    </div>
-                </form>
+                        <?php foreach ($teamList as $team): ?>
+                            <option value="<?= $team['id'] ?>">
+                                <?= htmlspecialchars($team['default_team_name']) ?>
+                                <?= htmlspecialchars($team['default_team_mascot']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="pt-3 my-3">
+                    <button type="button" id="selectTeams" class="btn btn-primary">
+                        Select Teams
+                    </button>
+                </div>
 
             </div>
-            <div class="row">
+
+            <!-- POKEMON SELECT -->
+            <div id="newMatchRosterSelection" class="row d-none">
+                
                 <div id="newMatchRoster1" class="col-12 col-lg-6 my-3">
-                    <div class="list-group">
-                        <div class="list-group-item">TEAM 1</div>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn1</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn2</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn3</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn4</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn5</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn6</button>
-                    </div>  
+                    <!-- dynamically added -->
                 </div>
+
                 <div id="newMatchRoster2" class="col-12 col-lg-6 my-3">
-                    <div class="list-group">
-                        <div class="list-group-item">TEAM 2</div>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn1</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn2</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn3</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn4</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn5</button>
-                        <button type="button" class="list-group-item list-group-item-action">Pkmn6</button>
-                    </div>
+                    <!-- dynamically added -->
                 </div>
-            </div>  
-            <div id="newMatchAddStats" class="row my-3">
-                <p class="text-danger">*Record the Kill/Deaths from Match</p>
-                <div class="col-12 col-lg-6 p-3">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Pokemon</th>
-                                    <th>Kills</th>
-                                    <th>Deaths</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Garchomp</td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Muk</td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
+                <div class="col-12 pt-3 border-top d-flex justify-content-between">
+                    <button id="prevBtnRoster" class="btn btn-danger">Prev</button>
+                    <button type="button" id="continueToStats" class="btn btn-primary">
+                        Continue to Stats
+                    </button>
+                </div>
+
+            </div>
+            
+            <!-- ADD STATISTICS -->
+            <div id="newMatchAddStats" class="row my-3 d-none">
+                <div class="col-12">
+                    <h3>Match Statistics</h3>
+                    <p class="text-danger">
+                        *Record the Kills/Deaths from Match
+                    </p>
                 </div>
                 <div class="col-12 col-lg-6 p-3">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Pokemon</th>
-                                    <th>Kills</th>
-                                    <th>Deaths</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Scrafty</td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Clefable</td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" max="6" step="1" value="0">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div id="team1Stats"></div>
                 </div>
+
+                <div class="col-12 col-lg-6 p-3">
+                    <div id="team2Stats"></div>
+                </div>
+
+                <div class="col-12 col-lg-6 my-3">
+                    <label for="matchResult" class="form-label">
+                        Match Winner
+                    </label>
+
+                    <select id="matchResult" class="form-select">
+                        <option value="">Select Winner</option>
+                    </select>
+                </div>
+                <div class="col-12 col-lg-6 my-3">
+                    <label for="matchReplay" class="form-label">
+                        Pokémon Showdown Replay
+                    </label>
+
+                    <input
+                        type="url"
+                        id="matchReplay"
+                        class="form-control"
+                        placeholder="https://replay.pokemonshowdown.com/..."
+                    >
+                </div>
+
+
+
+                <div class="col-12 pt-3 border-top d-flex justify-content-between">
+                    <button id="prevBtnStatistics" class="btn btn-danger">Prev</button>
+                    <button type="button" id="submitMatch" class="btn btn-primary">
+                        Submit Match
+                    </button>
+                </div>
+
             </div>
-            <div class="pt-3 border-top">
-                <input type="submit" value="Submit" class="btn btn-primary">
-            </div>
-        </div>
+
+            
+
         
     </main>
     <script src="../javascript/script.js"></script>

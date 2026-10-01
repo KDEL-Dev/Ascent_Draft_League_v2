@@ -30,6 +30,18 @@ button
     font-family: "jura";
 }
 
+/* Figure out proper way to change primary button color */
+.btn-primary
+{
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+.btn-primary:hover
+{
+    background-color: var(--main-color-hover) !important;
+}
+
 a,
 a:visited {
     color: white;

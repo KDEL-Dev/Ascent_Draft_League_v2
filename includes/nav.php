@@ -20,7 +20,7 @@
                 <a class="nav-link" href="matchups.php">Matchups</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Standings</a>
+                <a class="nav-link" href="standings.php">Standings</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Statistics</a>
@@ -36,6 +36,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="admin.php">Admin Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../index.php">Landing</a>
             </li>
         </ul>
     </div>
