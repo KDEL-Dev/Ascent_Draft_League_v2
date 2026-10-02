@@ -1,6 +1,6 @@
 <?php
-    error_reporting(E_ALL);
-    ini_set('display_errors',1);
+    // error_reporting(E_ALL);
+    // ini_set('display_errors',1);
 
     require_once __DIR__ . '/../includes/connection.php';
 
@@ -56,6 +56,50 @@
         ];
     }
 
+    // Group each team's Pokémon into OU, UU, RU, and NU
+    $tierGroups = 
+    [
+        'OU' => ['OU', 'UUBL'],
+        'UU' => ['UU', 'RUBL'],
+        'RU' => ['RU', 'NUBL'],
+        'NU' => ['NU', 'PUBL', 'PU', 'ZUBL', 'ZU']
+    ];
+
+    foreach ($rosters as &$roster) {
+
+        $groupedPokemon = 
+        [
+            'OU' => [],
+            'UU' => [],
+            'RU' => [],
+            'NU' => []
+        ];
+
+        foreach ($roster['pokemon'] as $pokemon) {
+
+            foreach ($tierGroups as $group => $tiers) {
+
+                if (in_array($pokemon['tier'], $tiers)) {
+                    $groupedPokemon[$group][] = $pokemon;
+                    break;
+                }
+            }
+        }
+
+        // Sort Pokémon alphabetically within each tier
+        foreach ($groupedPokemon as &$pokemonGroup) {
+            usort($pokemonGroup, function ($a, $b) {
+                return strcasecmp($a['name'], $b['name']);
+            });
+        }
+        unset($pokemonGroup);
+
+        // Replace the original Pokémon array with the grouped version
+        $roster['pokemon'] = $groupedPokemon;
+    }
+
+    unset($roster);
+
 
 
 ?>
@@ -102,21 +146,29 @@
 
                         <ul class="list-group list-group-flush">
 
-                            <?php foreach ($roster['pokemon'] as $pokemon): ?>
+                            <?php foreach ($roster['pokemon'] as $tier => $pokemonGroup): ?>
 
-                                <li class="list-group-item">
-                                    <div class="rosterCardTier">
-                                        <p><?php echo htmlspecialchars($pokemon['tier']); ?></p>
-                                    </div>
+                                <?php foreach ($pokemonGroup as $pokemon): ?>
 
-                                    <div class="rosterCardPkmn">
-                                        <p><?php echo htmlspecialchars($pokemon['name']); ?></p>
-                                    </div>
-                                </li>
+                                    <li class="list-group-item rosterPokemon">
+
+                                        <div class="rosterCardTier">
+                                            <?= htmlspecialchars($tier) ?>
+                                        </div>
+
+                                        <div class="rosterCardPkmn">
+                                            <?= htmlspecialchars($pokemon['name']) ?>
+                                        </div>
+
+                                    </li>
+
+                                <?php endforeach; ?>
 
                             <?php endforeach; ?>
 
                         </ul>
+
+
 
                     </div>
 

@@ -65,16 +65,24 @@
 
     // POKEMON LEADERBOARD
 
-    $pkmnLeaderSql = "SELECT showdown_pokemon.name,
+    $pkmnLeaderSql = "SELECT showdown_pokemon.name, pokemon_tier_per_season.tier,
                    SUM(match_stats.kills) AS total_kills,
-                   SUM(match_stats.deaths) AS total_deaths
+                   SUM(match_stats.deaths) AS total_deaths,
+                   users.default_team_name
                    FROM match_stats
                    JOIN roster_pkmn
                     ON roster_pkmn.id = match_stats.roster_pkmn_id
                    JOIN showdown_pokemon
                     ON showdown_pokemon.id = roster_pkmn.showdown_pokemon_id
+                    JOIN active_users
+                    ON roster_pkmn.active_user_id = active_users.id
+                    JOIN users
+                    ON users.id = active_users.user_id
+                    JOIN pokemon_tier_per_season
+                    ON pokemon_tier_per_season.showdown_pokemon_id = roster_pkmn.showdown_pokemon_id
+              
                    WHERE roster_pkmn.season_id = ?
-                   GROUP BY showdown_pokemon.id, showdown_pokemon.name
+                   GROUP BY showdown_pokemon.id, showdown_pokemon.name, pokemon_tier_per_season.tier, users.default_team_name
                    ORDER BY total_kills DESC, total_deaths ASC
                    LIMIT 5;
                 ";
@@ -118,7 +126,7 @@
             <h1 class="border-bottom">Standings</h1>
             <div class="col-12 col-lg-6">
                 <h2>Regular Season</h2>
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -153,19 +161,38 @@
 
                 </table>
             </div>
-            <div class="col-12 col-lg-6">
+            <div id="killLeaderCont" class="col-12 col-lg-6">
                 <h2>Pokemon Kill Leaders</h2>
                 <div class="card-group">
                     <!-- For every item, create a new card -->
                      <?php foreach ($pkmnLeader as $index => $pkmn): ?> <!-- colon is important for some reason - look into -->
                     <div class="card d-sm-flex flex-row d-md-block">
+                        
+                        <?php
+                            $rankClass = match ($index) {
+                                0 => 'rank-gold',
+                                1 => 'rank-silver',
+                                2 => 'rank-bronze',
+                                3, 4 => 'rank-grey',
+                                default => '',
+                            };
+                        ?>
+                        <div class="card-header <?= $rankClass ?>">
+                            <p class="mb-0 text-center text-white fw-bold"><?= $index + 1 ?></p>
+                        </div>
                         <div class="pkmnLeaderImgCont">
                             <img src="" alt="" data-pkmn-name="<?= htmlspecialchars($pkmn['name']) ?>" class="pkmnLeaderImg">
                         </div>
                         <div class="card-body">
-                            <p class="card-title"><?= htmlspecialchars($pkmn['name']) ?></p>
+                            <div class="d-flex">
+                                <p class="card-title"><?= htmlspecialchars($pkmn['name']) ?></p>
+                                <p class="card-text"><?= htmlspecialchars($pkmn['tier']) ?></p>
+                            </div>
                             <p class="card-text">Kills: <span><?= htmlspecialchars($pkmn['total_kills']) ?></span></p>
                             <p class="card-text">Deaths: <span><?= htmlspecialchars($pkmn['total_deaths']) ?></span></p>
+                        </div>
+                        <div class="card-footer">
+                            <p class="card-text text-center"><?= htmlspecialchars($pkmn['default_team_name']) ?></p>
                         </div>
                     </div>
                     <?php endforeach; ?>

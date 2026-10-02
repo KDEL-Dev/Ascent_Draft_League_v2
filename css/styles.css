@@ -627,7 +627,6 @@ li
     padding-left: 8px;
     flex: 1;
 
-    font-weight: bold;
 }
 
 
@@ -646,4 +645,27 @@ li
     height: 100%;
     object-fit: contain;
     padding: 8px;
+}
+
+#killLeaderCont .card-group .card-footer
+{
+    background-color: var(--main-color);
+    color: white;
+    font-weight: 700;
+}
+
+#killLeaderCont .card-group .card-header.rank-gold {
+    background-color: #ffd700;
+}
+
+#killLeaderCont .card-group .card-header.rank-silver {
+    background-color: #c0c0c0;
+}
+
+#killLeaderCont .card-group .card-header.rank-bronze {
+    background-color: #cd7f32;
+}
+
+#killLeaderCont .card-group .card-header.rank-grey {
+    background-color: #808080;
 }
