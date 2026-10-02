@@ -1166,75 +1166,82 @@ let team2Name = '';
 let team2Mascot = '';
 
 
-document.getElementById('selectTeams').addEventListener('click', function () {
+const selectTeams = document.getElementById('selectTeams');
 
-    team1Id = document.getElementById('team1').value;
-    team2Id = document.getElementById('team2').value;
+if(selectTeams)
+{
 
 
-    if (!team1Id || !team2Id) {
-        alert('Please select both teams.');
-        return;
-    }
+    selectTeams.addEventListener('click', function () {
 
-    if (team1Id === team2Id) {
-        alert('Please select two different teams.');
-        return;
-    }
+        team1Id = document.getElementById('team1').value;
+        team2Id = document.getElementById('team2').value;
 
-    fetch(
-        '../api/matchup/get_matchup_roster.php' +
-        '?team1_id=' + encodeURIComponent(team1Id) +
-        '&team2_id=' + encodeURIComponent(team2Id)
-    )
-    .then(response => response.json())
-    .then(data => {
 
-        if (!data.success) {
-            alert(data.message);
+        if (!team1Id || !team2Id) {
+            alert('Please select both teams.');
             return;
         }
 
-          // Save team information for later
-        team1Name = data.team1_name;
-        team1Mascot = data.team1_mascot;
+        if (team1Id === team2Id) {
+            alert('Please select two different teams.');
+            return;
+        }
 
-        team2Name = data.team2_name;
-        team2Mascot = data.team2_mascot;
+        fetch(
+            '../api/matchup/get_matchup_roster.php' +
+            '?team1_id=' + encodeURIComponent(team1Id) +
+            '&team2_id=' + encodeURIComponent(team2Id)
+        )
+        .then(response => response.json())
+        .then(data => {
+
+            if (!data.success) {
+                alert(data.message);
+                return;
+            }
+
+            // Save team information for later
+            team1Name = data.team1_name;
+            team1Mascot = data.team1_mascot;
+
+            team2Name = data.team2_name;
+            team2Mascot = data.team2_mascot;
 
 
-        displayRoster(
-            data.team1_roster,
-            document.getElementById('newMatchRoster1'),
-            team1Name,
-            team1Mascot
-        );
+            displayRoster(
+                data.team1_roster,
+                document.getElementById('newMatchRoster1'),
+                team1Name,
+                team1Mascot
+            );
 
-        displayRoster(
-            data.team2_roster,
-            document.getElementById('newMatchRoster2'),
-            team2Name,
-            team2Mascot
-        );
+            displayRoster(
+                data.team2_roster,
+                document.getElementById('newMatchRoster2'),
+                team2Name,
+                team2Mascot
+            );
 
 
-        // Hide team selection
-        document
-            .getElementById('newMatchTeamSelection')
-            .classList.add('d-none');
+            // Hide team selection
+            document
+                .getElementById('newMatchTeamSelection')
+                .classList.add('d-none');
 
-        // Show rosters
-        document
-            .getElementById('newMatchRosterSelection')
-            .classList.remove('d-none');
+            // Show rosters
+            document
+                .getElementById('newMatchRosterSelection')
+                .classList.remove('d-none');
 
-    })
-    .catch(error => {
-        console.error(error);
-        alert('Failed to load rosters.');
+        })
+        .catch(error => {
+            console.error(error);
+            alert('Failed to load rosters.');
+        });
+
     });
-
-});
+}
 
 
 function displayRoster(roster, container, teamName, teamMascot) {
@@ -1309,72 +1316,76 @@ function displayRoster(roster, container, teamName, teamMascot) {
 }
 
 
+const continueToStats = document.getElementById('continueToStats');
+
+if(continueToStats)
+{
 
 
-document.getElementById('continueToStats').addEventListener('click', function () {
+    continueToStats.addEventListener('click', function () {
 
-    const roster1 = document.getElementById('newMatchRoster1');
-    const roster2 = document.getElementById('newMatchRoster2');
+        const roster1 = document.getElementById('newMatchRoster1');
+        const roster2 = document.getElementById('newMatchRoster2');
 
-    const selected1 =
-        roster1.querySelectorAll('.pokemon-selected');
+        const selected1 =
+            roster1.querySelectorAll('.pokemon-selected');
 
-    const selected2 =
-        roster2.querySelectorAll('.pokemon-selected');
-
-
-    // Make sure both teams selected at least one
-    if (selected1.length === 0 || selected2.length === 0) {
-        alert('Please select at least one Pokémon from each team.');
-        return;
-    }
+        const selected2 =
+            roster2.querySelectorAll('.pokemon-selected');
 
 
-    // Build stats tables
-    displayStatsTable(
-        roster1,
-        document.getElementById('team1Stats'),
-        team1Name,
-        team1Mascot
-    );
-
-    displayStatsTable(
-        roster2,
-        document.getElementById('team2Stats'),
-        team2Name,
-        team2Mascot
-    );
+        // Make sure both teams selected at least one
+        if (selected1.length === 0 || selected2.length === 0) {
+            alert('Please select at least one Pokémon from each team.');
+            return;
+        }
 
 
-    // Populate winner dropdown
-    const matchResult = document.getElementById('matchResult');
+        // Build stats tables
+        displayStatsTable(
+            roster1,
+            document.getElementById('team1Stats'),
+            team1Name,
+            team1Mascot
+        );
 
-    matchResult.innerHTML = `
-        <option value="">Select Winner</option>
-
-        <option value="${team1Id}">
-            ${team1Name} ${team1Mascot}
-        </option>
-
-        <option value="${team2Id}">
-            ${team2Name} ${team2Mascot}
-        </option>
-    `;
-
-
-    // Hide roster selection
-    document
-        .getElementById('newMatchRosterSelection')
-        .classList.add('d-none');
+        displayStatsTable(
+            roster2,
+            document.getElementById('team2Stats'),
+            team2Name,
+            team2Mascot
+        );
 
 
-    // Show stats
-    document
-        .getElementById('newMatchAddStats')
-        .classList.remove('d-none');
+        // Populate winner dropdown
+        const matchResult = document.getElementById('matchResult');
 
-});
+        matchResult.innerHTML = `
+            <option value="">Select Winner</option>
 
+            <option value="${team1Id}">
+                ${team1Name} ${team1Mascot}
+            </option>
+
+            <option value="${team2Id}">
+                ${team2Name} ${team2Mascot}
+            </option>
+        `;
+
+
+        // Hide roster selection
+        document
+            .getElementById('newMatchRosterSelection')
+            .classList.add('d-none');
+
+
+        // Show stats
+        document
+            .getElementById('newMatchAddStats')
+            .classList.remove('d-none');
+
+    });
+}
 
 
 
@@ -1468,148 +1479,155 @@ function displayStatsTable(
 
 // STAT COLLECTION
 
-document.getElementById('submitMatch').addEventListener('click', function () {
+const submitMatch = document.getElementById('submitMatch');
 
-    const matchData = {
-        season_id: 1,
-
-        player1_au_id: team1Id,
-        player2_au_id: team2Id,
-
-        match_result: document.getElementById('matchResult').value,
-        match_replay: document.getElementById('matchReplay').value.trim(),
-
-        team1_pokemon: [],
-        team2_pokemon: []
-    };
-
-    if (!matchData.match_result) {
-        alert('Please select the match winner.');
-        return;
-    }
-
-    if (!matchData.match_replay) {
-        alert('Please enter the Pokémon Showdown replay link.');
-        return;
-    }
-
-    if (!isValidShowdownReplay(matchData.match_replay)) {
-        alert('Please enter a valid Pokémon Showdown replay link.');
-        return;
-    }
+if(submitMatch)
+{
 
 
-    // TEAM 1
-    document
-        .querySelectorAll('#team1Stats .pokemon-kills')
-        .forEach(killsInput => {
+    submitMatch.addEventListener('click', function () {
 
-            const rosterPokemonId =
-                killsInput.dataset.rosterPokemonId;
+        const matchData = {
+            season_id: 1,
 
-            const deathsInput =
-                document.querySelector(
-                    `#team1Stats .pokemon-deaths[data-roster-pokemon-id="${rosterPokemonId}"]`
-                );
+            player1_au_id: team1Id,
+            player2_au_id: team2Id,
 
-            matchData.team1_pokemon.push({
-                roster_pkmn_id: rosterPokemonId,
-                kills: parseInt(killsInput.value) || 0,
-                deaths: parseInt(deathsInput.value) || 0
-            });
-        });
+            match_result: document.getElementById('matchResult').value,
+            match_replay: document.getElementById('matchReplay').value.trim(),
 
+            team1_pokemon: [],
+            team2_pokemon: []
+        };
 
-    // TEAM 2
-    document
-        .querySelectorAll('#team2Stats .pokemon-kills')
-        .forEach(killsInput => {
-
-            const rosterPokemonId =
-                killsInput.dataset.rosterPokemonId;
-
-            const deathsInput =
-                document.querySelector(
-                    `#team2Stats .pokemon-deaths[data-roster-pokemon-id="${rosterPokemonId}"]`
-                );
-
-            matchData.team2_pokemon.push({
-                roster_pkmn_id: rosterPokemonId,
-                kills: parseInt(killsInput.value) || 0,
-                deaths: parseInt(deathsInput.value) || 0
-            });
-        });
-
-
-
-    // VALIDATE TEAM KILLS / DEATHS
-
-    const team1Kills = matchData.team1_pokemon.reduce(
-        (total, pokemon) => total + pokemon.kills,
-        0
-    );
-
-    const team1Deaths = matchData.team1_pokemon.reduce(
-        (total, pokemon) => total + pokemon.deaths,
-        0
-    );
-
-    const team2Kills = matchData.team2_pokemon.reduce(
-        (total, pokemon) => total + pokemon.kills,
-        0
-    );
-
-    const team2Deaths = matchData.team2_pokemon.reduce(
-        (total, pokemon) => total + pokemon.deaths,
-        0
-    );
-
-
-    if (team1Kills !== team2Deaths) {
-        alert(
-            `Team 1 has ${team1Kills} kills, but Team 2 has ${team2Deaths} deaths.`
-        );
-        return;
-    }
-
-    if (team2Kills !== team1Deaths) {
-        alert(
-            `Team 2 has ${team2Kills} kills, but Team 1 has ${team1Deaths} deaths.`
-        );
-        return;
-    }
-
-
-
-    fetch('../api/matchup/submit_matchup.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(matchData)
-    })
-    .then(response => response.json())
-    .then(data => {
-
-        if (!data.success) {
-            alert(data.message);
+        if (!matchData.match_result) {
+            alert('Please select the match winner.');
             return;
         }
 
-        alert('Match saved successfully!');
+        if (!matchData.match_replay) {
+            alert('Please enter the Pokémon Showdown replay link.');
+            return;
+        }
 
-        window.location.href = 'matchups.php';
+        if (!isValidShowdownReplay(matchData.match_replay)) {
+            alert('Please enter a valid Pokémon Showdown replay link.');
+            return;
+        }
 
-    })
-    .catch(error => {
 
-        console.error(error);
+        // TEAM 1
+        document
+            .querySelectorAll('#team1Stats .pokemon-kills')
+            .forEach(killsInput => {
 
-        alert('Failed to save match.');
+                const rosterPokemonId =
+                    killsInput.dataset.rosterPokemonId;
+
+                const deathsInput =
+                    document.querySelector(
+                        `#team1Stats .pokemon-deaths[data-roster-pokemon-id="${rosterPokemonId}"]`
+                    );
+
+                matchData.team1_pokemon.push({
+                    roster_pkmn_id: rosterPokemonId,
+                    kills: parseInt(killsInput.value) || 0,
+                    deaths: parseInt(deathsInput.value) || 0
+                });
+            });
+
+
+        // TEAM 2
+        document
+            .querySelectorAll('#team2Stats .pokemon-kills')
+            .forEach(killsInput => {
+
+                const rosterPokemonId =
+                    killsInput.dataset.rosterPokemonId;
+
+                const deathsInput =
+                    document.querySelector(
+                        `#team2Stats .pokemon-deaths[data-roster-pokemon-id="${rosterPokemonId}"]`
+                    );
+
+                matchData.team2_pokemon.push({
+                    roster_pkmn_id: rosterPokemonId,
+                    kills: parseInt(killsInput.value) || 0,
+                    deaths: parseInt(deathsInput.value) || 0
+                });
+            });
+
+
+
+        // VALIDATE TEAM KILLS / DEATHS
+
+        const team1Kills = matchData.team1_pokemon.reduce(
+            (total, pokemon) => total + pokemon.kills,
+            0
+        );
+
+        const team1Deaths = matchData.team1_pokemon.reduce(
+            (total, pokemon) => total + pokemon.deaths,
+            0
+        );
+
+        const team2Kills = matchData.team2_pokemon.reduce(
+            (total, pokemon) => total + pokemon.kills,
+            0
+        );
+
+        const team2Deaths = matchData.team2_pokemon.reduce(
+            (total, pokemon) => total + pokemon.deaths,
+            0
+        );
+
+
+        if (team1Kills !== team2Deaths) {
+            alert(
+                `Team 1 has ${team1Kills} kills, but Team 2 has ${team2Deaths} deaths.`
+            );
+            return;
+        }
+
+        if (team2Kills !== team1Deaths) {
+            alert(
+                `Team 2 has ${team2Kills} kills, but Team 1 has ${team1Deaths} deaths.`
+            );
+            return;
+        }
+
+
+
+        fetch('../api/matchup/submit_matchup.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(matchData)
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            if (!data.success) {
+                alert(data.message);
+                return;
+            }
+
+            alert('Match saved successfully!');
+
+            window.location.href = 'matchups.php';
+
+        })
+        .catch(error => {
+
+            console.error(error);
+
+            alert('Failed to save match.');
+
+        });
 
     });
-
-});
+}
 
 function isValidShowdownReplay(url) {
 
@@ -1626,7 +1644,6 @@ function isValidShowdownReplay(url) {
         return false;
     }
 }
-
 
 // BACK BUTTONS
 let prevBtnRoster = document.getElementById("prevBtnRoster");
@@ -1646,6 +1663,31 @@ if (prevBtnStatistics) {
     });
 }
 
+
+
+// --------------------------------
+// --------- STANDINGS ------------
+// --------------------------------
+
+function loadPokemonLeaderImages()
+{
+    const images = document.querySelectorAll('.pkmnLeaderImg');
+
+    images.forEach(image => {
+
+        const pokemonName = image.dataset.pkmnName;
+
+        const cleanName = pokemonName.toLowerCase();
+
+        image.src =
+            `https://img.pokemondb.net/artwork/large/${cleanName}.jpg`;
+
+        image.alt = pokemonName;
+
+    });
+}
+
+loadPokemonLeaderImages();
 
 
 // -------------------------------------------------
