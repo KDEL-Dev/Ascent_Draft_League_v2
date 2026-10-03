@@ -26,21 +26,26 @@
     </nav>
 
     <main class="p-3 container">
-        <h1>Admin Settings</h1>
-        <div id="admin_settings_cont" class="d-flex">
+        <div class="row p-3 bg-white">
+            <h1>Admin Settings</h1>
+            <div id="admin_settings_cont" class="d-flex">
+                
+                <div class="mx-3 p-3 border">
 
-            <div class="mx-3 p-3 border">
-                <h2>Draft Settings</h2>
+                    <h2>Draft Settings</h2>
 
-                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex flex-column gap-2">
 
-                    <form action="../api/admin_settings/reset_draft.php" method="POST"
-                        onsubmit="return confirm('Reset the draft?');">
-                        <!-- <input type="hidden" name="season_id" value="1"> -->
-                        <button type="submit">Reset Draft</button>
-                    </form>
+                        <form action="../api/admin_settings/reset_draft.php" method="POST"
+                            onsubmit="return confirm('Reset the draft?');">
+                            <!-- <input type="hidden" name="season_id" value="1"> -->
+                            <button type="submit">Reset Draft</button>
+                        </form>
+
+                    </div>
                 </div>
             </div>
+        </div>
     </main>
 
     <script src="../javascript/script.js"></script>

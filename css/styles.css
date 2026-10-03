@@ -622,6 +622,24 @@ li
     border-right: solid rgba(0, 0, 0, 0.2) 1px;
 }
 
+/* TIER COLORS */
+.rosterCardTier.tier-ou {
+    color: red;
+}
+
+.rosterCardTier.tier-uu {
+    color: blue;
+}
+
+.rosterCardTier.tier-ru {
+    color: green;
+}
+
+.rosterCardTier.tier-nu {
+    color: purple;
+}
+
+
 .rosterCardPkmn
 {
     padding-left: 8px;
