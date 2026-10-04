@@ -34,59 +34,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     
-    <title>Ascent Draft League</title>
+    <title>Hub - Ascent Draft League</title>
 </head>
-<body class="min-vh-100 d-flex flex-column justify-content-between">
-    <header class="border-bottom">
-        <div>
-            <img src="img/Ascent Horizontal Text.svg" alt="ascent main logo" class="">
+<body class="bg-body-secondary">
+   <nav class="px-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <button 
+            type="button" data-bs-toggle = "collapse" data-bs-target="#navbarSupportedContentHome" 
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" 
+            class="navbar-toggler"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarSupportedContentHome" class="collapse navbar-collapse">
+            <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-evenly" >
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Home</a>
+                </li>
+                <li class="nav-item" href="#">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item" href="#">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout.php">Logout</a>
+                </li>
+            </ul>
         </div>
-        <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="/">Ascent Logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Profile</a>                        
-                    </li>
-                    <li>
-                        <a class="nav-link" href="#">Settings</a>                        
-                    </li>
-                    <li>
-                        <a class="nav-link" href="logout.php">Log Out</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <main class="container p-3">
-        <div class="row">
-            <div class="col-12">
-                <p>Welcome,<b><?= htmlspecialchars($teamName) ?></b></p>        
-            </div>
-            <div class="col-12">
-                <h2>Current Season</h2>
-                <button><a href="season/draft.php">Season-Test</a></button>
-            </div>
-            <div class="col-12">
-                <h2>Statistics</h2>
-                <button>Go to Stats</button>
-            </div>
-            <div class="col-12">
-                <h2>Previous Seasons</h2>
-                
+   </nav>
+   <main class="container my-3 p-3 bg-white">
+        <h1>Ascent Draft League</h1>
+        <!-- Current Season -->
+        <div id="currentSeasonCont" class="row p-3">
+            <div class="card col-12 px-0">
+                <div class="row g-0">
+                    <div class="col-lg-3 d-flex align-items-center">
+                        <img src="img/Ascent Horizontal Text.svg" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="card-title">Season: Placeholder</p>
+                            <p class="card-text">Format:</p>
+                            <p class="card-text">Season Start:</p>
+                            <a class="btn btn-primary" href="season/draft.php">Enter</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
-    <footer class="container">
-        <!-- Footer Content -->
-         <p>Ascent Draft League</p>
-    </footer>
+        <!-- Previous Seasons -->
+        <div id="previousSeasonCont" class="border m-3 p-3">
+            <p>previous seasons</p>
+            <a class="btn btn-primary" href="#">Enter</a>
+        </div>
+        <!-- Legacy Stats -->
+         <div id="statisticsCont" class="border m-3 p-3">
+            <p>statistics</p>
+            <a class="btn btn-primary" href="#">Enter</a>
+         </div>
+   </main>
+   <footer>
+
+   </footer>
+</body>
     <script src="javascript/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
