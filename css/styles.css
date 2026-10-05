@@ -54,7 +54,34 @@ li
     list-style: none;
 }
 
+/* ------ TIER BADGES ------ */
 
+.tierBadge-OU,
+.tierBadge-UUBL
+{
+    background-color: rgb(117, 35, 35);
+}
+
+.tierBadge-UU,
+.tierBadge-RUBL
+{
+    background-color: rgb(151, 109, 29)
+}
+
+.tierBadge-RU,
+.tierBadge-NUBL
+{
+    background-color: rgb(155, 155, 20);
+}
+
+.tierBadge-NU,
+.tierBadge-PUBL,
+.tierBadge-PU,
+.tierBadge-ZUBL,
+.tierBadge-ZU
+{
+    background-color: rgb(27, 133, 27);
+}
 
 /* custom */
 
@@ -655,6 +682,8 @@ li
 {
     height: 150px;
     width: 100%;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.20);
 }
 
 .pkmnLeaderImg

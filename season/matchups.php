@@ -21,7 +21,7 @@
             JOIN showdown_pokemon
             ON roster_pkmn.showdown_pokemon_id = showdown_pokemon.id
             WHERE roster_pkmn.season_id = ?
-            ORDER BY `match_stats`.`matchup_id` ASC
+            ORDER BY `match_stats`.`matchup_id` DESC
     ";
 
     $stmt = $conn->prepare($sql);
@@ -152,9 +152,6 @@
                                     </div>
                                 </div>
 
-                                <div>
-                                    <h2 class="mb-0 text-center"><?=  htmlspecialchars($team2) ?> <?= htmlspecialchars($team2Mascot) ?></h2>
-                                </div>
                                 <div class="table-responsive">
                                     <table class="table mb-0 table-bordered">  
                                         <thead>
@@ -174,6 +171,9 @@
                                             <?php endforeach ?>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div>
+                                    <h2 class="mb-0 text-center"><?=  htmlspecialchars($team2) ?> <?= htmlspecialchars($team2Mascot) ?></h2>
                                 </div>
                             </div>
                         </div>

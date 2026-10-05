@@ -167,7 +167,7 @@
                                         <?php foreach ($pokemonGroup as $pokemon): ?>
 
                                             <tr>
-                                                <td><?= htmlspecialchars($pokemon['name']) ?> <span class="badge text-black"><?= htmlspecialchars($pokemon['tier']) ?></span></td>
+                                                <td><?= htmlspecialchars($pokemon['name']) ?> <span class="tierBadge-<?= htmlspecialchars($pokemon['tier']) ?> badge rounded-5"><?= htmlspecialchars($pokemon['tier']) ?></span></td>
                                                 <td><?= $pokemon['kills'] ?></td>
                                                 <td><?= $pokemon['deaths'] ?></td>
                                                 <td><?= $pokemon['usage'] ?></td>

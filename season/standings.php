@@ -124,7 +124,7 @@
     <main class="container p-3">
         <div class="row p-3 bg-white">
             <h1 class="border-bottom">Standings</h1>
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-5">
                 <h2>Regular Season</h2>
                 <table class="table table-hover">
                     <thead>
@@ -146,11 +146,11 @@
                                     <?= htmlspecialchars($team['default_team_mascot']) ?>
                                 </td>
 
-                                <td>
+                                <td class="fs-5">
                                     <?= $team['wins'] ?>
                                 </td>
 
-                                <td>
+                                <td class="fs-5">
                                     <?= $team['losses'] ?>
                                 </td>
                             </tr>
@@ -161,7 +161,7 @@
 
                 </table>
             </div>
-            <div id="killLeaderCont" class="col-12 col-lg-6">
+            <div id="killLeaderCont" class="col-12 col-lg-7">
                 <h2>Pokemon Kill Leaders</h2>
                 <div class="card-group">
                     <!-- For every item, create a new card -->
@@ -185,11 +185,11 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex">
-                                <p class="card-title"><?= htmlspecialchars($pkmn['name']) ?></p>
-                                <p class="card-text"><?= htmlspecialchars($pkmn['tier']) ?></p>
+                                <p class="card-title mb-0"><?= htmlspecialchars($pkmn['name']) ?></p>
+                                <p class="tierBadge-<?= htmlspecialchars($pkmn['tier']) ?> ms-1 mb-0 badge rounded-5"><?= htmlspecialchars($pkmn['tier']) ?></p>
                             </div>
-                            <p class="card-text">Kills: <span><?= htmlspecialchars($pkmn['total_kills']) ?></span></p>
-                            <p class="card-text">Deaths: <span><?= htmlspecialchars($pkmn['total_deaths']) ?></span></p>
+                            <p class="card-text mb-0">Kills: <span class="fw-bold fs-5"><?= htmlspecialchars($pkmn['total_kills']) ?></span></p>
+                            <p class="card-text">Deaths: <span class="fw-bold fs-5"><?= htmlspecialchars($pkmn['total_deaths']) ?></span></p>
                         </div>
                         <div class="card-footer">
                             <p class="card-text text-center"><?= htmlspecialchars($pkmn['default_team_name']) ?></p>

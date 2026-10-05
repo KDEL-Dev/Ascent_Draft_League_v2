@@ -81,7 +81,7 @@
                                 <?= htmlspecialchars($pick['name']) ?>
                             </div>
 
-                            <div>
+                            <div class="tierBadge-<?= htmlspecialchars($pick['tier']) ?> mb-0 badge rounded-5 d-flex align-items-center">
                                 <?= htmlspecialchars($pick['tier']) ?>
                             </div>
 
