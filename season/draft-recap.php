@@ -72,20 +72,20 @@
                 <h2>Round <?= htmlspecialchars($roundNumber) ?></h2>
                 <?php foreach ($picks as $pick): ?>
                     <ul class="ps-0 list-group">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <div>
+                        <li class="list-group-item d-flex">
+                            <div class="recapPickNum">
                                 <?= htmlspecialchars($pick['pick_number']) ?>
                             </div>
 
-                            <div>
+                            <div class="ps-3 fw-bold">
                                 <?= htmlspecialchars($pick['name']) ?>
                             </div>
 
-                            <div class="tierBadge-<?= htmlspecialchars($pick['tier']) ?> mb-0 badge rounded-5 d-flex align-items-center">
+                            <div class="tierBadge-<?= htmlspecialchars($pick['tier']) ?> mb-0 ms-2 badge rounded-5 d-flex align-items-center">
                                 <?= htmlspecialchars($pick['tier']) ?>
                             </div>
 
-                            <div>
+                            <div class="fw-bold flex-grow-1 d-flex justify-content-end">
                                 <?= htmlspecialchars($pick['default_team_name']) ?>
                             </div>
                         </li>

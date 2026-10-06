@@ -149,14 +149,14 @@
                 <div class="col-12 col-lg-6">
                     <div class="p-3 bg-light">
                         <h2><?= htmlspecialchars($teamName) ?></h2>
-                        <table class="table table-sm table-bordered">
+                        <table class="statsTable table table-sm table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Pokemon</th>
-                                    <th scope="col">Kills</th>
-                                    <th scope="col">Deaths</th>
-                                    <th scope="col">Usage</th>
-                                    <th scope="col">+/-</th>
+                                    <th scope="col" style="width:12%">Kills</th>
+                                    <th scope="col" style="width:12%">Deaths</th>
+                                    <th scope="col" style="width:12%">Usage</th>
+                                    <th scope="col" style="width:12%">+/-</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">

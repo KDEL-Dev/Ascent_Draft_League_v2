@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    <title>Admin</title>
+    <title>Season Setting - Ascent</title>
 </head>
 <body class="bg-body-secondary">
 
@@ -27,7 +27,7 @@
 
     <main class="p-3 container">
         <div class="row p-3 bg-white">
-            <h1>Admin Settings</h1>
+            <h1>Season Settings</h1>
             <div id="admin_settings_cont" class="d-flex">
                 
                 <div class="mx-3 p-3 border">

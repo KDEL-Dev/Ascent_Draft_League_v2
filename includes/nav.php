@@ -35,7 +35,7 @@
                 <a class="nav-link" href="profile.php">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="admin.php">Admin Settings</a>
+                <a class="nav-link" href="admin.php">Season Settings</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="../index.php">Landing</a>
