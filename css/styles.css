@@ -740,8 +740,15 @@ li
 ----------------------------- DRAFT RECAP PAGE -------------------------------
 ------------------------------------------------------------------------*/
 
+#draftRecapList li
+{
+    background-color: var(--nav-color);
+    color: white;
+}
+
+
+
 .recapPickNum
 {
     width: 30px;
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
 }
