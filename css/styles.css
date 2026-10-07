@@ -15,6 +15,12 @@
     --nav-color: rgb(48, 48, 48);
 
     --pkmn-red: rgb(131, 18, 18);
+
+    /* TIERS */
+    --ou-tier-color: rgb(117, 35, 35);
+    --uu-tier-color: rgb(151, 109, 29);
+    --ru-tier-color: rgb(155, 155, 20);
+    --nu-tier-color: rgb(27, 133, 27);
 }
 
 
@@ -59,19 +65,19 @@ li
 .tierBadge-OU,
 .tierBadge-UUBL
 {
-    background-color: rgb(117, 35, 35);
+    background-color: var(--ou-tier-color)
 }
 
 .tierBadge-UU,
 .tierBadge-RUBL
 {
-    background-color: rgb(151, 109, 29)
+    background-color: var(--uu-tier-color)
 }
 
 .tierBadge-RU,
 .tierBadge-NUBL
 {
-    background-color: rgb(155, 155, 20);
+    background-color: var(--ru-tier-color);
 }
 
 .tierBadge-NU,
@@ -80,7 +86,7 @@ li
 .tierBadge-ZUBL,
 .tierBadge-ZU
 {
-    background-color: rgb(27, 133, 27);
+    background-color: var(--nu-tier-color);
 }
 
 /* custom */
@@ -650,20 +656,40 @@ li
 }
 
 /* TIER COLORS */
-.rosterCardTier.tier-ou {
-    color: red;
+.rosterCardTier.tier-ou 
+{
+    color: white;
+    background-color: var(--ou-tier-color);
+
+    font-weight: 700;
+    font-family: "electrolize";
 }
 
-.rosterCardTier.tier-uu {
-    color: blue;
+.rosterCardTier.tier-uu 
+{
+    color: white;
+    background-color: var(--uu-tier-color);
+
+    font-weight: 700;
+    font-family: "electrolize";
 }
 
-.rosterCardTier.tier-ru {
-    color: green;
+.rosterCardTier.tier-ru 
+{
+    color: white;
+    background-color: var(--ru-tier-color);
+
+    font-weight: 700;
+    font-family: "electrolize";
 }
 
-.rosterCardTier.tier-nu {
-    color: purple;
+.rosterCardTier.tier-nu 
+{
+    color: white;
+    background-color: var(--nu-tier-color);
+
+    font-weight: 700;
+    font-family: "electrolize";
 }
 
 
@@ -672,12 +698,22 @@ li
     padding-left: 8px;
     flex: 1;
 
+    font-weight: 700;
+
 }
 
 
 /* -----------------------------------------------------------------------
 ----------------------------- STANDINGS PAGE --------------------------------
 -------------------------------------------------------------------------*/
+#standingsTable th
+{
+    background-color: var(--main-color);
+    color: white;
+}
+
+
+
 .pkmnLeaderImgCont
 {
     height: 150px;
@@ -694,11 +730,10 @@ li
     padding: 8px;
 }
 
-#killLeaderCont .card-group .card-footer
+#killLeaderCont .card-header p
 {
-    background-color: var(--main-color);
-    color: white;
-    font-weight: 700;
+    font-family: 'electrolize';
+    font-size: 20px;
 }
 
 #killLeaderCont .card-group .card-header.rank-gold {
@@ -722,10 +757,27 @@ li
 ----------------------------- MATCHUP PAGE -------------------------------
 ------------------------------------------------------------------------*/
 
+.matchupBoxes table thead th,
+.matchupBoxes table tfoot th
+{
+    background-color: var(--nav-color);
+    color: white;
+}   
+
+.matchupBoxes h2
+{
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
 .matchVsDivider
 {
     background-color: var(--main-color);
+    font-family: 'electrolize';
+    color: white;
 }
+
+
 
 /* -----------------------------------------------------------------------
 ----------------------------- STATISTICS PAGE -------------------------------

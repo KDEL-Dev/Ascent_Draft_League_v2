@@ -101,7 +101,7 @@
             </div>
             <div class="row">
                 <?php foreach ($matchups as $matchupId => $matchup): ?>
-                    <div class="col-12 col-md-6 col-lg-4 p-3 g-3 bg-light">
+                    <div class="matchupBoxes col-12 col-md-6 col-lg-4 p-3 g-3 bg-light">
                         <div class="border rounded-1 border-dark-subtle">
 
                         
@@ -116,15 +116,15 @@
 
                             ?>
                             <div>
-                                <h2 class="mb-0 text-center"><?=  htmlspecialchars($team1) ?> <?= htmlspecialchars($team1Mascot) ?></h2>
+                                <h2 class="mb-0 py-1 fs-5 text-center"><?=  htmlspecialchars($team1) ?> <?= htmlspecialchars($team1Mascot) ?></h2>
                             </div>
                             <div class="table-responsive">
                                 <table class="table mb-0 table-bordered">  
                                     <thead>
                                         <tr>
                                             <th>Pokemon</th>
-                                            <th>Kills</th>
-                                            <th>Deaths</th>
+                                            <th class="w-25">Kills</th>
+                                            <th class="w-25">Deaths</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
@@ -154,13 +154,6 @@
 
                                 <div class="table-responsive">
                                     <table class="table mb-0 table-bordered">  
-                                        <thead>
-                                            <tr>
-                                                <th>Pokemon</th>
-                                                <th>Kills</th>
-                                                <th>Deaths</th>
-                                            </tr>
-                                        </thead>
                                         <tbody class="table-group-divider">
                                             <?php foreach ($matchup['teams'][$team2]['pokemon'] as $pokemon): ?>
                                                 <tr>
@@ -170,10 +163,17 @@
                                                 </tr>
                                             <?php endforeach ?>
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Pokemon</th>
+                                                <th>Kills</th>
+                                                <th>Deaths</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 <div>
-                                    <h2 class="mb-0 text-center"><?=  htmlspecialchars($team2) ?> <?= htmlspecialchars($team2Mascot) ?></h2>
+                                    <h2 class="mb-0 py-1 fs-5 text-center"><?=  htmlspecialchars($team2) ?> <?= htmlspecialchars($team2Mascot) ?></h2>
                                 </div>
                             </div>
                         </div>

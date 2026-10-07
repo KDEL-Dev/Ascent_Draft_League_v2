@@ -144,11 +144,11 @@
 
     <main class="container p-3">
         <div class="row p-3 bg-white">
-            <h1 class="border-bottom">Statistics</h1>
+            <h1 class="border-bottom fs-3">Statistics</h1>
             <?php foreach ($teams as $teamName => $team): ?>
                 <div class="col-12 col-lg-6">
                     <div class="p-3 bg-light">
-                        <h2><?= htmlspecialchars($teamName) ?></h2>
+                        <h2 class="fs-4"><?= htmlspecialchars($teamName) ?></h2>
                         <table class="statsTable table table-sm table-bordered table-striped">
                             <thead>
                                 <tr>

@@ -66,7 +66,9 @@
 
     <main class="container p-3">
         <div class="row p-3 bg-white">
-            <h1>Draft Recap</h1>
+            <h1 class="fs-3">Draft Recap</h1>
+            <!-- <p>Date: </p> -->
+            <hr>
             <?php foreach ($round as $roundNumber => $picks): ?>
             <div class="mt-3 col-sm-12 col-md-6 col-lg-4 col-xl-3">
                 <h2 class="fs-5 border-bottom">Round <?= htmlspecialchars($roundNumber) ?></h2>

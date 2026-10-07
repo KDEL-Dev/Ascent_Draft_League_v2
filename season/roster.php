@@ -130,7 +130,10 @@
     <main class="container p-3">
         
         <div class="p-3 row bg-white">
-            <h1>Roster</h1>
+            <h1 class="fs-3">Roster</h1>
+
+            <hr>
+
             <?php foreach ($rosters as $teamName => $roster): ?>
 
                 <div class="mb-3 col-12 col-md-6 col-lg-3">
