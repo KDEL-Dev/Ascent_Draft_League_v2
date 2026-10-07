@@ -1135,6 +1135,74 @@ loadAllDraftedPokemon();
 loadDraftLog();
 showTier("ou");
 
+
+
+// -------------------------------------------------
+// ---------------- POKEBOX ------------------------
+// -------------------------------------------------
+
+const pokeboxButtons = document.querySelectorAll(".pokeboxBtn");
+
+pokeboxButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const pokemonId = button.dataset.pokemonId;
+        const pokemonName = button.dataset.pokemonName;
+        const tierGroup = button.dataset.tierGroup;
+
+        console.log("Selected:", pokemonName);
+        console.log("ID:", pokemonId);
+        console.log("Tier:", tierGroup);
+
+        // Next step:
+        // Load user's Pokémon from this tier
+        // and put them into the drop-down.
+    });
+
+});
+
+
+
+
+// -------------- POKEBOX LIST TOGGLING ---------------
+
+const pokeboxTierButtons = document.querySelectorAll(".pokeboxTierButton");
+const pokeboxTierSections = document.querySelectorAll(".pokebox-tier-section");
+
+function showPokeboxTier(tier) {
+
+    pokeboxTierSections.forEach(section => {
+        section.style.display = "none";
+    });
+
+    const selectedSection = document.getElementById(`${tier}PokeboxList`);
+
+    if (selectedSection) {
+        selectedSection.style.display = "flex";
+    }
+
+    pokeboxTierButtons.forEach(button => {
+        if (button.dataset.tier === tier) {
+            button.classList.remove("btn-outline-primary");
+            button.classList.add("btn-primary");
+        } else {
+            button.classList.remove("btn-primary");
+            button.classList.add("btn-outline-primary");
+        }
+    });
+}
+
+pokeboxTierButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        showPokeboxTier(button.dataset.tier);
+    });
+});
+
+// Show OU when page loads
+showPokeboxTier("ou");
+
+
 // -------------------------------------------------
 // ---------------- ADMIN SETTINGS ---------------------
 // -------------------------------------------------
