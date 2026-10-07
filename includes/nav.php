@@ -32,9 +32,6 @@
                 <a class="nav-link" href="draft-recap.php">Draft Recap</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="profile.php">Profile</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="admin.php">Season Settings</a>
             </li>
             <li class="nav-item">

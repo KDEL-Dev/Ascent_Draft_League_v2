@@ -78,7 +78,8 @@
 
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
+    <script src="https://kit.fontawesome.com/4a4034fc29.js" crossorigin="anonymous"></script>
+
     <title>Matchups</title>
 </head>
 <body class="bg-body-secondary">
@@ -122,9 +123,9 @@
                                 <table class="table mb-0 table-bordered">  
                                     <thead>
                                         <tr>
-                                            <th>Pokemon</th>
-                                            <th class="w-25">Kills</th>
-                                            <th class="w-25">Deaths</th>
+                                            <th class="bg-light">Pokemon</th>
+                                            <th class="w-25 bg-light">Kills</th>
+                                            <th class="w-25 bg-light">Deaths</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-group-divider">
@@ -165,9 +166,9 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th>Pokemon</th>
-                                                <th class="w-25">Kills</th>
-                                                <th class="w-25">Deaths</th>
+                                                <th class="bg-light">Pokemon</th>
+                                                <th class="w-25 bg-light">Kills</th>
+                                                <th class="w-25  bg-light">Deaths</th>
                                             </tr>
                                         </tfoot>
                                     </table>
