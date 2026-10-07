@@ -757,8 +757,7 @@ li
 ----------------------------- MATCHUP PAGE -------------------------------
 ------------------------------------------------------------------------*/
 
-.matchupBoxes table thead th,
-.matchupBoxes table tfoot th
+.matchTeamName
 {
     background-color: var(--nav-color);
     color: white;
@@ -772,11 +771,30 @@ li
 
 .matchVsDivider
 {
+    padding: 4px;
+    position: relative;
+
     background-color: var(--main-color);
     font-family: 'electrolize';
     color: white;
 }
 
+.matchVsDivider div:last-child
+{
+    position: absolute;
+    right: 1rem;
+}
+
+.matchVsDivider h2
+{
+    font-size: 28px;
+}
+
+.matchVsDivider div:last-child a
+{
+    padding: 4px 8px;
+    font-size: 16px;
+}
 
 
 /* -----------------------------------------------------------------------
