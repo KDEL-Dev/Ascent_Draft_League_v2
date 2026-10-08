@@ -220,11 +220,16 @@ unset($pokemonGroup);
 
             <hr>
 
+            <div class="alert alert-secondary">
+                Your Roster Count: <strong><?= $rosterCount ?>/12</strong>
+            </div>
+
             <div
                 id="pokeboxData"
                 data-roster-count="<?= $rosterCount ?>"
                 data-roster-max="12">
-            </div>            
+            </div>     
+
             <p class="mb-0 fs-5">Your Roster:</p>
             <div class="col-12 col-md-6 col-lg-3 mt-3">
                 <div class="pokeboxRoster">
