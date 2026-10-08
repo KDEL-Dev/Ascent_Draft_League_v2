@@ -1,5 +1,15 @@
 <?php
-    include_once 'includes/connection.php'
+
+// CHANGE NAME OF THIS FILE!!!
+
+
+    require_once __DIR__ . '/../includes/auth.php';
+
+    if (!$isAdmin) 
+    {
+        http_response_code(403);
+        exit('Access denied.');
+    }
 ?>
 
 <!DOCTYPE html>

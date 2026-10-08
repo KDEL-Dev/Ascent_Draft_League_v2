@@ -65,7 +65,7 @@ li
 .tierBadge-OU,
 .tierBadge-UUBL
 {
-    background-color: var(--ou-tier-color)
+    background-color: var(--ou-tier-color);
 }
 
 .tierBadge-UU,
@@ -884,15 +884,13 @@ li
 ----------------------------- STATISTICS PAGE -------------------------------
 ------------------------------------------------------------------------*/
 
-.statsTable
+.statsTable th,
+.statsTable td
 {
     /* Change color of THEAD to main */
+   font-family: 'jura'; 
 }
 
-#standingsTable tbody tr td
-{
-    font-family: 'jura';
-}
 
 /* -----------------------------------------------------------------------
 ----------------------------- DRAFT RECAP PAGE -------------------------------

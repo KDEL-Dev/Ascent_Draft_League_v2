@@ -1,8 +1,8 @@
 <?php
     session_start();
 
-    require_once __DIR__ . '/../includes/connection.php';
-
+    require_once __DIR__ . '/../includes/auth.php';
+    
     $seasonId = 1;
 
     $sql = "SELECT draft_picks.round_number, draft_picks.pick_number, showdown_pokemon.name, pokemon_tier_per_season.tier, users.default_team_name

@@ -1,8 +1,8 @@
 <?php
     // error_reporting(E_ALL);
     // ini_set('display_errors',1);
-
-    require_once __DIR__ . '/../includes/connection.php';
+        
+    require_once __DIR__ . '/../includes/auth.php';
 
     $seasonId = 1;
 
@@ -21,6 +21,7 @@
                 ORDER BY users.default_team_name, showdown_pokemon.name 
             " ; 
 
+    // Connection is actually working
     $stmt = $conn->prepare($rosterSql);
 
     if(!$stmt)

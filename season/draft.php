@@ -6,7 +6,7 @@
 
     $userId = $_SESSION['user_id'];
 
-    require_once __DIR__ . '/../includes/connection.php';
+    require_once __DIR__ . '/../includes/auth.php';
 
     $seasonId = 1;
     // $activeUserId = 6;
@@ -278,7 +278,9 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <button id="randomizeDraft" class="btn border rounded-0">Randomize</button>
+                <?php if ($isAdmin): ?>
+                    <button id="randomizeDraft" class="btn border rounded-0">Randomize</button>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -548,32 +550,36 @@
                     </div>
                 </div>
                 
-                <div id="draftControls" class="mt-1 d-flex justify-content-end">
-                    <div class="dropdown" data-bs-theme="dark">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"  aria-expanded="false">
-                            Draft Menu
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <button id="startDraft" type="button" class="dropdown-item">Start Draft</button>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <button id="resumeDraft" type="button" class="dropdown-item">Resume Draft</button>
-                            </li>
-                            <li>
-                                <button id="pauseDraft" type="button" class="dropdown-item">Pause Draft</button>
-                            </li>
-                            <li>
-                                <button id="skipPick" type="button" class="dropdown-item">Skip Pick</button>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <button id="endDraft" type="button" class="dropdown-item">End Draft</button>
-                            </li>
-                        </ul>
+                <?php if ($isAdmin): ?>
+
+                    <div id="draftControls" class="mt-1 d-flex justify-content-end">
+                        <div class="dropdown" data-bs-theme="dark">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"  aria-expanded="false">
+                                Draft Menu
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button id="startDraft" type="button" class="dropdown-item">Start Draft</button>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <button id="resumeDraft" type="button" class="dropdown-item">Resume Draft</button>
+                                </li>
+                                <li>
+                                    <button id="pauseDraft" type="button" class="dropdown-item">Pause Draft</button>
+                                </li>
+                                <li>
+                                    <button id="skipPick" type="button" class="dropdown-item">Skip Pick</button>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <button id="endDraft" type="button" class="dropdown-item">End Draft</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+
+                <?php endif; ?>
             </div>
         </div>
         <div id="draftTierPageBtn" class="btn-group mb-3 px-3" role="group">

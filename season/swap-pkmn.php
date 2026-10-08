@@ -1,12 +1,7 @@
-    <?php
+<?php
     session_start();
 
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: ../login.php");
-        exit;
-    }
-
-    require_once __DIR__ . '/../includes/connection.php';
+    require_once __DIR__ . '/../includes/auth.php';
 
     $userId = $_SESSION['user_id'];
     $seasonId = 1;

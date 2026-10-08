@@ -31,9 +31,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="draft-recap.php">Draft Recap</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="admin.php">Season Settings</a>
-            </li>
+            
+            <?php if ($isOwner): ?>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="admin.php">Season Settings</a>
+                </li>
+
+            <?php endif ?>
+
+
             <li class="nav-item">
                 <a class="nav-link" href="../index.php">Landing</a>
             </li>

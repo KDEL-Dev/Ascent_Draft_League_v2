@@ -19,10 +19,9 @@
 
             // We'll query the database here.
 
-            $sql = "
-            SELECT id, email, password_hash
-            FROM users
-            WHERE email = ?
+            $sql = "SELECT id, email, password_hash, role
+                    FROM users
+                    WHERE email = ?
         ";
 
         $stmt = $conn->prepare($sql);

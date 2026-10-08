@@ -27,7 +27,7 @@ if(randomizeBtn)
         .then(response => response.text())
         .then(data => {
             // Print the response in the browswer console
-            console.log(data);
+            // console.log(data);
             // Refresh the page
             window.location.reload();
         })
@@ -54,7 +54,7 @@ if(startDraftBtn)
 
             const data = await response.json();
 
-            console.log("START RESPONSE:", data);
+            // console.log("START RESPONSE:", data);
 
             if (!data.success)
             {
@@ -466,7 +466,7 @@ async function loadDraftedDisplay()
         return;
     }
 
-    console.log("PICK OWNER ROSTER:", rosterData.roster);
+    // console.log("PICK OWNER ROSTER:", rosterData.roster);
 
     // --------------------
     // DISPLAY ROSTER
@@ -922,7 +922,7 @@ async function loadDraftState()
     }
 
     myActiveUserId = Number(data.my_active_user.id); // ADDED
-    console.log("MY ACTIVE USER ID:", myActiveUserId);
+    // console.log("MY ACTIVE USER ID:", myActiveUserId);
 
 
     const draftState = data.draft_state;

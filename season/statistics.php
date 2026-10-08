@@ -1,11 +1,11 @@
 <?php
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+    // error_reporting(E_ALL);
+    // ini_set('display_errors', 1);
 
     session_start();
 
-    require_once __DIR__ . '/../includes/connection.php';
+    require_once __DIR__ . '/../includes/auth.php';
 
     $seasonId = 1;
 
@@ -150,7 +150,7 @@
                 <div class="col-12 col-lg-6">
                     <div class="p-3 bg-light">
                         <h2 class="fs-4"><?= htmlspecialchars($teamName) ?></h2>
-                        <table class="statsTable table table-sm table-bordered table-striped">
+                        <table class="statsTable table table-sm table-bordered table-striped ">
                             <thead>
                                 <tr>
                                     <th scope="col">Pokemon</th>

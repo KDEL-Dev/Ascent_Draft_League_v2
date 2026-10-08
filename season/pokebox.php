@@ -6,7 +6,7 @@
 
     $seasonId = 1;
 
-    require_once __DIR__ . '/../includes/connection.php';
+    require_once __DIR__ . '/../includes/auth.php';
 
     // ------------------
     // GET ACTIVE USER ID

@@ -6,7 +6,7 @@
     session_start();
 
     // connect to db
-    require_once __DIR__ . '/../includes/connection.php';
+    require_once __DIR__ . '/../includes/auth.php';
 
     // temp season number
     $seasonId = 1;
