@@ -1,9 +1,74 @@
 <?php 
 
+    session_start();
+
+    $userId = $_SESSION['user_id'];
+
     $seasonId = 1;
 
     require_once __DIR__ . '../../includes/connection.php';
 
+    // ------------------
+    // GET ACTIVE USER ID
+    // ------------------
+
+    $sql = "SELECT active_users.id
+            FROM active_users
+            JOIN users
+            ON active_users.user_id = users.id
+            WHERE active_users.season_id = ?
+            AND users.id = ?
+        ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii",$seasonId,$userId);
+    $stmt->execute();
+
+    $activeUserResult = $stmt->get_result();
+    $activeUserId = $activeUserResult->fetch_assoc()['id'];
+
+// GET USER TEAM
+
+$rosterSql ="SELECT
+                showdown_pokemon.name,
+                pokemon_tier_per_season.tier
+            FROM roster_pkmn
+
+            JOIN showdown_pokemon
+                ON showdown_pokemon.id = roster_pkmn.showdown_pokemon_id
+
+            JOIN pokemon_tier_per_season
+                ON showdown_pokemon.id = pokemon_tier_per_season.showdown_pokemon_id
+
+            WHERE roster_pkmn.active_user_id = ?
+            AND roster_pkmn.status = 'active'
+        ";
+
+$rosterStmt = $conn->prepare($rosterSql);
+$rosterStmt->bind_param("i",$activeUserId);
+$rosterStmt->execute();
+
+$rosterResults = $rosterStmt->get_result();
+
+$userRoster = 
+[
+    'OU' => [],
+    'UU' => [],
+    'RU' => [],
+    'NU' => []
+];
+
+while ($pokemon = $rosterResults->fetch_assoc()) {
+
+    $group = getTierGroup($pokemon['tier']);
+
+    if ($group !== null) {
+        $userRoster[$group][] = $pokemon;
+    }
+}
+
+
+// GET ALL Pokemon in current meta
     $pokemonSql="SELECT
                     showdown_pokemon.id,
                     showdown_pokemon.name,
@@ -29,7 +94,7 @@ while ($pokemon = $pokemonResults->fetch_assoc()) {
     $allPokemon[] = $pokemon;
 }
 
-//  Get Rostered Pokemon
+//  Get ALL Rostered Pokemon
 
 $ownedSql = "SELECT DISTINCT showdown_pokemon_id
             FROM roster_pkmn
@@ -109,6 +174,8 @@ unset($pokemonGroup);
 
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/4a4034fc29.js" crossorigin="anonymous"></script>
+
 
     <title>Roster - Ascent</title>
 </head>
@@ -128,39 +195,55 @@ unset($pokemonGroup);
         
         <div class="p-3 row bg-white">
             <h1>Pokebox</h1>
-            <p>Your Roster</p>
-            <div class="col-12 col-md-6 col-lg-3">
+            <p class="mb-0">Your Roster</p>
+            <div class="col-12 col-md-6 col-lg-3 mt-3">
                 <div class="pokeboxRoster">
                     <h2 class="fs-5">OU</h2>
-                    <ul id="ouUserRoster" class="list-group">
-                        <!-- Pokemon -->
+                    <ul id="ouUserRoster" class="list-group list-group-flush">
+                        <?php foreach ($userRoster['OU'] as $pokemon): ?>
+                            <li class="list-group-item px-0">
+                                <?= htmlspecialchars($pokemon['name']) ?>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-3">
+            <div class="col-12 col-md-6 col-lg-3 mt-3">
                 <div class="pokeboxRoster">
                     <h2 class="fs-5">UU</h2>
-                    <ul id="uuUserRoster" class="list-group">
-                        <!-- Pokemon -->
+                    <ul id="uuUserRoster" class="list-group list-group-flush">
+                        <?php foreach ($userRoster['UU'] as $pokemon): ?>
+                            <li class="list-group-item px-0">
+                                <?= htmlspecialchars($pokemon['name']) ?>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-3">
+            <div class="col-12 col-md-6 col-lg-3 mt-3">
                 <div class="pokeboxRoster">
                     <h2 class="fs-5">RU</h2>
-                    <ul id="ruUserRoster" class="list-group">
-                        <!-- Pokemon -->
+                    <ul id="ruUserRoster" class="list-group list-group-flush">
+                        <?php foreach ($userRoster['RU'] as $pokemon): ?>
+                            <li class="list-group-item px-0">
+                                <?= htmlspecialchars($pokemon['name']) ?>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-3">
+            <div class="col-12 col-md-6 col-lg-3 mt-3">
                 <div class="pokeboxRoster">
                     <h2 class="fs-5">NU</h2>
-                    <ul id="nuUserRoster" class="list-group">
-                        <!-- Pokemon -->
+                    <ul id="nuUserRoster" class="list-group list-group-flush">
+                        <?php foreach ($userRoster['NU'] as $pokemon): ?>
+                            <li class="list-group-item px-0">
+                                <?= htmlspecialchars($pokemon['name']) ?>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
@@ -204,7 +287,7 @@ unset($pokemonGroup);
             <!-- OU -->
             <div id="ouPokeboxList" class="row pokebox-tier-section">
 
-                <h2>
+                <h2 class="fs-3">
                     OU Pokemon
                     <span class="badge text-bg-secondary">UUBL</span>
                 </h2>
@@ -241,7 +324,7 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn"
+                                class="pokeboxBtn btn btn-primary"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"
@@ -263,7 +346,7 @@ unset($pokemonGroup);
             <!-- UU -->
             <div id="uuPokeboxList" class="row pokebox-tier-section">
 
-                <h2>
+                <h2 class="fs-3">
                     UU Pokemon
                     <span class="badge text-bg-secondary">RUBL</span>
                 </h2>
@@ -299,7 +382,7 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn"
+                                class="pokeboxBtn btn btn-primary"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"
@@ -321,7 +404,7 @@ unset($pokemonGroup);
             <!-- RU -->
             <div id="ruPokeboxList" class="row pokebox-tier-section">
 
-                <h2>
+                <h2 class="fs-3">
                     RU Pokemon
                     <span class="badge text-bg-secondary">NUBL</span>
                 </h2>
@@ -357,7 +440,7 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn"
+                                class="pokeboxBtn btn btn-primary"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"
@@ -379,7 +462,7 @@ unset($pokemonGroup);
             <!-- NU -->
             <div id="nuPokeboxList" class="row pokebox-tier-section">
 
-                <h2>
+                <h2 class="fs-3">
                     NU Pokemon
 
                     <span class="badge text-bg-secondary">PUBL</span>
@@ -419,7 +502,7 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn"
+                                class="pokeboxBtn btn btn-primary"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"

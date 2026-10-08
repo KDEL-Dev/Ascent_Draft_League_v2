@@ -39,8 +39,8 @@ button
 /* Figure out proper way to change primary button color */
 .btn-primary
 {
-    background-color: var(--main-color) !important;
-    border-color: var(--main-color) !important;
+    background-color: var(--main-color) ;
+    border-color: var(--main-color);
 }
 
 .btn-primary:hover
@@ -611,12 +611,55 @@ li
 /* -----------------------------------------------------------------------
 ----------------------------- POKEBOX PAGE --------------------------------
 -------------------------------------------------------------------------*/
-.pokeboxBtn
+
+
+/*------ Tier Pagination ------*/
+
+.pokeboxTierButton.btn-outline-primary
 {   /* Change */
-    background-color: var(--main-color) !important; 
+    border-color: var(--nav-color);
+    color: var(--nav-color);
+}
+
+.pokeboxTierButton.btn-outline-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
 }
 
 
+.pokeboxTierButton.btn-primary
+{
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.pokeboxTierButton.btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
+}
+
+/* Transaction Buttons */
+
+.pokeboxBtn.btn-primary
+{
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.pokeboxBtn.btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
+}
+
+.pokeboxBtn.btn-primary:disabled
+{
+    background-color: grey;
+    border-color: grey;
+    color: white;
+}
 
 /* -----------------------------------------------------------------------
 ----------------------------- ROSTER PAGE --------------------------------
