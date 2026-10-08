@@ -640,6 +640,18 @@ li
     border-color: var(--main-color-hover);
 }
 
+/* TIER */
+
+#ouPokeboxList h2 span,
+#uuPokeboxList h2 span,
+#ruPokeboxList h2 span,
+#nuPokeboxList h2 span
+
+{
+    font-size: 12px;
+    padding: 4px 8px;
+}
+
 /* Transaction Buttons */
 
 .pokeboxBtn.btn-primary
