@@ -6,7 +6,7 @@
 
     $seasonId = 1;
 
-    require_once __DIR__ . '../../includes/connection.php';
+    require_once __DIR__ . '/../includes/connection.php';
 
     // ------------------
     // GET ACTIVE USER ID
@@ -26,6 +26,28 @@
 
     $activeUserResult = $stmt->get_result();
     $activeUserId = $activeUserResult->fetch_assoc()['id'];
+
+
+
+
+    // ---------------------
+    // GET USER ROSTER COUNT
+    // ---------------------
+
+    $rosterCountSql = "
+    SELECT COUNT(*) AS roster_count
+    FROM roster_pkmn
+    WHERE active_user_id = ?
+    AND season_id = ?
+    AND status = 'active'
+";
+
+$stmt = $conn->prepare($rosterCountSql);
+$stmt->bind_param("ii", $activeUserId, $seasonId);
+$stmt->execute();
+
+$rosterCountResult = $stmt->get_result();
+$rosterCount = (int)$rosterCountResult->fetch_assoc()['roster_count'];
 
 // GET USER TEAM
 
@@ -198,8 +220,12 @@ unset($pokemonGroup);
 
             <hr>
 
-
-            <p class="mb-0">Your Roster:</p>
+            <div
+                id="pokeboxData"
+                data-roster-count="<?= $rosterCount ?>"
+                data-roster-max="12">
+            </div>            
+            <p class="mb-0 fs-5">Your Roster:</p>
             <div class="col-12 col-md-6 col-lg-3 mt-3">
                 <div class="pokeboxRoster">
                     <h2 class="fs-5 badge tierBadge-OU">OU</h2>
@@ -301,6 +327,17 @@ unset($pokemonGroup);
                     <?php
                         $isOwned = in_array((int)$pokemon['id'], $ownedPokemon, true);
                         $tierGroup = getTierGroup($pokemon['tier']);
+
+                        if ($isOwned) {
+                            $buttonText = 'Owned';
+                            $buttonClass = 'btn-secondary';
+                        } elseif ($rosterCount >= 12) {
+                            $buttonText = 'Swap';
+                            $buttonClass = 'btn-primary';
+                        } else {
+                            $buttonText = 'Add';
+                            $buttonClass = 'btn-primary';
+                        }
                     ?>
 
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
@@ -328,14 +365,14 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn btn-primary"
+                                class="pokeboxBtn btn <?= $buttonClass ?>"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"
                                 data-tier-group="<?= htmlspecialchars($tierGroup) ?>"
                                 <?= $isOwned ? 'disabled' : '' ?>
                             >
-                                <?= $isOwned ? 'Owned' : 'Add' ?>
+                                <?= $buttonText ?>
                             </button>
 
                         </div>
@@ -360,6 +397,17 @@ unset($pokemonGroup);
                     <?php
                         $isOwned = in_array((int)$pokemon['id'], $ownedPokemon, true);
                         $tierGroup = getTierGroup($pokemon['tier']);
+
+                        if ($isOwned) {
+                            $buttonText = 'Owned';
+                            $buttonClass = 'btn-secondary';
+                        } elseif ($rosterCount >= 12) {
+                            $buttonText = 'Swap';
+                            $buttonClass = 'btn-primary';
+                        } else {
+                            $buttonText = 'Add';
+                            $buttonClass = 'btn-primary';
+                        }
                     ?>
 
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
@@ -386,14 +434,14 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn btn-primary"
+                                class="pokeboxBtn btn <?= $buttonClass ?>"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"
                                 data-tier-group="<?= htmlspecialchars($tierGroup) ?>"
                                 <?= $isOwned ? 'disabled' : '' ?>
                             >
-                                <?= $isOwned ? 'Owned' : 'Add' ?>
+                                <?= $buttonText ?>
                             </button>
 
                         </div>
@@ -418,6 +466,17 @@ unset($pokemonGroup);
                     <?php
                         $isOwned = in_array((int)$pokemon['id'], $ownedPokemon, true);
                         $tierGroup = getTierGroup($pokemon['tier']);
+
+                        if ($isOwned) {
+                            $buttonText = 'Owned';
+                            $buttonClass = 'btn-secondary';
+                        } elseif ($rosterCount >= 12) {
+                            $buttonText = 'Swap';
+                            $buttonClass = 'btn-primary';
+                        } else {
+                            $buttonText = 'Add';
+                            $buttonClass = 'btn-primary';
+                        }
                     ?>
 
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
@@ -444,14 +503,14 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn btn-primary"
+                                class="pokeboxBtn btn <?= $buttonClass ?>"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"
                                 data-tier-group="<?= htmlspecialchars($tierGroup) ?>"
                                 <?= $isOwned ? 'disabled' : '' ?>
                             >
-                                <?= $isOwned ? 'Owned' : 'Add' ?>
+                                <?= $buttonText ?>
                             </button>
 
                         </div>
@@ -480,6 +539,17 @@ unset($pokemonGroup);
                     <?php
                         $isOwned = in_array((int)$pokemon['id'], $ownedPokemon, true);
                         $tierGroup = getTierGroup($pokemon['tier']);
+
+                        if ($isOwned) {
+                            $buttonText = 'Owned';
+                            $buttonClass = 'btn-secondary';
+                        } elseif ($rosterCount >= 12) {
+                            $buttonText = 'Swap';
+                            $buttonClass = 'btn-primary';
+                        } else {
+                            $buttonText = 'Add';
+                            $buttonClass = 'btn-primary';
+                        }
                     ?>
 
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
@@ -506,14 +576,14 @@ unset($pokemonGroup);
 
                             <button
                                 type="button"
-                                class="pokeboxBtn btn btn-primary"
+                                class="pokeboxBtn btn <?= $buttonClass ?>"
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="<?= htmlspecialchars($pokemon['tier']) ?>"
                                 data-tier-group="<?= htmlspecialchars($tierGroup) ?>"
                                 <?= $isOwned ? 'disabled' : '' ?>
                             >
-                                <?= $isOwned ? 'Owned' : 'Add' ?>
+                                <?= $buttonText ?>
                             </button>
 
                         </div>

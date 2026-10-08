@@ -1145,22 +1145,191 @@ const pokeboxButtons = document.querySelectorAll(".pokeboxBtn");
 
 pokeboxButtons.forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
 
         const pokemonId = button.dataset.pokemonId;
-        const pokemonName = button.dataset.pokemonName;
-        const tierGroup = button.dataset.tierGroup;
 
-        console.log("Selected:", pokemonName);
-        console.log("ID:", pokemonId);
-        console.log("Tier:", tierGroup);
+        if (!pokemonId) {
+            console.error("Missing Pokémon ID.");
+            return;
+        }
 
-        // Next step:
-        // Load user's Pokémon from this tier
-        // and put them into the drop-down.
+        const pokeboxData = document.getElementById("pokeboxData");
+
+        if (!pokeboxData) {
+            console.error("Pokebox data element not found.");
+            return;
+        }
+
+        const rosterCount =
+            Number(pokeboxData.dataset.rosterCount);
+
+        const rosterMax =
+            Number(pokeboxData.dataset.rosterMax);
+
+        // -----------------------------------------
+        // ROSTER IS FULL → GO TO SWAP PAGE
+        // -----------------------------------------
+
+        if (rosterCount >= rosterMax) {
+
+            window.location.href =
+                `swap-pkmn.php?add=${pokemonId}`;
+
+            return;
+        }
+
+        // -----------------------------------------
+        // ROSTER IS NOT FULL → NORMAL ADD
+        // -----------------------------------------
+
+        button.disabled = true;
+
+        try {
+
+            const response = await fetch(
+                "../api/pokebox/add_pkmn.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        pokemon_id: pokemonId
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+
+                button.textContent = "Owned";
+                button.disabled = true;
+
+                // Keep the page's roster count accurate
+                pokeboxData.dataset.rosterCount =
+                    rosterCount + 1;
+
+            } else {
+
+                alert(
+                    data.error ||
+                    "Failed to add Pokémon."
+                );
+
+                button.disabled = false;
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Add Pokémon failed:",
+                error
+            );
+
+            alert(
+                "Something went wrong while adding the Pokémon."
+            );
+
+            button.disabled = false;
+        }
+
     });
 
 });
+
+
+
+
+// ----------------------------------------
+// SWAP POKEMON PAGE
+// ----------------------------------------
+
+if (window.location.pathname.includes('swap-pkmn.php')) {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const addPokemonId = params.get('add');
+
+    const dropPokemon =
+        document.getElementById('dropPokemon');
+
+    const confirmSwapBtn =
+        document.getElementById('confirmSwapBtn');
+
+
+    if (confirmSwapBtn && dropPokemon && addPokemonId) {
+
+        confirmSwapBtn.addEventListener('click', async function () {
+
+            const dropRosterId = dropPokemon.value;
+
+            if (!dropRosterId) {
+
+                alert('Please select a Pokémon to replace.');
+
+                return;
+            }
+
+
+            const confirmed = confirm(
+                'Are you sure you want to complete this swap?'
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    '../api/pokebox/swap_pkmn.php',
+                    {
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+
+                        body: JSON.stringify({
+                            add: Number(addPokemonId),
+                            drop: Number(dropRosterId)
+                        })
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                if (data.status === 'success') {
+
+                    window.location.href =
+                        'pokebox.php';
+
+                } else {
+
+                    alert(
+                        data.error ||
+                        'Swap failed.'
+                    );
+                }
+
+            } catch (error) {
+
+                console.error('Swap failed:', error);
+
+                alert(
+                    'An error occurred while completing the swap.'
+                );
+            }
+
+        });
+
+    }
+}
 
 
 

@@ -446,7 +446,6 @@ li
 
 .draftTierTitle
 {
-    background-color: var(--info-header);
     border-radius: 16px;
     color: white;
 }
@@ -673,6 +672,12 @@ li
     color: white;
 }
 
+#confirmSwapBtn
+{
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
 /* -----------------------------------------------------------------------
 ----------------------------- ROSTER PAGE --------------------------------
 -------------------------------------------------------------------------*/
@@ -821,6 +826,20 @@ li
 ----------------------------- MATCHUP PAGE -------------------------------
 ------------------------------------------------------------------------*/
 
+#matchupPage .btn-primary
+{
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+
+}
+
+#matchupPage .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
+}
+
+
 .matchTeamName
 {
     background-color: var(--nav-color);
@@ -881,13 +900,13 @@ li
 
 #draftRecapList li
 {
-    background-color: var(--nav-color);
-    color: white;
+    /* color: white;
+    background-color: lightgray; */
 }
-
 
 
 .recapPickNum
 {
     width: 30px;
+
 }

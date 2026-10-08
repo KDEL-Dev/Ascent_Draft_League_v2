@@ -456,16 +456,16 @@
                                 <p class="fs-5">Roster</p>
                                 <div class="w-100 p-3 bg-white border rounded-3 d-flex justify-content-around flex-wrap">
                                     <div class="d-flex flex-column">
-                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
-                                            <p class="mb-0">ou</p>
+                                        <div class="draftTierTitle tierBadge-OU d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">OU</p>
                                         </div>
                                         <ul id="ouDraftDisplayRoster" class="p-0 flex-grow-1">
                                             <li>-</li>
                                             <li>-</li>
                                             <li>-</li>
                                         </ul>
-                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
-                                            <p class="mb-0">uu</p>
+                                        <div class="draftTierTitle tierBadge-UU d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">UU</p>
                                         </div>
                                         <ul id="uuDraftDisplayRoster" class="p-0">
                                             <li>-</li>
@@ -474,16 +474,16 @@
                                         </ul>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
-                                            <p class="mb-0">ru</p>
+                                        <div class="draftTierTitle tierBadge-RU d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">RU</p>
                                         </div>
                                         <ul id="ruDraftDisplayRoster" class="p-0">
                                             <li>-</li>
                                             <li>-</li>
                                             <li>-</li>
                                         </ul>
-                                        <div class="draftTierTitle d-flex align-items-center justify-content-center">
-                                            <p class="mb-0">nu</p>
+                                        <div class="draftTierTitle tierBadge-NU d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">NU</p>
                                         </div>
                                         <ul id="nuDraftDisplayRoster" class="p-0">
                                             <li>-</li>
@@ -502,7 +502,7 @@
                             <h3 class="text-center">My Team - <?= htmlspecialchars($teamName) ?></h3> <!-- Get team name -->
                             <div class="draftYourTeam w-100 d-flex justify-content-around align-items-center flex-wrap">
                                 <div class="d-flex flex-column">
-                                    <div class="draftTierTitle">
+                                    <div class="draftTierTitle tierBadge-OU">
                                         <p class="text-center">OU</p>
                                     </div>
                                     <ul id="ouDraftRoster" class="p-0 d-flex flex-column align-items-center">
@@ -510,7 +510,7 @@
                                         <li>—</li>
                                         <li>—</li>
                                     </ul>
-                                    <div class="draftTierTitle">
+                                    <div class="draftTierTitle tierBadge-UU">
                                         <p class="text-center">UU</p>
                                     </div>
                                     
@@ -521,7 +521,7 @@
                                     </ul>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <div class="draftTierTitle">
+                                    <div class="draftTierTitle tierBadge-RU">
                                         <p class="text-center">RU</p>
                                     </div>
                                     <ul id="ruDraftRoster" class="p-0 d-flex flex-column align-items-center">
@@ -529,7 +529,7 @@
                                         <li>—</li>
                                         <li>—</li>
                                     </ul>
-                                    <div class="draftTierTitle">
+                                    <div class="draftTierTitle tierBadge-NU">
                                         <p class="text-center">NU</p>
                                     </div>
                                     <ul id="nuDraftRoster" class="p-0 d-flex flex-column align-items-center">
