@@ -1,7 +1,6 @@
 <?php 
-    session_start();
 
-    require_once __DIR__ . '/includes/connection.php';
+    require_once __DIR__ . '/includes/auth.php';
 
     $userId = $_SESSION['user_id'];
 
@@ -24,6 +23,26 @@
 
     // Must I close the connection here?
 
+
+    $seasonsSql = "SELECT
+                        id,
+                        season_number,
+                        season_name,
+                        draft_date,
+                        start_date,
+                        created_at,
+                        is_active,
+                        format,
+                        team_size
+                    FROM seasons
+                    ORDER BY season_number DESC
+    ";
+
+    $seasonsResult = $conn->query($seasonsSql);
+
+    if (!$seasonsResult) {
+        die("Failed to retrieve seasons: " . $conn->error);
+    }
 
 ?>
 
@@ -85,10 +104,86 @@
                 </div>
             </div>
         </div>
+
         <!-- Previous Seasons -->
+
         <div id="previousSeasonCont" class="border m-3 p-3">
-            <p>previous seasons</p>
-            <a class="btn btn-primary" href="#">Enter</a>
+
+            <h2 class="fs-4 mb-3">Previous Seasons</h2>
+
+            <?php if ($seasonsResult->num_rows > 0): ?>
+
+                <div class="row g-3">
+
+                    <?php while ($season = $seasonsResult->fetch_assoc()): ?>
+
+                        <div class="col-12 col-md-6 col-lg-4">
+
+                            <a
+                                href="season/draft.php?season_id=<?= (int) $season['id'] ?>"
+                                class="text-decoration-none text-reset"
+                            >
+                                <div class="card h-100">
+
+                                    <div class="card-body">
+
+                                        <h3 class="card-title fs-5">
+                                            <?= htmlspecialchars(
+                                                $season['season_name']
+                                                ?: 'Season ' . $season['season_number']
+                                            ) ?>
+                                        </h3>
+
+                                        <p class="card-text">
+                                            <strong>Season Number:</strong>
+                                            <?= (int) $season['season_number'] ?>
+                                        </p>
+
+                                        <p class="card-text">
+                                            <strong>Format:</strong>
+                                            <?= htmlspecialchars($season['format'] ?? 'Not set') ?>
+                                        </p>
+
+                                        <p class="card-text">
+                                            <strong>Team Size:</strong>
+                                            <?= (int) $season['team_size'] ?>
+                                        </p>
+
+                                        <p class="card-text">
+                                            <strong>Status:</strong>
+                                            <?= (int) $season['is_active'] === 1
+                                                ? 'Active'
+                                                : 'Inactive' ?>
+                                        </p>
+
+                                        <?php if (!empty($season['start_date'])): ?>
+                                            <p class="card-text">
+                                                <strong>Start Date:</strong>
+                                                <?= htmlspecialchars($season['start_date']) ?>
+                                            </p>
+                                        <?php endif; ?>
+
+                                        <span class="btn btn-primary">
+                                            Enter Season
+                                        </span>
+
+                                    </div>
+
+                                </div>
+                            </a>
+
+                        </div>
+
+                    <?php endwhile; ?>
+
+                </div>
+
+            <?php else: ?>
+
+                <p>No seasons have been created yet.</p>
+
+            <?php endif; ?>
+
         </div>
         <!-- Legacy Stats -->
          <div id="statisticsCont" class="border m-3 p-3">
