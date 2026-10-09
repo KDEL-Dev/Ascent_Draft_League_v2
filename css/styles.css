@@ -908,3 +908,26 @@ li
     width: 30px;
 
 }
+
+
+/* -----------------------------------------------------------------------
+----------------------------- INDEX PAGE ---------------------------------
+------------------------------------------------------------------------*/
+
+#indexPage .btn-primary
+{
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+
+}
+
+#previousSeasonCont .card-header
+{
+    background-color: var(--main-color);
+    color: white;
+}
+
+#previousSeasonCont .card-body p
+{
+    margin-bottom: 8px;
+}
