@@ -1152,103 +1152,95 @@ showTier("ou");
 // -------------------------------------------------
 
 const pokeboxButtons = document.querySelectorAll(".pokeboxBtn");
+const pokeboxData = document.getElementById("pokeboxData");
 
-pokeboxButtons.forEach(button => {
+if(pokeboxButtons.length > 0 && pokeboxData)
+{
 
-    button.addEventListener("click", async () => {
+    pokeboxButtons.forEach(button => {
 
-        const pokemonId = button.dataset.pokemonId;
+        button.addEventListener("click", async () => {
 
-        if (!pokemonId) {
-            console.error("Missing Pokémon ID.");
-            return;
-        }
+            const pokemonId = button.dataset.pokemonId;
 
-        const pokeboxData = document.getElementById("pokeboxData");
+            const rosterCount =
+                Number(pokeboxData.dataset.rosterCount);
 
-        if (!pokeboxData) {
-            console.error("Pokebox data element not found.");
-            return;
-        }
+            const rosterMax =
+                Number(pokeboxData.dataset.rosterMax);
 
-        const rosterCount =
-            Number(pokeboxData.dataset.rosterCount);
+            // -----------------------------------------
+            // ROSTER IS FULL → GO TO SWAP PAGE
+            // -----------------------------------------
 
-        const rosterMax =
-            Number(pokeboxData.dataset.rosterMax);
+            if (rosterCount >= rosterMax) {
 
-        // -----------------------------------------
-        // ROSTER IS FULL → GO TO SWAP PAGE
-        // -----------------------------------------
+                window.location.href =
+                    `swap-pkmn.php?add=${pokemonId}`;
 
-        if (rosterCount >= rosterMax) {
+                return;
+            }
 
-            window.location.href =
-                `swap-pkmn.php?add=${pokemonId}`;
+            // -----------------------------------------
+            // ROSTER IS NOT FULL → NORMAL ADD
+            // -----------------------------------------
 
-            return;
-        }
+            button.disabled = true;
 
-        // -----------------------------------------
-        // ROSTER IS NOT FULL → NORMAL ADD
-        // -----------------------------------------
+            try {
 
-        button.disabled = true;
+                const response = await fetch(
+                    "../api/pokebox/add_pkmn.php",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            pokemon_id: pokemonId
+                        })
+                    }
+                );
 
-        try {
+                const data = await response.json();
 
-            const response = await fetch(
-                "../api/pokebox/add_pkmn.php",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        pokemon_id: pokemonId
-                    })
+                if (data.status === "success") {
+
+                    button.textContent = "Owned";
+                    button.disabled = true;
+
+                    // Keep the page's roster count accurate
+                    pokeboxData.dataset.rosterCount =
+                        rosterCount + 1;
+
+                } else {
+
+                    alert(
+                        data.error ||
+                        "Failed to add Pokémon."
+                    );
+
+                    button.disabled = false;
                 }
-            );
 
-            const data = await response.json();
+            } catch (error) {
 
-            if (data.status === "success") {
-
-                button.textContent = "Owned";
-                button.disabled = true;
-
-                // Keep the page's roster count accurate
-                pokeboxData.dataset.rosterCount =
-                    rosterCount + 1;
-
-            } else {
+                console.error(
+                    "Add Pokémon failed:",
+                    error
+                );
 
                 alert(
-                    data.error ||
-                    "Failed to add Pokémon."
+                    "Something went wrong while adding the Pokémon."
                 );
 
                 button.disabled = false;
             }
 
-        } catch (error) {
-
-            console.error(
-                "Add Pokémon failed:",
-                error
-            );
-
-            alert(
-                "Something went wrong while adding the Pokémon."
-            );
-
-            button.disabled = false;
-        }
+        });
 
     });
-
-});
-
+}
 
 
 
@@ -1372,15 +1364,17 @@ function showPokeboxTier(tier) {
     });
 }
 
-pokeboxTierButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        showPokeboxTier(button.dataset.tier);
+if (pokeboxTierButtons.length > 0 && pokeboxTierSections.length > 0) {
+
+    pokeboxTierButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            showPokeboxTier(button.dataset.tier);
+        });
     });
-});
 
-// Show OU when page loads
-showPokeboxTier("ou");
-
+    // Show OU when page loads
+    showPokeboxTier("ou");
+}
 
 // -------------------------------------------------
 // ---------------- ADMIN SETTINGS ---------------------
@@ -1730,8 +1724,6 @@ const submitMatch = document.getElementById('submitMatch');
 
 if(submitMatch)
 {
-
-
     submitMatch.addEventListener('click', function () {
 
         const matchData = {
