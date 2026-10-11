@@ -11,6 +11,8 @@
 
     $sql = "SELECT
             users.default_team_name,
+            users.default_team_mascot,
+
             showdown_pokemon.name,
             pokemon_tier_per_season.tier,
             COUNT(match_stats.id) AS usage_count,
@@ -31,6 +33,7 @@
         WHERE roster_pkmn.season_id = ?
         GROUP BY
             users.default_team_name,
+            users.default_team_mascot,
             showdown_pokemon.name,
             pokemon_tier_per_season.tier";
 
@@ -49,6 +52,7 @@
 
         if (!isset($teams[$team])) {
             $teams[$team] = [
+                'mascot' => $row['default_team_mascot'],
                 'usage_count' => 0,
                 'total_kills' => 0,
                 'total_deaths' => 0,
@@ -148,41 +152,46 @@
             <h1 class="border-bottom fs-3">Statistics</h1>
             <?php foreach ($teams as $teamName => $team): ?>
                 <div class="col-12 col-lg-6">
-                    <div class="p-3 bg-light">
-                        <h2 class="fs-4"><?= htmlspecialchars($teamName) ?></h2>
-                        <table class="statsTable table table-sm table-bordered table-striped ">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Pokemon</th>
-                                    <th scope="col" style="width:12%">Kills</th>
-                                    <th scope="col" style="width:12%">Deaths</th>
-                                    <th scope="col" style="width:12%">Usage</th>
-                                    <th scope="col" style="width:12%">+/-</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-group-divider">
-                                <?php foreach ($team['pokemon'] as $tier => $pokemonGroup): ?>
+                    <div class="m-1 p-3 bg-light border rounded-3">
+                        
+                        <h2 class="fs-4"><?= htmlspecialchars($teamName) ?> <?= htmlspecialchars($team['mascot']) ?></h2>                        
+                        
+                        <div class="table-responsive">
+                            
+                            <table class="statsTable table table-sm table-bordered table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Pokemon</th>
+                                        <th scope="col" style="width:12%">Kills</th>
+                                        <th scope="col" style="width:12%">Deaths</th>
+                                        <th scope="col" style="width:12%">Usage</th>
+                                        <th scope="col" style="width:12%">+/-</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    <?php foreach ($team['pokemon'] as $tier => $pokemonGroup): ?>
 
-                                    <?php if (!empty($pokemonGroup)): ?>
+                                        <?php if (!empty($pokemonGroup)): ?>
 
-                                        <?php foreach ($pokemonGroup as $pokemon): ?>
+                                            <?php foreach ($pokemonGroup as $pokemon): ?>
 
-                                            <tr>
-                                                <td><?= htmlspecialchars($pokemon['name']) ?> <span class="tierBadge-<?= htmlspecialchars($pokemon['tier']) ?> badge rounded-5"><?= htmlspecialchars($pokemon['tier']) ?></span></td>
-                                                <td><?= $pokemon['kills'] ?></td>
-                                                <td><?= $pokemon['deaths'] ?></td>
-                                                <td><?= $pokemon['usage'] ?></td>
-                                                <td><?= $pokemon['kills'] - $pokemon['deaths'] ?></td>
-                                            </tr>
+                                                <tr>
+                                                    <td><?= htmlspecialchars($pokemon['name']) ?> <span class="tierBadge-<?= htmlspecialchars($pokemon['tier']) ?> badge rounded-5"><?= htmlspecialchars($pokemon['tier']) ?></span></td>
+                                                    <td><?= $pokemon['kills'] ?></td>
+                                                    <td><?= $pokemon['deaths'] ?></td>
+                                                    <td><?= $pokemon['usage'] ?></td>
+                                                    <td><?= $pokemon['kills'] - $pokemon['deaths'] ?></td>
+                                                </tr>
 
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
 
-                                    <?php endif; ?>
+                                        <?php endif; ?>
 
-                                <?php endforeach; ?>
+                                    <?php endforeach; ?>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             <?php endforeach ?>

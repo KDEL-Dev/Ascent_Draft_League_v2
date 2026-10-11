@@ -888,7 +888,22 @@ li
 .statsTable td
 {
     /* Change color of THEAD to main */
-   font-family: 'jura'; 
+   font-family: 'electrolize'; 
+}
+
+.statsTable th:not(:first-child)
+{
+    text-align: center;
+}
+
+.statsTable td:first-child
+{
+    font-family: "jura";
+}
+
+.statsTable td:not(:first-child)
+{
+    text-align: center;
 }
 
 
