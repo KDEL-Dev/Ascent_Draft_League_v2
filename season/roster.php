@@ -143,7 +143,7 @@
                     <div class="rosterCard card">
 
                         <div class="card-header">
-                            <h2>
+                            <h2 class="fs-5">
                                 <?php echo htmlspecialchars($teamName); ?>
                                 <?php echo htmlspecialchars($roster['mascot']); ?>
                             </h2>

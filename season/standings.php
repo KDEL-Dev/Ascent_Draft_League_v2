@@ -140,22 +140,22 @@
                             <th scope="col">Losses</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="table-group-divider">
                         <?php foreach ($standings as $index => $team): ?>
 
                             <tr>
-                                <td class="fs-5"><?= $index + 1 ?></td>
+                                <td class=""><?= $index + 1 ?></td>
 
-                                <td class="fs-5">
+                                <td class="">
                                     <?= htmlspecialchars($team['default_team_name']) ?>
                                     <?= htmlspecialchars($team['default_team_mascot']) ?>                                   
                                 </td>
 
-                                <td class="fs-5">
+                                <td class="">
                                     <?= $team['wins'] ?>
                                 </td>
 
-                                <td class="fs-5">
+                                <td class="">
                                     <?= $team['losses'] ?>
                                 </td>
                             </tr>

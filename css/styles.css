@@ -781,6 +781,15 @@ li
     color: white;
 }
 
+#standingsTable
+{
+    font-family: "electrolize";
+}
+
+#standingsTable td:nth-child(2)
+{
+    font-family: "jura";
+}
 
 
 .pkmnLeaderImgCont
@@ -883,6 +892,15 @@ li
 /* -----------------------------------------------------------------------
 ----------------------------- STATISTICS PAGE -------------------------------
 ------------------------------------------------------------------------*/
+.tableBg 
+{
+    /* background-color: color-mix(in srgb, var(--main-color) 15%, transparent); */
+}
+
+.statsTeamName
+{
+    font-family: 'electrolize';
+}
 
 .statsTable th,
 .statsTable td
@@ -890,6 +908,22 @@ li
     /* Change color of THEAD to main */
    font-family: 'electrolize'; 
 }
+
+
+.statsTable thead th
+{
+    background-color: var(--main-color);
+    color: white;
+
+    border: none;
+    border-right: 1px solid white;
+}
+
+.statsTable thead th:last-child
+{
+    border-right: none
+}
+
 
 .statsTable th:not(:first-child)
 {

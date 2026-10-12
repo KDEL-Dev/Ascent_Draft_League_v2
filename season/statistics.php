@@ -152,9 +152,9 @@
             <h1 class="border-bottom fs-3">Statistics</h1>
             <?php foreach ($teams as $teamName => $team): ?>
                 <div class="col-12 col-lg-6">
-                    <div class="m-1 p-3 bg-light border rounded-3">
+                    <div class="tableBg m-1 p-3 border rounded-3">
                         
-                        <h2 class="fs-4"><?= htmlspecialchars($teamName) ?> <?= htmlspecialchars($team['mascot']) ?></h2>                        
+                        <h2 class="statsTeamName fs-4"><?= htmlspecialchars($teamName) ?> <?= htmlspecialchars($team['mascot']) ?></h2>                        
                         
                         <div class="table-responsive">
                             

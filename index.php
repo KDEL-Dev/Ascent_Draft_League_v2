@@ -69,7 +69,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div id="navbarSupportedContentHome" class="collapse navbar-collapse">
-            <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-evenly" >
+            <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-center" >
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
@@ -78,6 +78,9 @@
                 </li>
                 <li class="nav-item" href="#">
                     <a class="nav-link" href="#">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Admin Settings</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout.php">Logout</a>
