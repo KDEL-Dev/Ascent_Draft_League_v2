@@ -582,41 +582,43 @@
                 <?php endif; ?>
             </div>
         </div>
-        <div id="draftTierPageBtn" class="btn-group mb-3 px-3" role="group">
-            <button 
-                type="button" 
-                class="btn btn-primary btn-lg tierButton"
-                data-tier="ou">
-                OU
-            </button>
+        <div class="container">
+            <div id="draftTierPageBtn" class="btn-group my-3 d-flex justify-content-center" role="group">
+                <button 
+                    type="button" 
+                    class="btn btn-primary btn-sm tierButton"
+                    data-tier="ou">
+                    OU
+                </button>
 
-            <button 
-                type="button" 
-                class="btn btn-outline-primary btn-lg tierButton"
-                data-tier="uu">
-                UU
-            </button>
+                <button 
+                    type="button" 
+                    class="btn btn-outline-primary btn-sm tierButton"
+                    data-tier="uu">
+                    UU
+                </button>
 
-            <button 
-                type="button" 
-                class="btn btn-outline-primary btn-lg tierButton"
-                data-tier="ru">
-                RU
-            </button>
+                <button 
+                    type="button" 
+                    class="btn btn-outline-primary btn-sm tierButton"
+                    data-tier="ru">
+                    RU
+                </button>
 
-            <button 
-                type="button" 
-                class="btn btn-outline-primary btn-lg tierButton"
-                data-tier="nu">
-                NU
-            </button>
+                <button 
+                    type="button" 
+                    class="btn btn-outline-primary btn-sm tierButton"
+                    data-tier="nu">
+                    NU
+                </button>
+            </div>
         </div>
 
-        <div class="m-3">
+        <div class="m-4">
             <div id="ouDraftList" class="row tier-section">
-                <h2>
+                <h2 class="py-2 fs-5 badge tierBadge-OU ">
                     OU Pokemon
-                    <span class="badge text-bg-secondary">UUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+UUBL</span>
                 </h2>
                 <?php foreach ($groupedPokemon['OU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
@@ -647,9 +649,9 @@
                 <?php endforeach; ?>
             </div>
             <div class="row tier-section" id="uuDraftList">
-                <h2>
+                <h2 class="py-2 fs-5 badge tierBadge-UU">
                     UU Pokemon
-                    <span class="badge text-bg-secondary">RUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+RUBL</span>
                 </h2>
                 <?php foreach ($groupedPokemon['UU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
@@ -680,9 +682,9 @@
                 <?php endforeach; ?>
             </div>
             <div class="row tier-section" id="ruDraftList">
-                <h2>
+                <h2 class="py-2 fs-5 badge tierBadge-RU">
                     RU Pokemon
-                    <span class="badge text-bg-secondary">NUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+NUBL</span>
                 </h2>
                 <?php foreach ($groupedPokemon['RU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">
@@ -713,12 +715,13 @@
                 <?php endforeach; ?>
             </div>
             <div class="row tier-section" id="nuDraftList">
-                <h2>
+                <h2 class="py-2 fs-5 badge tierBadge-NU">
                     NU Pokemon
-                    <span class="badge text-bg-secondary">PUBL</span>
-                    <span class="badge text-bg-secondary">PU</span>
-                    <span class="badge text-bg-secondary">ZUBL</span>
-                    <span class="badge text-bg-secondary">ZU</span>
+
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+PUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+PU</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+ZUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+ZU</span>
                 </h2>
                 <?php foreach ($groupedPokemon['NU'] as $pokemon): ?>
                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 my-2">

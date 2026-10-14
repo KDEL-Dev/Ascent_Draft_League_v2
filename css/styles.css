@@ -24,6 +24,7 @@
 }
 
 
+
 p,span,li,h1,h2,h3
 {
     font-family: "jura";
@@ -495,23 +496,25 @@ li
 }
 
 /* Tier Buttons */
+
+
 #draftTierPageBtn .btn-outline-primary
 {
-    border-color: var(--info-header);
-    color: var(--info-header);
+    border-color: var(--nav-color);
+    color: var(--nav-color);
 }
 
 #draftTierPageBtn .btn-outline-primary:hover
 {
-    background-color: var(--info-header);
-    border-color: var(--info-header);
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
     color: white;
 }
 
 #draftTierPageBtn .btn-primary
 {
-    background-color: var(--info-header);
-    border-color: var(--info-header);
+    background-color: var(--main-color);
+    border-color: var(--main-color);
     color: white;
 }
 

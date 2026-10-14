@@ -322,9 +322,9 @@ unset($pokemonGroup);
             <!-- OU -->
             <div id="ouPokeboxList" class="row pokebox-tier-section">
 
-                <h2 class="fs-5 badge tierBadge-OU">
+                <h2 class="py-2 fs-5 badge tierBadge-OU">
                     OU Pokemon
-                    <span class="badge text-bg-secondary">+UUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+UUBL</span>
                 </h2>
 
                 <?php foreach ($groupedPokemon['OU'] as $pokemon): ?>
@@ -392,9 +392,9 @@ unset($pokemonGroup);
             <!-- UU -->
             <div id="uuPokeboxList" class="row pokebox-tier-section">
 
-                <h2 class="fs-5 badge tierBadge-UU">
+                <h2 class="py-2 fs-5 badge tierBadge-UU">
                     UU Pokemon
-                    <span class="badge text-bg-secondary">+RUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+RUBL</span>
                 </h2>
 
                 <?php foreach ($groupedPokemon['UU'] as $pokemon): ?>
@@ -461,9 +461,9 @@ unset($pokemonGroup);
             <!-- RU -->
             <div id="ruPokeboxList" class="row pokebox-tier-section">
 
-                <h2 class="fs-5 badge tierBadge-RU">
+                <h2 class="py-2 fs-5 badge tierBadge-RU">
                     RU Pokemon
-                    <span class="badge text-bg-secondary">+NUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+NUBL</span>
                 </h2>
 
                 <?php foreach ($groupedPokemon['RU'] as $pokemon): ?>
@@ -530,13 +530,13 @@ unset($pokemonGroup);
             <!-- NU -->
             <div id="nuPokeboxList" class="row pokebox-tier-section">
 
-                <h2 class="fs-5 badge tierBadge-NU">
+                <h2 class="py-2 fs-5 badge tierBadge-NU">
                     NU Pokemon
 
-                    <span class="badge text-bg-secondary">+PUBL</span>
-                    <span class="badge text-bg-secondary">+PU</span>
-                    <span class="badge text-bg-secondary">+ZUBL</span>
-                    <span class="badge text-bg-secondary">+ZU</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+PUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+PU</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+ZUBL</span>
+                    <span class="badge text-bg-secondary d-sm-none d-md-inline">+ZU</span>
                 </h2>
 
                 <?php foreach ($groupedPokemon['NU'] as $pokemon): ?>
