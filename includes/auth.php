@@ -10,8 +10,8 @@
     // ----------------------------------------
 
     if (!isset($_SESSION['user_id'])) {
-
-        header("Location: ../login.php");
+        // Path below might need to change when I put it online.
+        header("Location: /ascent_draft_league_v2/login.php");
         exit;
     }
 

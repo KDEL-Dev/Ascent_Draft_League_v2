@@ -11,37 +11,58 @@
     <title>About</title>
 </head>
 <body class="bg-body-secondary">
-    <nav class="px-3 mb-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-        <button 
+   <nav class="px-3 mb-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container-fluid position-relative">
+            <!-- Logo -->
+            <a href="index.php" class="navbar-brand">
+                <img
+                    src="img/Ascent_Horizontal_Text_GRAD_2.png"
+                    alt="Ascent Grad Logo"
+                    height="50"
+                    style="width: auto;"
+                >
+            </a>
+            <!-- Collapse Button -->
+            <button 
             type="button" data-bs-toggle = "collapse" data-bs-target="#navbarSupportedContentHome" 
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" 
-            class="navbar-toggler"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarSupportedContentHome" class="collapse navbar-collapse">
-            <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-center" >
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <li class="nav-item" href="#">
-                    <a class="nav-link" href="about.php">About</a>
-                </li>
-                <li class="nav-item" href="#">
-                    <a class="nav-link" href="#">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Admin Settings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Logout</a>
-                </li>
-            </ul>
+            class="navbar-toggler">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Main Nav Buttons -->
+            <div id="navbarSupportedContentHome" class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item" href="#">
+                        <a class="nav-link" href="about.php">About</a>
+                    </li>
+                    <li class="nav-item" href="#">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-main.php">Admin Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-   </nav>
-    <main class="container bg-white">
+    </nav>
+    <main class="container p-3 bg-white">
         <h1 class="fs-3">About</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos perferendis maxime repudiandae eos porro asperiores sunt facere mollitia ad consequuntur officiis dolore error optio, aperiam quis accusamus est voluptatum id.</p>
+        
+        <div class="d-flex align-items-center flex-column">
+            <img src="img/Ascent_Horizontal_Text_GRAD_2.png" height="150" alt="">
+            <p class="text-center">The Ascent Draft League is a competitive Pokémon draft-style league focused on strategy, team building, and player skill. Each participant drafts a unique roster of Pokémon across multiple tiers, creating balanced and diverse teams for the season. 
+
+            The league is structured into a Round Robin stage followed by a Knockout stage, where players compete in Best-of-One matches. Success depends on preparation, adaptability, and smart roster management, including limited mid-season trades.
+
+            Players are responsible for scheduling their own matches and are expected to maintain clear communication and respectful conduct throughout the season. The Ascent Draft League is designed to deliver a competitive yet community-driven experience for all participants. 
+            </p>
+        </div>
     </main>
      <script src="javascript/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

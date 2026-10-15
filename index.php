@@ -34,7 +34,7 @@
                         is_active,
                         format
                     FROM seasons
-                    ORDER BY season_number DESC
+                    ORDER BY season_number ASC
     ";
 
     $seasonsResult = $conn->query($seasonsSql);
@@ -60,34 +60,46 @@
     <title>Ascent Draft League</title>
 </head>
 <body class=" bg-body-secondary">
-   <nav class="px-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-        <button 
+   <nav class="px-3 mb-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container-fluid position-relative">
+            <!-- Logo -->
+            <a href="index.php" class="navbar-brand">
+                <img
+                    src="img/Ascent_Horizontal_Text_GRAD_2.png"
+                    alt="Ascent Grad Logo"
+                    height="50"
+                    style="width: auto;"
+                >
+            </a>
+            <!-- Collapse Button -->
+            <button 
             type="button" data-bs-toggle = "collapse" data-bs-target="#navbarSupportedContentHome" 
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" 
-            class="navbar-toggler"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarSupportedContentHome" class="collapse navbar-collapse">
-            <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-center" >
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <li class="nav-item" href="#">
-                    <a class="nav-link" href="about.php">About</a>
-                </li>
-                <li class="nav-item" href="#">
-                    <a class="nav-link" href="#">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Admin Settings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Logout</a>
-                </li>
-            </ul>
+            class="navbar-toggler">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Main Nav Buttons -->
+            <div id="navbarSupportedContentHome" class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item" href="#">
+                        <a class="nav-link" href="about.php">About</a>
+                    </li>
+                    <li class="nav-item" href="#">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-main.php">Admin Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-   </nav>
+    </nav>
 
    <div class="d-flex flex-column">
 
@@ -102,7 +114,7 @@
                         <div class="card">
                             <div class="row g-0">
                                 <div class="col-md-4 bg-dark">
-                                    <img class="img-fluid" src="img/Ascent Grad Logo.svg" alt="">
+                                    <img class="img-fluid" src="img/Ascent Grad Logo w Text.svg" alt="">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -225,7 +237,7 @@
                         <h2 class="fs-4 mb-0">Statistics</h2>
                         <p>Stats from all previous seasons</p>
                         <div class="flex-grow-1">
-                            <a class="btn btn-primary" href="#">Enter</a>
+                            <a class="btn btn-primary" href="statistics.php">Enter</a>
                         </div>
                         
                     </div>
@@ -235,7 +247,7 @@
                     <div id="pastChampionsCont" class=" p-3 h-100 border rounded-2 d-flex justify-content-center flex-column align-items-center">
                         <h2 class="fs-4 mb-0">Past Champions</h2>
                         <p>List of all previous league winners and their teams</p>
-                        <a href="#" class="btn btn-primary">Enter</a>
+                        <a href="champions.php" class="btn btn-primary">Enter</a>
                     </div>
                 </div>
                 
