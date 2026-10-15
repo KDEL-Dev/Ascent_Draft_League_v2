@@ -5,7 +5,47 @@
 
     require_once __DIR__ . '/../includes/auth.php';
 
-    $seasonId = 1;
+    // $seasonId = 1;
+    // 1. Get seasonId from url
+    $seasonId = filter_input(INPUT_GET,'seasonId',FILTER_VALIDATE_INT,['options' => ['min_range' => 1]]);
+
+    // 2. Validate ID
+    if($seasonId === false || $seasonId === null)
+    {
+        http_response_code(400);
+        exit("Invalid season ID.");
+    }
+
+    // 3. Check that season exists
+    $seasonSql ="SELECT
+                 id, season_number, season_name, format
+                 FROM
+                 seasons
+                 WHERE
+                 id = ?
+                 LIMIT 
+                 1
+    ";
+
+    $seasonStmt = $conn->prepare($seasonSql);
+    $seasonStmt->bind_param("i", $seasonId);
+    $seasonStmt->execute();
+
+    $seasonResult = $seasonStmt->get_result();
+    $season = $seasonResult->fetch_assoc();
+
+    $seasonStmt->close();
+
+    // 4. Stop if eseason doesnt exist
+    if(!$season)
+    {
+        http_response_code(404);
+        exit("Season not found.");
+    }
+
+
+
+    
 
     $sql = "SELECT active_users.id, users.default_team_name, users.default_team_mascot
         FROM active_users
@@ -49,7 +89,7 @@
     <main class="container p-3">
         <div class="p-3 bg-white">
             <div class="my-3 pb-3 border-bottom">
-                <a href="matchups.php" class="btn btn-secondary">Return to Matchups</a>
+                <a href="matchups.php?seasonId=<?= (int)$seasonId ?>" class="btn btn-secondary">Return to Matchups</a>
             </div>
             <!-- TEAM SELECT -->
             <div id="newMatchTeamSelection" class="row">

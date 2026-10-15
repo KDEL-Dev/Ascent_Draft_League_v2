@@ -24,7 +24,7 @@
 
     $userId = (int)$_SESSION['user_id'];
 
-    $seasonId = 1;
+    // $seasonId = 1;
 
 
     // --------------------------------------------------
@@ -33,11 +33,43 @@
 
     $data = json_decode(file_get_contents('php://input'), true);
 
-    $pokemonId = isset($data['pokemon_id'])
-        ? (int)$data['pokemon_id']
-        : 0;
+    if (!is_array($data)) {
+        http_response_code(400);
 
-    if ($pokemonId <= 0) {
+        echo json_encode([
+            'status' => 'error',
+            'error' => 'Invalid request.'
+        ]);
+
+        exit;
+    }
+
+    // Validate season ID
+    $seasonId = filter_var(
+        $data['season_id'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    if ($seasonId === false || $seasonId === null) {
+        http_response_code(400);
+
+        echo json_encode([
+            'status' => 'error',
+            'error' => 'Invalid season ID.'
+        ]);
+
+        exit;
+    }
+
+    // Validate Pokémon ID
+    $pokemonId = filter_var(
+        $data['pokemon_id'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    if ($pokemonId === false || $pokemonId === null) {
         http_response_code(400);
 
         echo json_encode([
@@ -47,7 +79,6 @@
 
         exit;
     }
-
 
     // --------------------------------------------------
     // GET ACTIVE USER

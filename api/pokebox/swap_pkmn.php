@@ -25,8 +25,9 @@
 
 
     $userId = (int) $_SESSION['user_id'];
-    $seasonId = 1;
+    // $seasonId = 1;
 
+    
 
     // --------------------------------------------------
     // GET JSON REQUEST
@@ -48,6 +49,28 @@
 
         exit;
     }
+
+    // --------------------------------------------------
+    // GET AND VALIDATE SEASON ID
+    // --------------------------------------------------
+
+    $seasonId = filter_var(
+        $input['season_id'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    if ($seasonId === false || $seasonId === null) {
+        http_response_code(400);
+
+        echo json_encode([
+            'status' => 'error',
+            'error' => 'Invalid season ID.'
+        ]);
+
+        exit;
+    }
+
 
 
     // --------------------------------------------------

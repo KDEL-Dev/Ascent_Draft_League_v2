@@ -1,10 +1,51 @@
 <?php
     // error_reporting(E_ALL);
     // ini_set('display_errors',1);
+
+    session_start();
         
     require_once __DIR__ . '/../includes/auth.php';
 
-    $seasonId = 1;
+    // $seasonId = 1;
+    // 1. Get seasonId from url
+    $seasonId = filter_input(INPUT_GET,'seasonId',FILTER_VALIDATE_INT,['options' => ['min_range' => 1]]);
+
+    // 2. Validate ID
+    if($seasonId === false || $seasonId === null)
+    {
+        http_response_code(400);
+        exit("Invalid season ID.");
+    }
+
+    // 3. Check that season exists
+    $seasonSql ="SELECT
+                 id, season_number, season_name, format
+                 FROM
+                 seasons
+                 WHERE
+                 id = ?
+                 LIMIT 
+                 1
+    ";
+
+    $seasonStmt = $conn->prepare($seasonSql);
+    $seasonStmt->bind_param("i", $seasonId);
+    $seasonStmt->execute();
+
+    $seasonResult = $seasonStmt->get_result();
+    $season = $seasonResult->fetch_assoc();
+
+    $seasonStmt->close();
+
+    // 4. Stop if eseason doesnt exist
+    if(!$season)
+    {
+        http_response_code(404);
+        exit("Season not found.");
+    }
+
+
+    
 
     $rosterSql = "SELECT users.default_team_name, users.default_team_mascot, showdown_pokemon.name, pokemon_tier_per_season.tier
                 FROM roster_pkmn

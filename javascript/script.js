@@ -1154,6 +1154,11 @@ showTier("ou");
 const pokeboxButtons = document.querySelectorAll(".pokeboxBtn");
 const pokeboxData = document.getElementById("pokeboxData");
 
+// To receive season number from URL
+const params = new URLSearchParams(window.location.search);
+const seasonId = params.get('seasonId');
+
+
 if(pokeboxButtons.length > 0 && pokeboxData)
 {
 
@@ -1176,8 +1181,7 @@ if(pokeboxButtons.length > 0 && pokeboxData)
             if (rosterCount >= rosterMax) {
 
                 window.location.href =
-                    `swap-pkmn.php?add=${pokemonId}`;
-
+                    `swap-pkmn.php?seasonId=${seasonId}&add=${pokemonId}`;
                 return;
             }
 
@@ -1197,7 +1201,8 @@ if(pokeboxButtons.length > 0 && pokeboxData)
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            pokemon_id: pokemonId
+                            season_id: Number(seasonId),
+                            pokemon_id: Number(pokemonId)
                         })
                     }
                 );
@@ -1251,7 +1256,7 @@ if(pokeboxButtons.length > 0 && pokeboxData)
 if (window.location.pathname.includes('swap-pkmn.php')) {
 
     const params = new URLSearchParams(window.location.search);
-
+    const seasonId = params.get('seasonId')
     const addPokemonId = params.get('add');
 
     const dropPokemon =
@@ -1296,6 +1301,7 @@ if (window.location.pathname.includes('swap-pkmn.php')) {
                         },
 
                         body: JSON.stringify({
+                            season_id: Number(seasonId),
                             add: Number(addPokemonId),
                             drop: Number(dropRosterId)
                         })
@@ -1309,7 +1315,7 @@ if (window.location.pathname.includes('swap-pkmn.php')) {
                 if (data.status === 'success') {
 
                     window.location.href =
-                        'pokebox.php';
+                        `pokebox.php?seasonId=${seasonId}`;
 
                 } else {
 

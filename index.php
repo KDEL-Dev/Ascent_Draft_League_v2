@@ -159,7 +159,7 @@
                             <div class="col-6 col-md-4 col-lg-3">
 
                                 <a
-                                    href="season/draft.php?season_id=<?= (int) $season['id'] ?>"
+                                    href="season/draft.php?seasonId=<?= (int) $season['id'] ?>"
                                     class="text-decoration-none text-reset"
                                 >
                                     <div class="card h-100">
