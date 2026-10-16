@@ -250,7 +250,7 @@
                 </button>
 
                 <a
-                    href="pokebox.php"
+                    href="pokebox.php?seasonId=<?= (int)$seasonId ?>"
                     class="btn btn-secondary">
                     Cancel
                 </a>

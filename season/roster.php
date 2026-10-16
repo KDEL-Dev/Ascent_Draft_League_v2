@@ -47,7 +47,7 @@
 
     
 
-    $rosterSql = "SELECT users.default_team_name, users.default_team_mascot, showdown_pokemon.name, pokemon_tier_per_season.tier
+    $rosterSql ="SELECT users.default_team_name, users.default_team_mascot, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.tier
                 FROM roster_pkmn
                 JOIN active_users
                 ON roster_pkmn.active_user_id = active_users.id
@@ -94,7 +94,9 @@
 
         $rosters[$teamName]['pokemon'][] = [
             'name' => $row['name'],
-            'tier' => $row['tier']
+            'tier' => $row['tier'],
+            'type1' => $row['type1'],
+            'type2' => $row['type2'],
         ];
     }
 
@@ -193,7 +195,7 @@
 
                 <?php foreach ($rosters as $teamName => $roster): ?>
 
-                    <div class="mb-3 col-12 col-md-6 col-lg-3">
+                    <div class="mb-3 col-12 col-sm-6 col-md-4 col-lg-3">
 
                         <div class="rosterCard card">
 
@@ -216,13 +218,24 @@
                                                 <?= htmlspecialchars($tier) ?>
                                             </div>
 
-                                            <div class="rosterCardPkmn">
-                                                <?= htmlspecialchars($pokemon['name']) ?>
+                                            <div class="rosterCardPkmn d-flex flex-column align-items-start">
+                                                <div>
+                                                    <p class="">
+                                                        <?= htmlspecialchars($pokemon['name']) ?>
+                                                    </p>
+                                                </div>
+                                                
+                                                <div class="mb-1 d-flex">
+                                                    <div class="me-1 badge typeBadge-<?= strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                                        <?= htmlspecialchars($pokemon['type1']) ?>
+                                                    </div>
+                                                    <div class="badge typeBadge-<?= strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                                        <?= htmlspecialchars($pokemon['type2']) ?>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div>
-                                                <!-- Typings -->
-                                            </div>
+                                            
                                         </li>
 
                                     <?php endforeach; ?>

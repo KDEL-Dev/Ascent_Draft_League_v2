@@ -234,7 +234,7 @@
             <div class="row mb-3">
                 <div class="col-lg-6 my-1">
                     <div id="statisticsCont" class="h-100 p-3 border rounded-2 d-flex justify-content-center flex-column align-items-center">
-                        <h2 class="fs-4 mb-0">Statistics</h2>
+                        <h2 class="fs-4 mb-0">Legacy Stats</h2>
                         <p>Stats from all previous seasons</p>
                         <div class="flex-grow-1">
                             <a class="btn btn-primary" href="statistics.php">Enter</a>
