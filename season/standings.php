@@ -166,83 +166,95 @@
     <main class="container p-3">
         <div class="row p-3 bg-white">
             <h1 class="fs-3">Standings</h1>
-
             <hr> 
             
-            <div class="col-12 col-lg-4">
-                <h2 class="fs-4">Regular Season</h2>
-                <table id="standingsTable" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Team</th>
-                            <th scope="col">Wins</th>
-                            <th scope="col">Losses</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                        <?php foreach ($standings as $index => $team): ?>
+            <?php if(empty($standings)): ?>
+                
+                <div class="col-12 py-5 text-center">
+                    <i class="mb-3 fa-solid fa-calendar-xmark fa-3x text-secondary"></i>
 
+                    <h2 class="fs-5">No Standings Yet</h2>
+
+                    <p class="mb-0 text-secondary">Standings will appear once the first match has been completed</p>
+                </div>
+                
+            <?php else: ?>
+                <div class="col-12 col-lg-4">
+                    <h2 class="fs-4">Regular Season</h2>
+                    <table id="standingsTable" class="table table-bordered table-striped">
+                        <thead>
                             <tr>
-                                <td class=""><?= $index + 1 ?></td>
-
-                                <td class="">
-                                    <?= htmlspecialchars($team['default_team_name']) ?>
-                                    <?= htmlspecialchars($team['default_team_mascot']) ?>                                   
-                                </td>
-
-                                <td class="">
-                                    <?= $team['wins'] ?>
-                                </td>
-
-                                <td class="">
-                                    <?= $team['losses'] ?>
-                                </td>
+                                <th scope="col">#</th>
+                                <th scope="col">Team</th>
+                                <th scope="col">Wins</th>
+                                <th scope="col">Losses</th>
                             </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <?php foreach ($standings as $index => $team): ?>
 
-                        <?php endforeach; ?>
+                                <tr>
+                                    <td class=""><?= $index + 1 ?></td>
 
-                    </tbody>
+                                    <td class="">
+                                        <?= htmlspecialchars($team['default_team_name']) ?>
+                                        <?= htmlspecialchars($team['default_team_mascot']) ?>                                   
+                                    </td>
 
-                </table>
-            </div>
-            <div id="killLeaderCont" class="col-12 col-lg-8">
-                <h2 class="fs-4">Pokemon Kill Leaders</h2>
-                <div class="card-group">
-                    <!-- For every item, create a new card -->
-                     <?php foreach ($pkmnLeader as $index => $pkmn): ?> <!-- colon is important for some reason - look into -->
-                    <div class="card d-sm-flex flex-row d-md-block">
-                        
-                        <?php
-                            $rankClass = match ($index) {
-                                0 => 'rank-gold',
-                                1 => 'rank-silver',
-                                2 => 'rank-bronze',
-                                3, 4 => 'rank-grey',
-                                default => '',
-                            };
-                        ?>
-                        <div class="card-header <?= $rankClass ?>">
-                            <p class="mb-0 text-center text-white fw-bold"><?= $index + 1 ?></p>
-                        </div>
-                        <div class="pkmnLeaderImgCont">
-                            <img src="" alt="<?= htmlspecialchars($pkmn['name']) ?>" data-pkmn-name="<?= htmlspecialchars($pkmn['name']) ?>" class="pkmnLeaderImg">
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <p class="card-title fw-bold mb-0"><?= htmlspecialchars($pkmn['name']) ?></p>
-                                <p class="tierBadge-<?= htmlspecialchars($pkmn['tier']) ?>  mb-0 badge rounded-5 d-inline-block"><?= htmlspecialchars($pkmn['tier']) ?></p>
+                                    <td class="">
+                                        <?= $team['wins'] ?>
+                                    </td>
+
+                                    <td class="">
+                                        <?= $team['losses'] ?>
+                                    </td>
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            
+                <div id="killLeaderCont" class="col-12 col-lg-8">
+                    <h2 class="fs-4">Pokemon Kill Leaders</h2>
+                    <div class="card-group">
+                        <!-- For every item, create a new card -->
+                        <?php foreach ($pkmnLeader as $index => $pkmn): ?> <!-- colon is important for some reason - look into -->
+                        <div class="card d-sm-flex flex-row d-md-block">
+                            
+                            <?php
+                                $rankClass = match ($index) {
+                                    0 => 'rank-gold',
+                                    1 => 'rank-silver',
+                                    2 => 'rank-bronze',
+                                    3, 4 => 'rank-grey',
+                                    default => '',
+                                };
+                            ?>
+                            <div class="card-header <?= $rankClass ?>">
+                                <p class="mb-0 text-center text-white fw-bold"><?= $index + 1 ?></p>
                             </div>
-                            <p class="card-text mb-0 d-flex align-items-center">Kills: <span class="ms-1 fw-bold fs-4"><?= htmlspecialchars($pkmn['total_kills']) ?></span></p>
-                            <p class="card-text d-flex align-items-center">Deaths: <span class="ms-1 fw-bold fs-4"><?= htmlspecialchars($pkmn['total_deaths']) ?></span></p>
+                            <div class="pkmnLeaderImgCont">
+                                <img src="" alt="<?= htmlspecialchars($pkmn['name']) ?>" data-pkmn-name="<?= htmlspecialchars($pkmn['name']) ?>" class="pkmnLeaderImg">
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <p class="card-title fw-bold mb-0"><?= htmlspecialchars($pkmn['name']) ?></p>
+                                    <p class="tierBadge-<?= htmlspecialchars($pkmn['tier']) ?>  mb-0 badge rounded-5 d-inline-block"><?= htmlspecialchars($pkmn['tier']) ?></p>
+                                </div>
+                                <p class="card-text mb-0 d-flex align-items-center">Kills: <span class="ms-1 fw-bold fs-4"><?= htmlspecialchars($pkmn['total_kills']) ?></span></p>
+                                <p class="card-text d-flex align-items-center">Deaths: <span class="ms-1 fw-bold fs-4"><?= htmlspecialchars($pkmn['total_deaths']) ?></span></p>
+                            </div>
+                            <div class="card-footer fw-bold">
+                                <p class="card-text text-center"><?= htmlspecialchars($pkmn['default_team_name']) ?></p>
+                            </div>
                         </div>
-                        <div class="card-footer fw-bold">
-                            <p class="card-text text-center"><?= htmlspecialchars($pkmn['default_team_name']) ?></p>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>  
-            </div>
+                        <?php endforeach; ?>
+                    </div>  
+                </div>
+            <?php endif ?>
         </div>
         
     </main>

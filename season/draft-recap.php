@@ -87,7 +87,7 @@
 
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
+    <script src="https://kit.fontawesome.com/4a4034fc29.js" crossorigin="anonymous"></script>
 
     <title>Draft Recap</title>
 </head>
@@ -108,35 +108,49 @@
             <h1 class="fs-3">Draft Recap</h1>
             <!-- <p>Date: </p> -->
             <hr>
-            <?php foreach ($round as $roundNumber => $picks): ?>
-            <div class="mt-3 col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                <h2 class="fs-5 border-bottom">Round <?= htmlspecialchars($roundNumber) ?></h2>
-                <?php foreach ($picks as $pick): ?>
-                    <ul id="draftRecapList" class="ps-0 list-group">
-                        <li class="list-group-item d-flex">
-                            <div class="recapPickNum border-end">
-                                <?= htmlspecialchars($pick['pick_number']) ?>
-                            </div>
-                            <div class="flex-grow-1 d-flex">
-                                <div class="ps-3 fw-bold">
-                                    <?= htmlspecialchars($pick['name']) ?>
+
+            <?php if(empty($round)): ?>
+                <div class="col-12 py-5 text-center">
+                    
+                    <i class="mb-3 fa-solid fa-calendar-xmark fa-3x text-secondary"></i>
+
+                    <h2 class="fs-5">No Draft Recap</h2>
+
+                    <p class="mb-0 text-secondary">Draft Recap will appear once draft information has been added</p>
+                </div>
+            <?php else: ?>
+
+            
+                <?php foreach ($round as $roundNumber => $picks): ?>
+                <div class="mt-3 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <h2 class="fs-5 border-bottom">Round <?= htmlspecialchars($roundNumber) ?></h2>
+                    <?php foreach ($picks as $pick): ?>
+                        <ul id="draftRecapList" class="ps-0 list-group">
+                            <li class="list-group-item d-flex">
+                                <div class="recapPickNum border-end">
+                                    <?= htmlspecialchars($pick['pick_number']) ?>
                                 </div>
+                                <div class="flex-grow-1 d-flex">
+                                    <div class="ps-3 fw-bold">
+                                        <?= htmlspecialchars($pick['name']) ?>
+                                    </div>
 
-                                <div class="tierBadge-<?= htmlspecialchars($pick['tier']) ?> mb-0 ms-2 badge rounded-5 d-flex align-items-center">
-                                    <?= htmlspecialchars($pick['tier']) ?>
+                                    <div class="tierBadge-<?= htmlspecialchars($pick['tier']) ?> mb-0 ms-2 badge rounded-5 d-flex align-items-center">
+                                        <?= htmlspecialchars($pick['tier']) ?>
+                                    </div>
                                 </div>
-                            </div>
-                            
+                                
 
-                            <div class="fw-bold border-start ps-2 d-flex justify-content-end">
-                                <?= htmlspecialchars($pick['default_team_name']) ?>
-                            </div>
-                        </li>
-                    </ul>
+                                <div class="fw-bold border-start ps-2 d-flex justify-content-end">
+                                    <?= htmlspecialchars($pick['default_team_name']) ?>
+                                </div>
+                            </li>
+                        </ul>
 
-                <?php endforeach; ?>
-            </div>
-            <?php endforeach ?>
+                    <?php endforeach; ?>
+                </div>
+                <?php endforeach ?>
+            <?php endif ?>
         </div>
     </main>
 

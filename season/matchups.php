@@ -135,67 +135,54 @@
 
     <main class="container p-3">
         <div id="matchupPage" class="p-3 bg-white">
-            <h1>Matchups</h1>
+            <h1 class="fs-3">Matchups</h1>
+
             <div class="pb-3 border-bottom">
-                <button class="btn btn-primary"><a href="new-matchup.php?seasonId=<?= (int)$seasonId ?>">New Entry</a></button>
+                <a href="new-matchup.php?seasonId=<?= (int)$seasonId ?>" class="btn btn-primary">New Entry</a>
             </div>
+
             <div class="row">
-                <?php foreach ($matchups as $matchupId => $matchup): ?>
-                    <div class="matchupBoxes col-12 col-md-6 col-lg-4 p-3 g-3">
-                        <div class="border rounded-1 border-dark-subtle">
 
-                        
-                            <?php
-                                // What is array keys doing?
-                                $teams = array_keys($matchup['teams']);
-                                $team1 = $teams[0] ?? 'Team 1';
-                                $team2 = $teams[1] ?? 'Team 2';
+                <?php if (empty($matchups)): ?>
+                    <div class="col-12 py-5 text-center">
+                        <i class="fa-solid fa-calendar-xmark fa-3x text-secondary mb-3"></i>
 
-                                $team1Mascot = $matchup['teams'][$team1]['mascot'] ?? '';
-                                $team2Mascot = $matchup['teams'][$team2]['mascot'] ?? '';
+                        <h2 class="fs-5">No Matchups Yet</h2>
 
-                            ?>
-                            <div class="matchTeamName">
-                                <h2 class="mb-0 py-1 fs-5 text-center"><?=  htmlspecialchars($team1) ?> <?= htmlspecialchars($team1Mascot) ?></h2>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table mb-0 table-bordered">  
-                                    <thead>
-                                        <tr>
-                                            <th class="bg-light">Pokemon</th>
-                                            <th class="w-25 bg-light">Kills</th>
-                                            <th class="w-25 bg-light">Deaths</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-group-divider">
-                                        <?php foreach ($matchup['teams'][$team1]['pokemon'] as $pokemon): ?>
-                                            <tr>
-                                                <td><?= htmlspecialchars($pokemon['name']) ?></td>
-                                                <td><?= $pokemon['kills'] ?></td>
-                                                <td><?= $pokemon['deaths'] ?></td>
-                                            </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
+                        <p class="text-secondary mb-0">Matchup will appear here once match data has been added</p>
+                    </div>
+                <?php else: ?>
 
-                                <div class="matchVsDivider d-flex p-1 border-top border-bottom">
-                                    <div class="flex-grow-1 d-flex align-items-center justify-content-center">
-                                        <h2 class="mb-0">VS</h2>
-                                    </div>
-                                    <div>
-                                        <a
-                                            href="<?= htmlspecialchars($matchup['replay']) ?>"
-                                            target="_blank"
-                                            class="btn btn-outline-light">
-                                            Replay
-                                        </a>
-                                    </div>
+                    <?php foreach ($matchups as $matchupId => $matchup): ?>
+
+                        <div class="matchupBoxes col-12 col-md-6 col-lg-4 p-3 g-3">
+                            <div class="border rounded-1 border-dark-subtle">
+
+                            
+                                <?php
+                                    // What is array keys doing?
+                                    $teams = array_keys($matchup['teams']);
+                                    $team1 = $teams[0] ?? 'Team 1';
+                                    $team2 = $teams[1] ?? 'Team 2';
+
+                                    $team1Mascot = $matchup['teams'][$team1]['mascot'] ?? '';
+                                    $team2Mascot = $matchup['teams'][$team2]['mascot'] ?? '';
+
+                                ?>
+                                <div class="matchTeamName">
+                                    <h2 class="mb-0 py-1 fs-5 text-center"><?=  htmlspecialchars($team1) ?> <?= htmlspecialchars($team1Mascot) ?></h2>
                                 </div>
-
                                 <div class="table-responsive">
                                     <table class="table mb-0 table-bordered">  
+                                        <thead>
+                                            <tr>
+                                                <th class="bg-light">Pokemon</th>
+                                                <th class="w-25 bg-light">Kills</th>
+                                                <th class="w-25 bg-light">Deaths</th>
+                                            </tr>
+                                        </thead>
                                         <tbody class="table-group-divider">
-                                            <?php foreach ($matchup['teams'][$team2]['pokemon'] as $pokemon): ?>
+                                            <?php foreach ($matchup['teams'][$team1]['pokemon'] as $pokemon): ?>
                                                 <tr>
                                                     <td><?= htmlspecialchars($pokemon['name']) ?></td>
                                                     <td><?= $pokemon['kills'] ?></td>
@@ -203,22 +190,50 @@
                                                 </tr>
                                             <?php endforeach ?>
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th class="bg-light">Pokemon</th>
-                                                <th class="w-25 bg-light">Kills</th>
-                                                <th class="w-25  bg-light">Deaths</th>
-                                            </tr>
-                                        </tfoot>
                                     </table>
-                                </div>
-                                <div class="matchTeamName">
-                                    <h2 class="mb-0 py-1 fs-5 text-center"><?=  htmlspecialchars($team2) ?> <?= htmlspecialchars($team2Mascot) ?></h2>
+
+                                    <div class="matchVsDivider d-flex p-1 border-top border-bottom">
+                                        <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+                                            <h2 class="mb-0">VS</h2>
+                                        </div>
+                                        <div>
+                                            <a
+                                                href="<?= htmlspecialchars($matchup['replay']) ?>"
+                                                target="_blank"
+                                                class="btn btn-outline-light">
+                                                Replay
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table mb-0 table-bordered">  
+                                            <tbody class="table-group-divider">
+                                                <?php foreach ($matchup['teams'][$team2]['pokemon'] as $pokemon): ?>
+                                                    <tr>
+                                                        <td><?= htmlspecialchars($pokemon['name']) ?></td>
+                                                        <td><?= $pokemon['kills'] ?></td>
+                                                        <td><?= $pokemon['deaths'] ?></td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="bg-light">Pokemon</th>
+                                                    <th class="w-25 bg-light">Kills</th>
+                                                    <th class="w-25  bg-light">Deaths</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="matchTeamName">
+                                        <h2 class="mb-0 py-1 fs-5 text-center"><?=  htmlspecialchars($team2) ?> <?= htmlspecialchars($team2Mascot) ?></h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach ?>
+                    <?php endforeach ?>
+                <?php endif ?>
             </div>
         </div>
         

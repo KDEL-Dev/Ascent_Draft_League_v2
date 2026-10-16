@@ -177,55 +177,68 @@
 
             <hr>
 
-            <?php foreach ($rosters as $teamName => $roster): ?>
+            <?php if(empty($rosters)): ?>
 
-                <div class="mb-3 col-12 col-md-6 col-lg-3">
+                <div class="col-12 py-5 text-center">
 
-                    <div class="rosterCard card">
+                    <i class="mb-3 fa-solid fa-calendar-xmark fa-3x text-secondary"></i>
 
-                        <div class="card-header">
-                            <h2 class="fs-5">
-                                <?php echo htmlspecialchars($teamName); ?>
-                                <?php echo htmlspecialchars($roster['mascot']); ?>
-                            </h2>
-                        </div>
+                    <h2 class="fs-5">No Rosters Yet</h2>
 
-                        <ul class="list-group list-group-flush">
+                    <p class="text-secondary mb-0">Rosters will appear once draft is complete.</p>
+                </div>
 
-                            <?php foreach ($roster['pokemon'] as $tier => $pokemonGroup): ?>
+            <?php else: ?>          
 
-                                <?php foreach ($pokemonGroup as $pokemon): ?>
 
-                                    <li class="list-group-item rosterPokemon">
+                <?php foreach ($rosters as $teamName => $roster): ?>
 
-                                        <div class="rosterCardTier tier-<?= strtolower($tier) ?>">
-                                            <?= htmlspecialchars($tier) ?>
-                                        </div>
+                    <div class="mb-3 col-12 col-md-6 col-lg-3">
 
-                                        <div class="rosterCardPkmn">
-                                            <?= htmlspecialchars($pokemon['name']) ?>
-                                        </div>
+                        <div class="rosterCard card">
 
-                                        <div>
-                                            <!-- Typings -->
-                                        </div>
-                                    </li>
+                            <div class="card-header">
+                                <h2 class="fs-5">
+                                    <?php echo htmlspecialchars($teamName); ?>
+                                    <?php echo htmlspecialchars($roster['mascot']); ?>
+                                </h2>
+                            </div>
+
+                            <ul class="list-group list-group-flush">
+
+                                <?php foreach ($roster['pokemon'] as $tier => $pokemonGroup): ?>
+
+                                    <?php foreach ($pokemonGroup as $pokemon): ?>
+
+                                        <li class="list-group-item rosterPokemon">
+
+                                            <div class="rosterCardTier tier-<?= strtolower($tier) ?>">
+                                                <?= htmlspecialchars($tier) ?>
+                                            </div>
+
+                                            <div class="rosterCardPkmn">
+                                                <?= htmlspecialchars($pokemon['name']) ?>
+                                            </div>
+
+                                            <div>
+                                                <!-- Typings -->
+                                            </div>
+                                        </li>
+
+                                    <?php endforeach; ?>
 
                                 <?php endforeach; ?>
 
-                            <?php endforeach; ?>
-
-                        </ul>
+                            </ul>
 
 
+
+                        </div>
 
                     </div>
 
-                </div>
-
-            <?php endforeach; ?>
-
-
+                <?php endforeach; ?>
+            <?php endif ?>
         </div>
     </main>
 
