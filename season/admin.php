@@ -64,6 +64,8 @@
 
     <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/4a4034fc29.js" crossorigin="anonymous"></script>
+
 
     <title>Season Setting - Ascent</title>
 </head>
@@ -80,24 +82,87 @@
     </nav>
 
     <main class="p-3 container">
-        <div class="row p-3 bg-white">
-            <h1>Season Settings</h1>
-            <div id="admin_settings_cont" class="d-flex">
+        <div class="p-3 bg-white">
+
+            <h1 class="fs-3">Season Settings</h1>
+
+            <div id="admin_settings_cont" class="row">
                 
-                <div class="mx-3 p-3 border">
+                <div class="col-12 col-md-6 col-lg-3 p-3">
 
-                    <h2>Draft Settings</h2>
+                    <div class="p-3 border rounded-3">
 
-                    <div class="d-flex flex-column gap-2">
+                        <h2 class="text-center border-bottom fs-4">Draft Settings</h2>
 
-                        <form action="../api/admin_settings/reset_draft.php" method="POST"
-                            onsubmit="return confirm('Reset the draft?');">
-                            <!-- <input type="hidden" name="season_id" value="1"> -->
-                            <button type="submit">Reset Draft</button>
-                        </form>
+                        <div class="d-flex flex-column gap-2 align-items-center">
+
+                            <button class="btn btn-secondary">Load Pokemon Tier</button>
+
+                            <button class="btn btn-secondary">Edit Tier Numbers</button>
+                        
+                            <form action="../api/admin_settings/reset_draft.php" method="POST"
+                                onsubmit="return confirm('Reset the draft?');">
+                                <!-- <input type="hidden" name="season_id" value="1"> -->
+                                <button type="submit" class="btn btn-danger">Reset Draft</button>
+                            </form>
+
+                        </div>
 
                     </div>
+
+                    
                 </div>
+
+                <div class="col-12 col-md-6 col-lg-3 p-3">
+
+                    <div class="p-3 border rounded-3">
+
+                        <h2 class="text-center border-bottom fs-4">General Settings</h2>
+
+                        <div class="d-flex flex-column gap-2 align-items-center">
+
+                            <button class="btn btn-secondary">Edit Competitors</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3 p-3">
+
+                    <div class="p-3 border rounded-3">
+
+                        <h2 class="text-center border-bottom fs-4">Pokebox</h2>
+
+                        <div class="d-flex flex-column gap-2 align-items-center">
+
+                            <button class="btn btn-secondary">Reset Transaction Counter</button>
+
+                            <form action="" method="POST">
+                                <button type="submit" class="btn btn-danger">Clear Transaction Log</button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3 p-3">
+
+                    <div class="p-3 border rounded-3">
+
+                        <h2 class="text-center border-bottom fs-4">MatchUps</h2>
+
+                        <div class="d-flex flex-column gap-2 align-items-center">
+                            <button class="btn btn-danger">Clear Matchups</button>
+                        </div>
+
+                    </div>
+                    
+                </div>
+
             </div>
         </div>
     </main>
