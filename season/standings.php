@@ -170,7 +170,7 @@
             
             <?php if(empty($standings)): ?>
                 
-                <div class="col-12 py-5 text-center">
+                <div class="col-12 col-lg-4 py-5 text-center">
                     <i class="mb-3 fa-solid fa-calendar-xmark fa-3x text-secondary"></i>
 
                     <h2 class="fs-5">No Standings Yet</h2>
@@ -216,9 +216,24 @@
 
                     </table>
                 </div>
-            
-                <div id="killLeaderCont" class="col-12 col-lg-8">
-                    <h2 class="fs-4">Pokemon Kill Leaders</h2>
+            <?php endif ?>
+
+            <?php if(empty($pkmnLeader)): ?>
+
+                <div class="col-12 col-lg-8 py-5">
+                    <!-- <i class="mb-3 fa-solid fa-calendar-xmark fa-3x text-secondary"></i> -->
+
+                    <h2 class="fs-5">No Pokemon Stats Yet</h2>
+
+                    <p class="mb-0 text-secondary">Pokemon Leader will appear once the first match has been completed</p>
+                </div>
+
+            <?php else: ?>
+
+            <div id="killLeaderCont" class="col-12 col-lg-8">
+
+                <h2 class="fs-4">Pokemon Kill Leaders</h2>
+
                     <div class="card-group">
                         <!-- For every item, create a new card -->
                         <?php foreach ($pkmnLeader as $index => $pkmn): ?> <!-- colon is important for some reason - look into -->
@@ -253,8 +268,9 @@
                         </div>
                         <?php endforeach; ?>
                     </div>  
-                </div>
-            <?php endif ?>
+                <?php endif ?>
+            </div>
+            
         </div>
         
     </main>

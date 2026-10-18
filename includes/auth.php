@@ -22,17 +22,16 @@
 
     $userId = (int) $_SESSION['user_id'];
 
-    $sql = "
-        SELECT
+    $sql = "SELECT
             id,
             email,
             default_team_name,
             default_team_mascot,
             role,
             theme
-        FROM users
-        WHERE id = ?
-        LIMIT 1
+            FROM users
+            WHERE id = ?
+            LIMIT 1
     ";
 
     $stmt = $conn->prepare($sql);

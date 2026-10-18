@@ -1922,7 +1922,7 @@ function loadPokemonLeaderImages()
 
         const pokemonName = image.dataset.pkmnName;
 
-        const cleanName = pokemonName.toLowerCase();
+        const cleanName = pokemonName.toLowerCase().replace(/\s+/g, '-'); // Added .replace because names with spaces werent appearing.
 
         image.src =
             `https://img.pokemondb.net/artwork/large/${cleanName}.jpg`;

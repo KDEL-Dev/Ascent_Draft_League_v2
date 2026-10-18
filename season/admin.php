@@ -100,17 +100,18 @@
 
                             <button class="btn btn-secondary">Edit Tier Numbers</button>
                         
-                            <form action="../api/admin_settings/reset_draft.php" method="POST"
-                                onsubmit="return confirm('Reset the draft?');">
-                                <!-- <input type="hidden" name="season_id" value="1"> -->
+                            <form action="../api/admin_settings/reset_draft.php" method="POST" onsubmit="return confirm('Reset the draft?');">
+
+                                <input type="hidden" name="seasonId" value="<?= htmlspecialchars((string)$seasonId) ?>">
+
                                 <button type="submit" class="btn btn-danger">Reset Draft</button>
+
                             </form>
 
                         </div>
 
                     </div>
 
-                    
                 </div>
 
                 <div class="col-12 col-md-6 col-lg-3 p-3">
@@ -139,8 +140,12 @@
 
                             <button class="btn btn-secondary">Reset Transaction Counter</button>
 
-                            <form action="" method="POST">
+                            <form action="../api/admin_settings/clear_transaction_log.php" method="POST" onsubmit="return confirm('Clear the transaction log for this season? This cannot be undone.');">
+
+                                <input type="hidden" name="seasonId"  value="<?= htmlspecialchars((string)$seasonId) ?>">
+                                
                                 <button type="submit" class="btn btn-danger">Clear Transaction Log</button>
+
                             </form>
 
                         </div>
@@ -156,7 +161,15 @@
                         <h2 class="text-center border-bottom fs-4">MatchUps</h2>
 
                         <div class="d-flex flex-column gap-2 align-items-center">
-                            <button class="btn btn-danger">Clear Matchups</button>
+                            <!-- <button class="btn btn-danger">Clear Matchups</button> -->
+
+                            <form action="../api/admin_settings/clear_matchups.php" method="POST" onsubmit="return confirm('Clear all matchups for this season? This cannot be undone');">
+                                
+                                <input type="hidden" name="seasonId" value="<?= htmlspecialchars((string)$seasonId) ?>"> 
+                                
+                                <button type="submit" class="btn btn-danger">Clear Matchups</button>
+
+                            </form>
                         </div>
 
                     </div>

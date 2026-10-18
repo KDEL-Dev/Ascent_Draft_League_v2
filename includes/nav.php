@@ -7,9 +7,9 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Nav bar -->
         <ul class="navbar-nav w-100 me-auto mb-2 mb-lg-0 d-flex justify-content-evenly">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="#">Overview</a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="draft.php?seasonId=<?= (int)$seasonId ?>">Draft</a>
             </li>

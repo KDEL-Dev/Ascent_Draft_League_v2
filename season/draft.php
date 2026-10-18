@@ -54,11 +54,11 @@
     // ------------------
 
     $sql = "SELECT active_users.id
-        FROM active_users
-        JOIN users
-        ON active_users.user_id = users.id
-        WHERE active_users.season_id = ?
-        AND users.id = ?
+            FROM active_users
+            JOIN users
+            ON active_users.user_id = users.id
+            WHERE active_users.season_id = ?
+            AND users.id = ?
     ";
 
     $stmt = $conn->prepare($sql);
@@ -88,10 +88,9 @@
     // DRAFT STATE
     // ---------------
 
-    $draftStateSql = "
-        SELECT draft_position, current_round, total_picks, is_active
-        FROM draft_state
-        WHERE season_id = ?
+    $draftStateSql = "SELECT draft_position, current_round, total_picks, is_active
+                        FROM draft_state
+                        WHERE season_id = ?
     ";
 
     $stmt = $conn->prepare($draftStateSql);
