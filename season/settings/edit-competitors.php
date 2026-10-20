@@ -58,16 +58,91 @@
 
 
 
+    // ------------------
+    // CHECK DRAFT STATUS
+    // ------------------
+
+    $draftSql="SELECT status
+               FROM draft_state
+               WHERE season_id = ?
+               LIMIT 1";
+
+    $draftStmt = $conn->prepare($draftSql);
+    $draftStmt->bind_param("i", $seasonId);
+    $draftStmt->execute();
+
+    $draftResult = $draftStmt->get_result();
+    $draftState = $draftResult->fetch_assoc();
+
+    $draftStmt->close();
+
+    $draftEnded = $draftState
+        && $draftState['status'] === 'ended';
+
+
+
+    // ------------------------
+    // UPDATE COMPETITOR STATUS
+    // ------------------------
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+    {
+
+        // This checks to see if the draft has concluded
+        if ($draftEnded) 
+        {   
+            http_response_code(403);
+            exit('Competitors cannot be changed after the draft has ended.');
+        }
+
+        $userId = (int) $_POST['user_id'];
+        $status = $_POST['status'];
+
+        if ($status === 'Yes') {
+
+            $sql = "INSERT IGNORE INTO active_users (user_id, season_id)
+                    VALUES (?, ?)";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $userId, $seasonId);
+            $stmt->execute();
+            $stmt->close();
+
+        } else {
+
+            $sql = "DELETE FROM active_users
+                    WHERE user_id = ? AND season_id = ?";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $userId, $seasonId);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        exit;
+    }
+
+
     // --------------------
     // RETRIEVE ALL MEMBERS
     // --------------------
 
-    $userSql ="SELECT users.default_team_name, users.email
+    $userSql ="SELECT 
+               users.id, users.default_team_name, users.email,
+               CASE 
+                    WHEN active_users.id IS NOT NULL THEN 'Yes'
+                    ELSE 'No'
+                END AS competitor_status
                FROM users
+               LEFT JOIN active_users
+                    ON active_users.user_id = users.id
+                    AND active_users.season_id = ?
+                ORDER BY users.email
             
     ";
 
     $stmt =$conn->prepare($userSql);
+    $stmt->bind_param("i", $seasonId);
     $stmt->execute();
 
     $userResults = $stmt->get_result();
@@ -76,8 +151,10 @@
 
     while ($row = $userResults->fetch_assoc()) {
     $users[] = [
+        'id' => $row['id'],
         'default_team_name' => $row['default_team_name'],
-        'email' => $row['email']
+        'email' => $row['email'],
+        'competitor_status' => $row['competitor_status']
     ];
 }
 
@@ -86,6 +163,8 @@
     // echo '<pre>';
     // print_r($users);
     // echo '</pre>';
+
+
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +191,11 @@
     </nav>
 
     <main class="p-3 bg-white container">
-        <h1 class="f-3">Edit Competitors</h1>
+        <h1 class="fs-3">Edit Competitors</h1>
+        <hr>
+
+        <a class="btn btn-secondary" href="../admin.php?seasonId=<?= (int)$seasonId ?>">Back</a>
+
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
@@ -128,9 +211,20 @@
                             <td><?= htmlspecialchars($user['default_team_name']) ?></td>
                             <td><?= htmlspecialchars($user['email']) ?></td>
                             <td>
-                                <select name="" id="" class="form-select form-select-sm">
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
+                                <select
+                                    class="form-select form-select-sm competitor-status"
+                                    data-user-id="<?= (int) $user['id'] ?>"
+                                    <?= $draftEnded ? 'disabled' : '' ?> 
+                                >
+                                    <option value="No"
+                                        <?= $user['competitor_status'] === 'No' ? 'selected' : '' ?>>
+                                        No
+                                    </option>
+
+                                    <option value="Yes"
+                                        <?= $user['competitor_status'] === 'Yes' ? 'selected' : '' ?>>
+                                        Yes
+                                    </option>
                                 </select>
                             </td>
                         </tr>

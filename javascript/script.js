@@ -1934,6 +1934,47 @@ function loadPokemonLeaderImages()
 
 loadPokemonLeaderImages();
 
+// --------
+// SETTINGS
+// --------
+
+// ----- EDIT COMPETITORS - COMPETITOR STATUS ------
+
+document.querySelectorAll('.competitor-status').forEach(select => {
+    select.addEventListener('change', async function () {
+
+        const previousStatus = this.value === 'Yes' ? 'No' : 'Yes';
+
+        const data = new URLSearchParams({
+            user_id: this.dataset.userId,
+            status: this.value
+        });
+
+        this.disabled = true;
+
+        try {
+            const response = await fetch(window.location.href, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update competitor.');
+            }
+
+        } catch (error) {
+            this.value = previousStatus;
+            alert(error.message);
+
+        } finally {
+            this.disabled = false;
+        }
+    });
+});
+
 
 // -------------------------------------------------
 // ------------------ WEB SOCKET -------------------
