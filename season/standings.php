@@ -197,7 +197,10 @@
                                     <td class=""><?= $index + 1 ?></td>
 
                                     <td class="">
-                                        <?= htmlspecialchars($team['default_team_name']) ?>
+                                        <span class="fw-bold">
+                                            <?= htmlspecialchars($team['default_team_name']) ?>
+                                        </span>
+                                        
                                         <?= htmlspecialchars($team['default_team_mascot']) ?>                                   
                                     </td>
 
@@ -276,4 +279,5 @@
     </main>
     <script src="../javascript/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
 </html>

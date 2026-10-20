@@ -41,8 +41,8 @@
             <?php endif ?>
 
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="../index.php">Landing</a>
-            </li>
+            </li> -->
         </ul>
     </div>

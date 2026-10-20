@@ -122,7 +122,7 @@
 
                         <div class="d-flex flex-column gap-2 align-items-center">
 
-                            <button class="btn btn-secondary">Edit Competitors</button>
+                            <a class="btn btn-secondary" href="settings/edit-competitors.php?seasonId=<?= (int)$seasonId ?>">Edit Competitors</a>
 
                         </div>
 
