@@ -203,6 +203,7 @@
                         <th>Team Name</th>
                         <th>Emails</th>
                         <th>Competitor Status</th>
+                        <th>Transaction Counter</th>
                     </tr>
                 </thead>
                 <tbody>

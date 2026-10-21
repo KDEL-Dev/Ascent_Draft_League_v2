@@ -177,9 +177,9 @@
                                             <img src="img/Ascent Grad Logo w Text.svg" alt="" class="card-img-top h-50">
 
                                        
-                                        <div class="card-body">
+                                        <div class="card-body border-top">
                     
-                                            <h3 class="card-title fs-5 text-center">
+                                            <h3 class="card-title fs-4 text-center">
                                                 <?= htmlspecialchars(
                                                     $season['season_name']
                                                     ?: 'Season ' . $season['season_number']
@@ -205,13 +205,17 @@
                                                 </p>
                                             <?php endif; ?>
 
-                                            <div class="d-flex justify-content-center">
+                                            <!-- <div class="d-flex justify-content-center">
                                                 <span class="btn btn-primary">
                                                     Enter Season
                                                 </span>
-                                            </div>
+                                            </div> -->
                                             
 
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <button class="btn">Enter Season</button>
                                         </div>
 
                                     </div>
@@ -234,7 +238,11 @@
             <div class="row mb-3">
                 <div class="col-lg-6 my-1">
                     <div id="statisticsCont" class="h-100 p-3 border rounded-2 d-flex justify-content-center flex-column align-items-center">
-                        <h2 class="fs-4 mb-0">Legacy Stats</h2>
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            <h2 class="fs-4 mb-0 mx-3">Legacy Stats</h2>                            
+                            <i class="fa-solid fa-chart-simple"></i>
+                        </div>
                         <p>Stats from all previous seasons</p>
                         <div class="flex-grow-1">
                             <a class="btn btn-primary" href="statistics.php">Enter</a>
@@ -245,7 +253,12 @@
                 
                 <div class="col-lg-6 my-1">
                     <div id="pastChampionsCont" class=" p-3 h-100 border rounded-2 d-flex justify-content-center flex-column align-items-center">
-                        <h2 class="fs-4 mb-0">Past Champions</h2>
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-crown"></i>
+                            <h2 class="fs-4 mb-0 mx-3">Past Champions</h2>
+                            <i class="fa-solid fa-crown"></i>
+                        </div>    
+                    
                         <p>List of all previous league winners and their teams</p>
                         <a href="champions.php" class="btn btn-primary">Enter</a>
                     </div>
@@ -255,7 +268,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="p-3 border d-flex justify-content-center align-items-center flex-column">
-                        <h2 class="fs-4">Create New Season</h2>
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-plus"></i>
+                            <h2 class="fs-4 mx-3 mb-0">Create New Season</h2>
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                        
                         <div>
                             <p>Click Below to create a new  season</p>
                         </div>

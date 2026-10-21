@@ -11,31 +11,31 @@
                 <a class="nav-link" href="#">Overview</a>
             </li> -->
             <li class="nav-item">
-                <a class="nav-link" href="draft.php?seasonId=<?= (int)$seasonId ?>">Draft</a>
+                <a class="nav-link" href="<?= BASE_URL ?>season/draft.php?seasonId=<?= (int)$seasonId ?>">Draft</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="roster.php?seasonId=<?= (int)$seasonId ?>">Roster</a>
+                <a class="nav-link" href="<?= BASE_URL ?>season/roster.php?seasonId=<?= (int)$seasonId ?>">Roster</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="matchups.php?seasonId=<?= (int)$seasonId ?>">Matchups</a>
+                <a class="nav-link" href="<?= BASE_URL ?>season/matchups.php?seasonId=<?= (int)$seasonId ?>">Matchups</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="standings.php?seasonId=<?= (int)$seasonId ?>">Standings</a>
+                <a class="nav-link" href="<?= BASE_URL ?>season/standings.php?seasonId=<?= (int)$seasonId ?>">Standings</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="statistics.php?seasonId=<?= (int)$seasonId ?>">Statistics</a>
+                <a class="nav-link" href="<?= BASE_URL ?>season/statistics.php?seasonId=<?= (int)$seasonId ?>">Statistics</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="pokebox.php?seasonId=<?= (int)$seasonId ?>">Pokebox</a>
+                <a class="nav-link" href="<?= BASE_URL ?>season/pokebox.php?seasonId=<?= (int)$seasonId ?>">Pokebox</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="draft-recap.php?seasonId=<?= (int)$seasonId ?>">Draft Recap</a>
+                <a class="nav-link" href="<?= BASE_URL ?>season/draft-recap.php?seasonId=<?= (int)$seasonId ?>">Draft Recap</a>
             </li>
             
             <?php if ($isOwner): ?>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.php?seasonId=<?= (int)$seasonId ?>">Season Settings</a>
+                    <a class="nav-link" href="<?= BASE_URL ?>season/admin.php?seasonId=<?= (int)$seasonId ?>">Season Settings</a>
                 </li>
 
             <?php endif ?>

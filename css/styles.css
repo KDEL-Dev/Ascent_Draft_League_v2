@@ -975,14 +975,46 @@ li
 
 #previousSeasonCont .card-header
 {
-    background-color: var(--main-color);
+    background-color: var(--nav-color);
     color: white;
+}
+
+#previousSeasonCont .card-header p span
+{
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+#previousSeasonCont .card-body
+{
+    background-color: color-mix(in srgb, var(--nav-color), white 95%)
 }
 
 #previousSeasonCont .card-body p
 {
     margin-bottom: 8px;
 }
+
+#previousSeasonCont .card-footer
+{
+    background-color:var(--main-color);
+
+    display: flex;
+    justify-content: center;
+
+    transition: background-color .2s  ease ;
+}
+
+#previousSeasonCont .card-footer button
+{
+    color: white;
+}
+
+#previousSeasonCont .card-footer:hover
+{
+    background-color: var(--main-color-hover);
+}
+
 
 
 /* -----------------------------------------------------------------------
