@@ -128,9 +128,13 @@
                         </div>
                     </div>
                 </div>
-                <div class=" col-12 col-lg-6">
-                    <div class="h-100 p-3 mx-1 border rounded-2">
-                        <h2 class="fs-5 text-center fw-bold">About - Ascent Draft League</h2>
+                <div class="col-12 col-lg-6">
+                    <div id="homeAboutCont" class="h-100 p-3 mx-1 border rounded-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-play"></i>
+                            <h2 class="mx-3 fs-5 text-center fw-bold mb-0">About - Ascent Draft League</h2>
+                            <i class="fa-solid fa-play"></i>
+                        </div>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem doloribus atque 
                             enim odio obcaecati, velit repellendus tempore? Dignissimos rem, quasi porro impedit alias 
                             temporibus, voluptatibus illum nulla earum deserunt reiciendis?
@@ -267,13 +271,12 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="p-3 border d-flex justify-content-center align-items-center flex-column">
+                    <div id="homeCreateSeasonCont" class="p-3 border rounded-3 d-flex justify-content-center align-items-center flex-column">
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-plus"></i>
-                            <h2 class="fs-4 mx-3 mb-0">Create New Season</h2>
+                            <h2 class="fs-4 mx-3">Create New Season</h2>
                             <i class="fa-solid fa-plus"></i>
                         </div>
-                        
                         <div>
                             <p>Click Below to create a new  season</p>
                         </div>

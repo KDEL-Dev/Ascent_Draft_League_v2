@@ -152,18 +152,17 @@
     // -------------
 
     // Begin by created your query
-    $pokemonSql = "
-    SELECT
-        showdown_pokemon.id,
-        showdown_pokemon.name,
-        showdown_pokemon.type1,
-        showdown_pokemon.type2,
-        pokemon_tier_per_season.tier,
-        pokemon_tier_per_season.season_id
-    FROM showdown_pokemon
-    JOIN pokemon_tier_per_season
-        ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
-    WHERE pokemon_tier_per_season.season_id = ?
+    $pokemonSql = " SELECT
+                    showdown_pokemon.id,
+                    showdown_pokemon.name,
+                    showdown_pokemon.type1,
+                    showdown_pokemon.type2,
+                    pokemon_tier_per_season.tier,
+                    pokemon_tier_per_season.season_id
+                    FROM showdown_pokemon
+                    JOIN pokemon_tier_per_season
+                        ON pokemon_tier_per_season.showdown_pokemon_id = showdown_pokemon.id
+                    WHERE pokemon_tier_per_season.season_id = ?
     ";
 
     $stmt = $conn->prepare($pokemonSql);
@@ -225,22 +224,21 @@
     // COUNT TIER
     // -------------
 
-    $tierCountSql = "
-        SELECT
-            CASE
-                WHEN pt.tier IN ('OU', 'UUBL') THEN 'OU'
-                WHEN pt.tier IN ('UU', 'RUBL') THEN 'UU'
-                WHEN pt.tier IN ('RU', 'NUBL') THEN 'RU'
-                WHEN pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU') THEN 'NU'
-            END AS tier_group,
-            COUNT(*) AS tier_count
-        FROM draft_picks dp
-        JOIN pokemon_tier_per_season pt
-            ON pt.showdown_pokemon_id = dp.showdown_pokemon_id
-            AND pt.season_id = dp.season_id
-        WHERE dp.season_id = ?
-        AND dp.active_user_id = ?
-        GROUP BY tier_group
+    $tierCountSql = "SELECT
+                        CASE
+                            WHEN pt.tier IN ('OU', 'UUBL') THEN 'OU'
+                            WHEN pt.tier IN ('UU', 'RUBL') THEN 'UU'
+                            WHEN pt.tier IN ('RU', 'NUBL') THEN 'RU'
+                            WHEN pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU') THEN 'NU'
+                        END AS tier_group,
+                        COUNT(*) AS tier_count
+                    FROM draft_picks dp
+                    JOIN pokemon_tier_per_season pt
+                        ON pt.showdown_pokemon_id = dp.showdown_pokemon_id
+                        AND pt.season_id = dp.season_id
+                    WHERE dp.season_id = ?
+                    AND dp.active_user_id = ?
+                    GROUP BY tier_group
     ";
 
     $tierCounts = 

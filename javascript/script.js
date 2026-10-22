@@ -29,21 +29,43 @@ const randomizeBtn = document.getElementById("randomizeDraft");
 
 if(randomizeBtn)
 {
-    randomizeBtn.addEventListener("click", function() 
+    randomizeBtn.addEventListener("click", async function() 
     {
-        //Send request to PHP
-        fetch("../api/draft/randomize_draft.php")
-        // Wait for PHP Response --which normally is echo"Draft order randomized successfully";
-        .then(response => response.text())
-        .then(data => {
-            // Print the response in the browswer console
-            // console.log(data);
+        try
+        {
+            // Get seasonId from the current page URL
+            const params = new URLSearchParams(window.location.search);
+            const seasonId = params.get("seasonId");
+
+            // Send request to PHP
+            const response = await fetch(
+                "../api/draft/randomize_draft.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({
+                        seasonId: seasonId
+                    })
+                }
+            );
+
+            const data = await response.text();
+
+            if (!response.ok)
+            {
+                console.error("Randomization failed:", data);
+                return;
+            }
+
             // Refresh the page
             window.location.reload();
-        })
-        .catch(error => {
+        }
+        catch (error)
+        {
             console.error("Randomization failed:", error);
-        });
+        }
     });
 }
 
@@ -58,8 +80,22 @@ if(startDraftBtn)
     {
         try
         {
+            // 1. Get seasonId from the current page URL
+            const params = new URLSearchParams(window.location.search);
+            const seasonId = params.get("seasonId");
+
+            // 2. Send seasonId to API using post
             const response = await fetch(
-                "../api/draft/start_draft.php"
+                "../api/draft/start_draft.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({
+                        seasonId: seasonId
+                    })
+                }
             );
 
             const data = await response.json();
@@ -90,9 +126,25 @@ if(startDraftBtn)
 
 async function loadUserDraftRoster()
 {
-    const response = await fetch(
-        `../api/roster/get_roster.php`
-    );
+     // Get seasonId from the current page URL
+    const params = new URLSearchParams(window.location.search);
+    const seasonId = params.get("seasonId");
+
+    if (!seasonId)
+    {
+        console.error("Missing season ID.");
+        return;
+    }
+
+    const response = await fetch("../api/roster/get_roster.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+            seasonId: seasonId
+        })
+    });
 
     // const response = await fetch('api/roster/get_roster.php');
 
@@ -215,7 +267,25 @@ function displayUserDraftTier(list, roster, tiers)
 
 async function loadAllDraftedPokemon()
 {
-    const response = await fetch('../api/draft/get_drafted_pokemon.php');
+    // Get seasonId from the current page URL
+    const params = new URLSearchParams(window.location.search);
+    const seasonId = params.get("seasonId");
+
+    if (!seasonId)
+    {
+        console.error("Missing season ID.");
+        return;
+    }
+
+    const response = await fetch('../api/draft/get_drafted_pokemon.php', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+            seasonId: seasonId
+        })
+    });
 
     const data = await response.json();
 
@@ -323,7 +393,25 @@ function setPokemonType(element, type)
 
 async function loadDraftedDisplay()
 {
-    const response = await fetch('../api/draft/get_draft_picks.php');
+    // Get seasonId from the current page URL
+    const params = new URLSearchParams(window.location.search);
+    const seasonId = params.get("seasonId");
+
+    if (!seasonId)
+    {
+        console.error("Missing season ID.");
+        return;
+    }
+
+    const response = await fetch('../api/draft/get_draft_picks.php', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+            seasonId: seasonId
+        })
+    });
 
     const data = await response.json();
 
@@ -664,6 +752,15 @@ if(pauseDraftBtn)
 
         try
         {
+            const params = new URLSearchParams(window.location.search);
+            const seasonId = params.get("seasonId");
+
+            if (!seasonId)
+            {
+                console.error("Missing season ID.");
+                return;
+            }
+
             const response = await fetch(
                 "../api/draft/pause_draft.php",
                 {
@@ -672,6 +769,7 @@ if(pauseDraftBtn)
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
+                        seasonId: Number(seasonId),
                         timer_remaining: timerRemaining
                     })
                 }
@@ -710,8 +808,26 @@ if(resumeDraftBtn)
     {
         try
         {
-            const response = await fetch(
-                "../api/draft/resume_draft.php"
+            const params = new URLSearchParams(window.location.search);
+            const seasonId = params.get("seasonId");
+
+            if (!seasonId)
+            {
+                console.error("Missing season ID.");
+                return;
+            }
+
+             const response = await fetch(
+                "../api/draft/resume_draft.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({
+                        seasonId: seasonId
+                    })
+                }
             );
 
             const data = await response.json();
@@ -744,21 +860,39 @@ if(skipPickBtn)
 {
     skipPickBtn.addEventListener("click", function() 
     {
-        fetch("../api/draft/skip_pick.php")
-        .then(response => response.json())
-        .then(data => {
+        const params = new URLSearchParams(window.location.search);
+        const seasonId = params.get("seasonId");
 
-            console.log("SKIP RESPONSE:", data);
+        if (!seasonId)
+        {
+            console.error("Missing season ID.");
+            return;
+        }
 
-            if (!data.success)
+        fetch("../api/draft/skip_pick.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams({
+                seasonId: seasonId
+            })
+        })
+        .then(async response => {
+            const data = await response.json();
+
+            if (!response.ok || !data.success)
             {
-                console.error(data.message);
-                return;
+                throw new Error(data.message || "Failed to skip pick.");
             }
+
+            return data;
+        })
+        .then(data => {
+            console.log("SKIP RESPONSE:", data);
 
             loadDraftState();
             loadDraftedDisplay();
-
         })
         .catch(error => {
             console.error("Skip Pick failed:", error);
@@ -786,19 +920,43 @@ if (endDraftBtn)
 
         try
         {
+            const params = new URLSearchParams(window.location.search);
+            const seasonId = params.get("seasonId");
+
+            if (!seasonId)
+            {
+                console.error("Missing season ID.");
+                return;
+            }
+
             const response = await fetch(
-                "../api/draft/end_draft.php"
+                "../api/draft/end_draft.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({
+                        seasonId: seasonId
+                    })
+                }
             );
 
             const data = await response.json();
 
             console.log("END DRAFT RESPONSE:", data);
 
-            if (!data.success)
+            if (!response.ok || !data.success)
             {
                 console.error(data.message);
                 return;
             }
+
+            // if (!data.success)
+            // {
+            //     console.error(data.message);
+            //     return;
+            // }
 
             // The WebSocket event will handle
             // redirecting every browser.
@@ -883,7 +1041,16 @@ async function autoSkipPick()
     try
     {
         const response = await fetch(
-            "../api/draft/skip_pick.php"
+            "../api/draft/skip_pick.php",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
+                    seasonId: seasonId
+                })
+            }
         );
 
         const data = await response.json();
@@ -922,7 +1089,31 @@ async function autoSkipPick()
 
 async function loadDraftState()
 {
-    const response = await fetch('../api/draft/get_draft_state.php');
+     // Get seasonId from the current page URL
+    const params = new URLSearchParams(window.location.search);
+    const seasonId = params.get("seasonId");
+
+    // console.log("Season ID from URL:", seasonId);
+
+    if (!seasonId)
+    {
+        console.error("Missing season ID.");
+        return;
+    }
+
+    // Send seasonId to the API
+    const response = await fetch(
+        `../api/draft/get_draft_state.php?seasonId=${encodeURIComponent(seasonId)}`
+    );
+
+    // Check for HTTP errors before parsing JSON
+    if (!response.ok)
+    {
+        console.error("Failed to load draft state:", response.status);
+        console.error(await response.text());
+        return;
+    }
+
     const data = await response.json();
 
     if (!data.success)
@@ -931,9 +1122,7 @@ async function loadDraftState()
         return;
     }
 
-    myActiveUserId = Number(data.my_active_user.id); // ADDED
-    // console.log("MY ACTIVE USER ID:", myActiveUserId);
-
+    myActiveUserId = Number(data.my_active_user.id);
 
     const draftState = data.draft_state;
     const currentTeam = data.current_team;
@@ -1039,9 +1228,25 @@ async function loadDraftState()
 
 async function loadDraftLog()
 {
-    const response = await fetch(
-        '../api/draft/get_draft_picks.php'
-    );
+    // Get seasonId from the current page URL
+    const params = new URLSearchParams(window.location.search);
+    const seasonId = params.get("seasonId");
+
+    if (!seasonId)
+    {
+        console.error("Missing season ID.");
+        return;
+    }
+    
+    const response = await fetch('../api/draft/get_draft_picks.php', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+            seasonId: seasonId
+        })
+    });
 
     const data = await response.json();
 
@@ -2067,7 +2272,17 @@ socket.onmessage = async function(event)
 
         stopTimer();
 
-        window.location.href = "roster.php";
+        const seasonId = data.season_id;
+
+        if (!seasonId) {
+            console.error(
+                "Cannot redirect: season ID missing from draft_ended event.",
+                data
+            );
+            return;
+        }
+
+        window.location.href = `roster.php?seasonId=${encodeURIComponent(seasonId)}`;
     }
 
 

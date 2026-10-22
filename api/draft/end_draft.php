@@ -1,10 +1,74 @@
 <?php
 
-    require_once __DIR__ . '/../../includes/connection.php';
+    require_once __DIR__ . '/../../includes/auth.php';
 
     header('Content-Type: application/json');
 
-    $seasonId = 1;
+    
+// -------------
+// GET SEASON ID
+// -------------
+
+// $seasonId = 1;
+
+// Get season ID from POST
+    $seasonId = filter_input(
+        INPUT_POST,
+        'seasonId',
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    // Validate season ID
+    if ($seasonId === false || $seasonId === null) {
+        http_response_code(400);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid season ID."
+        ]);
+
+        exit;
+    }
+
+    // Check that season exists
+    $seasonSql ="SELECT id
+                 FROM seasons
+                 WHERE id = ?
+                 LIMIT 1
+    ";
+
+    $seasonStmt = $conn->prepare($seasonSql);
+
+    if (!$seasonStmt) {
+        http_response_code(500);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to prepare season query."
+        ]);
+
+        exit;
+    }
+
+    $seasonStmt->bind_param("i", $seasonId);
+    $seasonStmt->execute();
+
+    $seasonResult = $seasonStmt->get_result();
+    $season = $seasonResult->fetch_assoc();
+
+    $seasonStmt->close();
+
+    if (!$season) {
+        http_response_code(404);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Season not found."
+        ]);
+
+        exit;
+    }
 
 
     // =====================================================
@@ -151,13 +215,13 @@
     // END DRAFT
     // =====================================================
 
-    $sql = " UPDATE draft_state
-        SET
-            is_active = 0,
-            status = 'ended',
-            timer_remaining = NULL
-        WHERE season_id = ?
-        AND status IN ('active', 'paused')
+    $sql = "UPDATE draft_state
+            SET
+                is_active = 0,
+                status = 'ended',
+                timer_remaining = NULL
+            WHERE season_id = ?
+            AND status IN ('active', 'paused')
     ";
 
     $stmt = $conn->prepare($sql);

@@ -2,9 +2,73 @@
 
     header('Content-Type: application/json');
 
-    require_once __DIR__ . '/../../includes/connection.php';
+    require_once __DIR__ . '/../../includes/auth.php';
 
-    $seasonId = 1;
+    // -------------
+    // GET SEASON ID
+    // -------------
+
+    // $seasonId = 1;
+
+    // Get season ID from POST
+        $seasonId = filter_input(
+            INPUT_POST,
+            'seasonId',
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]]
+        );
+
+        // Validate season ID
+        if ($seasonId === false || $seasonId === null) {
+            http_response_code(400);
+
+            echo json_encode([
+                "success" => false,
+                "message" => "Invalid season ID."
+            ]);
+
+            exit;
+        }
+
+        // Check that season exists
+        $seasonSql ="SELECT id
+                    FROM seasons
+                    WHERE id = ?
+                    LIMIT 1
+        ";
+
+        $seasonStmt = $conn->prepare($seasonSql);
+
+        if (!$seasonStmt) {
+            http_response_code(500);
+
+            echo json_encode([
+                "success" => false,
+                "message" => "Failed to prepare season query."
+            ]);
+
+            exit;
+        }
+
+        $seasonStmt->bind_param("i", $seasonId);
+        $seasonStmt->execute();
+
+        $seasonResult = $seasonStmt->get_result();
+        $season = $seasonResult->fetch_assoc();
+
+        $seasonStmt->close();
+
+        if (!$season) {
+            http_response_code(404);
+
+            echo json_encode([
+                "success" => false,
+                "message" => "Season not found."
+            ]);
+
+            exit;
+        }
+
 
     // BROADCAST
 
@@ -134,14 +198,13 @@
     // GET DRAFT STATE
     // -------------------------
 
-    $sql = "
-        SELECT
+    $sql = "SELECT
             draft_position,
             current_round,
             total_picks,
             is_active
-        FROM draft_state
-        WHERE season_id = ?
+            FROM draft_state
+            WHERE season_id = ?
     ";
 
     $stmt = $conn->prepare($sql);
@@ -182,16 +245,13 @@
     // GET CURRENT DRAFT USER
     // -------------------------
 
-    $sql = "
-        SELECT
+    $sql = "SELECT
             id,
-            team_name,
             draft_position
-        FROM active_users
-        WHERE season_id = ?
-        AND draft_position = ?
-    ";
-
+            FROM active_users
+            WHERE season_id = ?
+            AND draft_position = ?
+        ";
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
@@ -227,10 +287,9 @@
     // TEAM COUNT
     // -------------------------
 
-    $sql = "
-        SELECT COUNT(*) AS team_count
-        FROM active_users
-        WHERE season_id = ?
+    $sql = "SELECT COUNT(*) AS team_count
+            FROM active_users
+            WHERE season_id = ?
     ";
 
     $stmt = $conn->prepare($sql);
@@ -258,8 +317,7 @@
     $pickNumber = $draftState['total_picks'] + 1;
     $roundNumber = $draftState['current_round'];
 
-    $sql = "
-        INSERT INTO draft_picks
+    $sql = "INSERT INTO draft_picks
         (
             season_id,
             active_user_id,

@@ -52,8 +52,10 @@
         </div>
     </nav>
     <main class="container p-3 bg-white">
-        <h1 class="fs-3">About</h1>
         
+        <h1 class="fs-3">About</h1>
+        <hr>
+
         <div class="d-flex align-items-center flex-column">
             <img src="img/Ascent_Horizontal_Text_GRAD_2.png" height="150" alt="">
             <p class="text-center">The Ascent Draft League is a competitive Pokémon draft-style league focused on strategy, team building, and player skill. Each participant drafts a unique roster of Pokémon across multiple tiers, creating balanced and diverse teams for the season. 

@@ -41,28 +41,77 @@
 
             try
             {
-                $sql = "INSERT INTO 
-                        seasons (season_number, season_name, format)
-                        VALUES
-                        (?, ?, ?)
+                // Start transaction
+                $conn->begin_transaction();
+
+                // 1. Create the season
+                $sql = "
+                    INSERT INTO seasons
+                        (season_number, season_name, format)
+                    VALUES (?, ?, ?)
                 ";
 
                 $stmt = $conn->prepare($sql);
 
-                $stmt->bind_param("iss", $seasonNumber, $seasonNameValue, $seasonFormatValue );
+                if (!$stmt) {
+                    throw new RuntimeException("Failed to prepare season insert.");
+                }
+
+                $stmt->bind_param(
+                    "iss",
+                    $seasonNumber,
+                    $seasonNameValue,
+                    $seasonFormatValue
+                );
 
                 $stmt->execute();
 
-                $successMessage = "Season created successfully";
+                // Get the ID of the newly created season
+                $seasonId = $conn->insert_id;
 
                 $stmt->close();
 
+
+                // 2. Create its initial draft state
+                $sql = "INSERT INTO 
+                        draft_state (
+                        season_id,
+                        draft_position,
+                        current_round,
+                        total_picks,
+                        is_active,
+                        status,
+                        timer_remaining
+                    )
+                        VALUES (?, 1, 1, 0, 0, 'pending', 60)
+                ";
+
+                $stmt = $conn->prepare($sql);
+
+                if (!$stmt) {
+                    throw new RuntimeException(
+                        "Failed to prepare draft state insert."
+                    );
+                }
+
+                $stmt->bind_param("i", $seasonId);
+                $stmt->execute();
+                $stmt->close();
+
+
+                // 3. Save both records
+                $conn->commit();
+
+                // Redirect after successful creation
                 header("Location: index.php");
                 exit;
             }
-            catch(mysqli_sql_exception $e)
+            catch (Throwable $e)
             {
-                if($e->getCode() === 1062)
+                // Undo both inserts if anything failed
+                $conn->rollback();
+
+                if ($e instanceof mysqli_sql_exception && $e->getCode() === 1062)
                 {
                     $errorMessage = "That season number already exists.";
                 }

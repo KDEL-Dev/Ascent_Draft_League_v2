@@ -973,6 +973,12 @@ li
 
 }
 
+#homeAboutCont .fa-play
+{
+    rotate: 270deg;
+    color: var(--main-color);
+}
+
 #previousSeasonCont .card-header
 {
     background-color: var(--nav-color);
@@ -1013,6 +1019,18 @@ li
 #previousSeasonCont .card-footer:hover
 {
     background-color: var(--main-color-hover);
+}
+
+#homeCreateSeasonCont
+{   
+    background-color: color-mix(in srgb, var(--main-color), white 90%); 
+}
+
+#statisticsCont,
+#pastChampionsCont,
+#homeAboutCont
+{
+    background-color: color-mix(in srgb,var(--nav-color), white 95%);
 }
 
 

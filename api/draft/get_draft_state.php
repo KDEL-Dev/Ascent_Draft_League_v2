@@ -1,13 +1,88 @@
 <?php
 
-    session_start();
+    error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('log_errors', '1');
 
+    require_once __DIR__ . '/../../includes/auth.php';
     header('Content-Type: application/json');
 
-    require_once __DIR__ . '/../../includes/connection.php';
+
+    
+
+    // -------------------------
+    // GET SEASON ID FROM URL
+    // -------------------------
+
+    $seasonId = filter_input(
+        INPUT_GET,
+        'seasonId',
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    if ($seasonId === false || $seasonId === null)
+    {
+        http_response_code(400);
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Invalid or missing season ID.'
+        ]);
+
+        exit;
+    }
+
+    // -------------------------
+    // VERIFY SEASON EXISTS
+    // -------------------------
+
+    $seasonSql = "SELECT id
+                FROM seasons
+                WHERE id = ?
+                LIMIT 1";
+
+    $seasonStmt = $conn->prepare($seasonSql);
+
+    if (!$seasonStmt)
+    {
+        http_response_code(500);
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to prepare season query.'
+        ]);
+
+        exit;
+    }
+
+    $seasonStmt->bind_param("i", $seasonId);
+    $seasonStmt->execute();
+
+    $seasonResult = $seasonStmt->get_result();
+    $season = $seasonResult->fetch_assoc();
+
+    $seasonStmt->close();
+
+    if (!$season)
+    {
+        http_response_code(404);
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Season not found.'
+        ]);
+
+        exit;
+    }
+
+    // -----------
+    // GET USER ID
+    // -----------
+
 
     $userId = $_SESSION['user_id'] ?? null;
-    $seasonId = 1;
+    
 
     if (!$userId) {
         echo json_encode([
@@ -21,19 +96,23 @@
     // GET LOGGED-IN ACTIVE USER
     // -------------------------
 
-    $sql = "
-        SELECT id, team_name, draft_position
+    $sql = "SELECT
+            active_users.id,
+            users.default_team_name,
+            active_users.draft_position
         FROM active_users
-        WHERE user_id = ?
-        AND season_id = ?
-    ";
+        JOIN users
+            ON active_users.user_id = users.id
+        WHERE active_users.user_id = ?
+        AND active_users.season_id = ?
+        LIMIT 1";
 
     $stmt = $conn->prepare($sql);
 
     if (!$stmt) {
         echo json_encode([
             'success' => false,
-            'message' => 'Prepare failed when finding active user'
+            'message' => 'Failed to prepare active user query.'
         ]);
         exit;
     }
@@ -42,22 +121,21 @@
     $stmt->execute();
 
     $result = $stmt->get_result();
-
     $myActiveUser = $result->fetch_assoc();
 
-    if (!$myActiveUser) 
-    {
+    $stmt->close();
+
+    if (!$myActiveUser) {
         echo json_encode([
             'success' => false,
-            'message' => 'You are not an active user for this season'
+            'message' => 'You are not an active user for this season.'
         ]);
         exit;
     }
 
 
 
-$sql = "
-    SELECT
+$sql = "SELECT
         is_active,
         status,
         started_at,
@@ -67,10 +145,10 @@ $sql = "
         draft_position,
         current_round,
         total_picks
-    FROM 
+        FROM 
         draft_state
-
-    WHERE season_id = ?
+        WHERE 
+        season_id = ?
 ";
 
 $stmt = $conn->prepare($sql);

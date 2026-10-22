@@ -4,8 +4,92 @@
 
     header('Content-Type: application/json');
 
-    $seasonId = 1;
 
+    // Get JSON input from request
+    $input = json_decode(file_get_contents("php://input"), true);
+
+    // Validate JSON input
+    if (!is_array($input)) {
+        http_response_code(400);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid request data."
+        ]);
+        exit;
+    }
+
+    // Get and validate season ID
+    $seasonId = filter_var(
+        $input['seasonId'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    if ($seasonId === false || $seasonId === null) {
+        http_response_code(400);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid season ID."
+        ]);
+        exit;
+    }
+
+    // Get and validate timer remaining
+    $timerRemaining = filter_var(
+        $input['timer_remaining'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 0, 'max_range' => 60]]
+    );
+
+    if ($timerRemaining === false || $timerRemaining === null) {
+        http_response_code(400);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid timer remaining."
+        ]);
+        exit;
+    }
+
+    // Check that the season exists
+    $seasonSql = "
+        SELECT id
+        FROM seasons
+        WHERE id = ?
+        LIMIT 1
+    ";
+
+    $seasonStmt = $conn->prepare($seasonSql);
+
+    if (!$seasonStmt) {
+        http_response_code(500);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to prepare season query."
+        ]);
+        exit;
+    }
+
+    $seasonStmt->bind_param("i", $seasonId);
+    $seasonStmt->execute();
+
+    $seasonResult = $seasonStmt->get_result();
+    $season = $seasonResult->fetch_assoc();
+
+    $seasonStmt->close();
+
+    if (!$season) {
+        http_response_code(404);
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Season not found."
+        ]);
+        exit;
+    }
 
 
     // =====================================================
@@ -160,20 +244,6 @@
         return $result !== false;
     }
 
-    //-----GET TIMER FROM REQUEST ------
-
-    $input = json_decode(file_get_contents("php://input"), true);
-
-    $timerRemaining = $input['timer_remaining'] ?? null;
-
-    if ($timerRemaining === null)
-    {
-        echo json_encode([
-            "success" => false,
-            "message" => "Timer remaining was not provided."
-        ]);
-        exit;
-    }
 
     //------ PAUSE DRAFT ------
     $sql = "
