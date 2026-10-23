@@ -289,7 +289,7 @@
             
     </main>
     <footer class="border-top text-center">
-            <p>Copyright Ascent Draft League</p>
+            <p>&copy;Copyright Ascent Draft League 2026</p>
     </footer>
    </div>
 </body>

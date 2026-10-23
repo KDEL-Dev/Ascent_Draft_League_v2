@@ -96,17 +96,32 @@
 
                         <div class="d-flex flex-column gap-2 align-items-center">
 
-                            <button class="btn btn-secondary">Load Pokemon Tier</button>
+                            <a class="btn btn-secondary" href="settings/load-showdown-tiers.php?seasonId=<?= (int)$seasonId ?>">Load Pokemon Tiers</a>
 
                             <button class="btn btn-secondary">Edit Tier Numbers</button>
-                        
-                            <form action="../api/admin_settings/reset_draft.php" method="POST" onsubmit="return confirm('Reset the draft?');">
+                            
+                            <!-- DELETEION BUTTONS -->
+                            <div class="border-top pt-2 gap-2 d-flex align-items-center flex-column">
 
-                                <input type="hidden" name="seasonId" value="<?= htmlspecialchars((string)$seasonId) ?>">
+                                <form action="../api/admin_settings/reset_draft.php" method="POST" onsubmit="return confirm('Reset the draft?');">
 
-                                <button type="submit" class="btn btn-danger">Reset Draft</button>
+                                    <input type="hidden" name="seasonId" value="<?= htmlspecialchars((string)$seasonId) ?>">
 
-                            </form>
+                                    <button type="submit" class="btn btn-danger">Reset Draft</button>
+
+                                </form>
+
+                                <form action="../api/upload_to_dB/delete_pkmn_tier_from_dB.php" method="POST" onsubmit="return confirm('Delete ALL Pokemon tiers for this season? This cannot be undone.');">
+                                    <input
+                                        type="hidden"
+                                        name="seasonId"
+                                        value="<?= (int)$seasonId ?>"
+                                    >
+
+                                    <button type="submit" class="btn btn-danger">Clear Pokemon Tiers</button>
+                                </form>
+
+                            </div>
 
                         </div>
 

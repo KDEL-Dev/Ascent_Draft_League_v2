@@ -6,7 +6,7 @@
 
     require_once __DIR__ . '/../../includes/auth.php';
 
-        // 1. Get seasonId from url
+    // 1. Get seasonId from url
     $seasonId = filter_input(INPUT_GET,'seasonId',FILTER_VALIDATE_INT,['options' => ['min_range' => 1]]);
 
     // 2. Validate ID

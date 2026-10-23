@@ -25,7 +25,7 @@
     }
 
     // TEMP VARIABLES - Will make Dynamic in future
-    $seasonId = 1;
+    $seasonId = 8;
 
     // This is needed to get the id of each pokemon which I believe will be inserted into showdown_pokemon_id
     $findPokemon = $conn->prepare("

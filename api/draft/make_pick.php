@@ -3,11 +3,13 @@
     // error_reporting(E_ALL);
     // ini_set('display_errors', 1);    
 
-    $userId = $_SESSION['user_id'] ?? null;
+    
 
     require_once __DIR__ . '/../../includes/auth.php';
 
     header('Content-Type: application/json');
+
+    $userId = $_SESSION['user_id'] ?? null;
 
     // BROADCAST TEST
     function broadcastDraftEvent(array $data): void
