@@ -387,6 +387,7 @@ li
 
 .rayquazaCircle
 {
+    min-width: 56px;
     padding: 8px;
     margin: 4px;
 

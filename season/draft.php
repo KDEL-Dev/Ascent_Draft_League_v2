@@ -427,7 +427,7 @@
                                 </div>
                                 
                                 <div id="draftPokemonStats" class="w-100">
-                                    <div id="draftPkmnStats1" class=" mb-2 text-center d-flex justify-content-between">
+                                    <div id="draftPkmnStats1" class=" mb-2 text-center d-flex justify-content-evenly">
                                         <div>
                                             <p>HP</p>
                                             <div class="rayquazaCircle">
