@@ -53,9 +53,13 @@
     </nav>
     <main class="container p-3 bg-white">
         <h1 class="fs-3">Past Champions</h1>
+        <hr>
         <!-- Sort these based on Season. Maybe make it an accordian that has season and
          the winner, when you expand then you see winning team/ winning roster/ and runner 
          up team and roster. Maybe these should be sprites? -->
+
+        <button class="btn btn-primary">New Entry</button>
+
     </main>
     <script src="javascript/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

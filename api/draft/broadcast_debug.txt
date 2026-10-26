@@ -430,3 +430,21 @@ RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick
 HTTP CODE: 200
 RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":36,"round_number":12,"active_user_id":12,"team_name":"DZN","pokemon_id":"518"}}
 
+2026-10-26 21:13:49 BROADCAST CALLED
+{"type":"draft_pick","pick_number":1,"round_number":1,"active_user_id":18,"team_name":"DZN","pokemon_id":229}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":1,"round_number":1,"active_user_id":18,"team_name":"DZN","pokemon_id":229}}
+
+2026-10-26 21:19:07 BROADCAST CALLED
+{"type":"draft_pick","pick_number":4,"round_number":2,"active_user_id":18,"team_name":"DZN","pokemon_id":476}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":4,"round_number":2,"active_user_id":18,"team_name":"DZN","pokemon_id":476}}
+
+2026-10-26 21:21:21 BROADCAST CALLED
+{"type":"draft_pick","pick_number":5,"round_number":3,"active_user_id":18,"team_name":"DZN","pokemon_id":806}
+
+HTTP CODE: 200
+RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":5,"round_number":3,"active_user_id":18,"team_name":"DZN","pokemon_id":806}}
+

@@ -136,15 +136,9 @@ async function loadUserDraftRoster()
         return;
     }
 
-    const response = await fetch("../api/roster/get_roster.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-            seasonId: seasonId
-        })
-    });
+    const response = await fetch(
+         `../api/roster/get_roster.php?seasonId=${encodeURIComponent(seasonId)}`
+    );
 
     // const response = await fetch('api/roster/get_roster.php');
 
@@ -553,7 +547,7 @@ async function loadDraftedDisplay()
     // --------------------
 
     const rosterResponse = await fetch(
-        `../api/roster/get_roster.php?active_user_id=${currentPick.active_user_id}`
+        `../api/roster/get_roster.php?active_user_id=${currentPick.active_user_id}&seasonId=${seasonId}`
     );
 
     const rosterData = await rosterResponse.json();
@@ -663,6 +657,11 @@ let draftButtons = document.querySelectorAll(".draftBtn")
 draftButtons.forEach(button => {
     button.addEventListener("click", () => {
         const pokemonId = button.dataset.pokemonId;
+        const seasonId = button.dataset.seasonId;
+
+        console.log("Pokemon ID:", pokemonId);
+        console.log("Season ID:", seasonId);
+
 
         fetch("../api/draft/make_pick.php", {
             method: "POST",
@@ -671,6 +670,7 @@ draftButtons.forEach(button => {
             },
             body: JSON.stringify({
                 pokemon_id: pokemonId,
+                seasonId: seasonId
             })
         })
         .then(async response => {

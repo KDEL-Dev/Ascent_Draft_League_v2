@@ -43,6 +43,26 @@
         die("Failed to retrieve seasons: " . $conn->error);
     }
 
+    // --------------
+    // CURRENT SEASON
+    // --------------
+
+    $currentSql ="SELECT s.id, s.season_number, s.season_name, s.format, s.is_active
+                        FROM seasons s
+                        WHERE s.is_active = 1
+                        ORDER BY s.id DESC
+                        LIMIT 1;
+    ";
+
+    $currentStmt = $conn->prepare($currentSql);
+    $currentStmt->execute();
+
+    $currentResults = $currentStmt->get_result();
+    $currentSeason = $currentResults->fetch_assoc();
+
+    // echo '<pre>';
+    // print_r($currentSeason);
+    // echo '</pre>';
 ?>
 
 
@@ -87,14 +107,22 @@
                     <li class="nav-item" href="#">
                         <a class="nav-link" href="about.php">About</a>
                     </li>
-                    <li class="nav-item" href="#">
+                    <!-- <li class="nav-item" href="#">
                         <a class="nav-link" href="profile.php">Profile</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="admin-main.php">Admin Settings</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>
+                    </li> -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?= $teamName ?></a>
+                        <ul class="dropdown-menu px-3"> 
+                            <li><a href="profile.php">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a href="logout.php">Logout</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -109,35 +137,49 @@
             <!-- Current Season -->
             <div id="indexTopCont" class="row p-3">
                 <div class="col-12 col-lg-6 px-0">
-                    <div class="h-100 p-3 mx-1 border rounded-2">
-                        <h2 class="fs-5 text-center fw-bold">Current Season</h2>
-                        <div class="card">
-                            <div class="row g-0">
-                                <div class="col-md-4 bg-dark">
-                                    <img class="img-fluid" src="img/Ascent Grad Logo w Text.svg" alt="">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <p class="card-title fs-5 fw-bold">Season 14</p>
-                                        <p class="card-text">name:</p>
-                                        <p class="card-text">format:</p>
-                                        <a href="#" class="btn btn-primary">Enter</a>
+                    <div class="h-100 p-3 mx-1 border rounded-2 bg-dark">
+                        <h2 class="fs-5 text-center fw-bold text-white">Current Season</h2>
+                        
+                        <?php if ($currentSeason): ?>
+
+                            <a href="season/draft.php?seasonId=<?= (int) $currentSeason['id'] ?>"
+                               class="d-block text-decoration-none text-reset"
+                            >
+
+                                <div class="card border border-2">
+                                    <div class="row g-0">
+                                        <div class="col-md-4 bg-secondary">
+                                            <img class="img-fluid" src="img/Ascent Grad Logo w Text.svg" alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                
+                                                <p class="card-title fs-5">Season Number: <span class="fs-4 fw-semibold"><?= htmlspecialchars($currentSeason['season_number']) ?></span></p>
+                                                <p class="card-text">name: <span class="fs-5 fw-semibold"><?= htmlspecialchars($currentSeason['season_name']) ?></span></p>
+                                                <p class="card-text">format: <?= htmlspecialchars($currentSeason['format']) ?></p>
+
+                                                <button href="#" class="btn btn-primary">Enter</button>
+
+                                            </div>
+                                        </div>  
                                     </div>
-                                </div>  
-                            </div>
-                        </div>
+                                </div>
+
+                            </a>
+
+                        <? endif ?>
+
                     </div>
                 </div>
-                <div class="col-12 col-lg-6">
-                    <div id="homeAboutCont" class="h-100 p-3 mx-1 border rounded-2">
-                        <div class="d-flex align-items-center justify-content-center">
+                <div class="col-12 col-lg-6 px-0">
+                    <div id="homeAboutCont" class="h-100 p-3 mx-1 mt-3 mt-lg-0 border rounded-2">
+                        <div class="mb-3 d-flex align-items-center justify-content-center">
                             <i class="fa-solid fa-play"></i>
                             <h2 class="mx-3 fs-5 text-center fw-bold mb-0">About - Ascent Draft League</h2>
                             <i class="fa-solid fa-play"></i>
                         </div>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem doloribus atque 
-                            enim odio obcaecati, velit repellendus tempore? Dignissimos rem, quasi porro impedit alias 
-                            temporibus, voluptatibus illum nulla earum deserunt reiciendis?
+                        <p>Ascent Pokemon Draft League is a competitive Draft format league played amongst friends. This league is based off of the UCL which was made in X year and we've
+                            been playing this league for over 10+ years. Click Read more if you want to find out more about our league.
                         </p>
                         <div class="d-flex justify-content-center">
                             <a href="about.php" class="btn btn-primary">Read More</a>

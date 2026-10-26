@@ -8,8 +8,7 @@
 
     require_once __DIR__ . '/../includes/auth.php';
 
-    // $seasonId = 1;
-    // $activeUserId = 6;
+    
 
     // 1. Get seasonId from url
     $seasonId = filter_input(INPUT_GET,'seasonId',FILTER_VALIDATE_INT,['options' => ['min_range' => 1]]);
@@ -674,6 +673,7 @@
                             <button 
                                 class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-season-id="<?= (int) $seasonId ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="OU">
                                 Draft 
@@ -707,6 +707,7 @@
                             <button 
                                 class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-season-id="<?= (int) $seasonId ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="UU">
                                 Draft 
@@ -740,6 +741,7 @@
                             <button 
                                 class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-season-id="<?= (int) $seasonId ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="RU">
                                 Draft 
@@ -777,6 +779,7 @@
                             <button 
                                 class="draftBtn btn" 
                                 data-pokemon-id="<?= $pokemon['id'] ?>"
+                                data-season-id="<?= (int) $seasonId ?>"
                                 data-pokemon-name="<?= htmlspecialchars($pokemon['name']) ?>"
                                 data-tier="NU">
                                 Draft 
@@ -787,6 +790,9 @@
             </div>
         </div>
     </main>
+
+
+
     <!-- Bootstrap Script and My Script -->
     <script src="../javascript/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

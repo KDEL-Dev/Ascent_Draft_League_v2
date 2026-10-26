@@ -55,52 +55,67 @@
 
 
 
-    // -------------
-    // GET SEASON ID
-    // -------------
+    // ----------------------
+    // GET JSON REQUEST DATA
+    // ----------------------
 
-    // $seasonId = 1;
+    $data = json_decode(file_get_contents('php://input'), true);
 
-    // Get season ID from POST
-        $seasonId = filter_input(
-            INPUT_POST,
-            'seasonId',
-            FILTER_VALIDATE_INT,
-            ['options' => ['min_range' => 1]]
-        );
+    if (!is_array($data)) {
+        http_response_code(400);
 
-        // Validate season ID
-        if ($seasonId === false || $seasonId === null) {
-            http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid JSON request."
+        ]);
 
-            echo json_encode([
-                "success" => false,
-                "message" => "Invalid season ID."
-            ]);
+        exit;
+    }
 
-            exit;
-        }
+    // Get season ID from JSON
+    $seasonId = filter_var(
+        $data['seasonId'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
 
-        // Check that season exists
-        $seasonSql ="SELECT id
-                    FROM seasons
-                    WHERE id = ?
-                    LIMIT 1
-        ";
+    // Get Pokemon ID from JSON
+    $pokemonId = filter_var(
+        $data['pokemon_id'] ?? null,
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
 
-        $seasonStmt = $conn->prepare($seasonSql);
+    // Validate IDs
+    if ($seasonId === false || $seasonId === null) {
+        http_response_code(400);
 
-        if (!$seasonStmt) {
-            http_response_code(500);
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid season ID."
+        ]);
 
-            echo json_encode([
-                "success" => false,
-                "message" => "Failed to prepare season query."
-            ]);
+        exit;
+    }
 
-            exit;
-        }
+    if ($pokemonId === false || $pokemonId === null) {
+        http_response_code(400);
 
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid Pokemon ID."
+        ]);
+
+        exit;
+    }
+
+    // Check that season exists
+    $seasonSql = "SELECT id
+                FROM seasons
+                WHERE id = ?
+                LIMIT 1";
+
+    $seasonStmt = $conn->prepare($seasonSql);
     $seasonStmt->bind_param("i", $seasonId);
     $seasonStmt->execute();
 
@@ -120,63 +135,44 @@
         exit;
     }
 
-
-
-
-
-
+    
 
     //-------------------
     // GET ACTIVE USER ID
     //-------------------
 
     $sql = "SELECT id
-            FROM active_users
-            WHERE user_id = ?
-            AND season_id = ?
-    ";
+        FROM active_users
+        WHERE user_id = ?
+        AND season_id = ?";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $userId, $seasonId);
-    $stmt->execute();
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $userId, $seasonId);
+        $stmt->execute();
 
-    $row = $stmt->get_result()->fetch_assoc();
+        $row = $stmt->get_result()->fetch_assoc();
 
-    if (!$row) {
-        echo json_encode([
-            "success" => false,
-            "message" => "You are not active in this season."
-        ]);
-        exit;
-    }
+        if (!$row) {
+            http_response_code(403);
 
-    $activeUserId = $row['id'];
+            echo json_encode([
+                "success" => false,
+                "message" => "You are not active in this season."
+            ]);
 
-    //-------------------------
-    // Get data from Javascript
-    //-------------------------
-    
-    $data = json_decode(file_get_contents("php://input"), true);
-    $pokemonId = $data['pokemon_id'] ?? null;
+            exit;
+        }
 
-    if (!$activeUserId) {
-        echo json_encode([
-            "success" => false,
-            "message" => "User not identified."
-        ]);
-        exit;
-    }
+        $activeUserId = (int)$row['id'];
+        $stmt->close();
 
-    if(!$pokemonId)
-    {
-        echo json_encode([
-            "success" => false,
-            "message" => "No Pokemon selected"
-        ]);
-        exit;
-    }
+   
 
+
+
+    // ---------------
     // Get Draft State
+    // ---------------
 
     $sql = "SELECT draft_position, current_round, total_picks, is_active
             FROM draft_state
@@ -270,11 +266,10 @@
 
     // Check if Pokemon has already been drafted
 
-    $sql = "
-        SELECT id
-        FROM draft_picks
-        WHERE season_id = ?
-        AND showdown_pokemon_id = ?
+    $sql = "SELECT id
+            FROM draft_picks
+            WHERE season_id = ?
+            AND showdown_pokemon_id = ?
     ";
 
     $stmt = $conn->prepare($sql);
@@ -301,11 +296,10 @@
     // GET POKEMON TIER
     // -------------------------
 
-    $sql = "
-        SELECT tier
-        FROM pokemon_tier_per_season
-        WHERE season_id = ?
-        AND showdown_pokemon_id = ?
+    $sql = "SELECT tier
+            FROM pokemon_tier_per_season
+            WHERE season_id = ?
+            AND showdown_pokemon_id = ?
     ";
 
     $stmt = $conn->prepare($sql);
@@ -359,23 +353,22 @@
     // CHECK TIER LIMIT
     // -------------------------
 
-    $tierCountSql = "
-        SELECT COUNT(*) AS tier_count
-        FROM draft_picks dp
-        JOIN pokemon_tier_per_season pt
-            ON pt.showdown_pokemon_id = dp.showdown_pokemon_id
-            AND pt.season_id = dp.season_id
-        WHERE dp.season_id = ?
-        AND dp.active_user_id = ?
-        AND (
-            (? = 'OU' AND pt.tier IN ('OU', 'UUBL'))
-            OR
-            (? = 'UU' AND pt.tier IN ('UU', 'RUBL'))
-            OR
-            (? = 'RU' AND pt.tier IN ('RU', 'NUBL'))
-            OR
-            (? = 'NU' AND pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU'))
-        )
+    $tierCountSql ="SELECT COUNT(*) AS tier_count
+                    FROM draft_picks dp
+                    JOIN pokemon_tier_per_season pt
+                        ON pt.showdown_pokemon_id = dp.showdown_pokemon_id
+                        AND pt.season_id = dp.season_id
+                    WHERE dp.season_id = ?
+                    AND dp.active_user_id = ?
+                    AND (
+                        (? = 'OU' AND pt.tier IN ('OU', 'UUBL'))
+                        OR
+                        (? = 'UU' AND pt.tier IN ('UU', 'RUBL'))
+                        OR
+                        (? = 'RU' AND pt.tier IN ('RU', 'NUBL'))
+                        OR
+                        (? = 'NU' AND pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU'))
+                    )
     ";
 
     $stmt = $conn->prepare($tierCountSql);

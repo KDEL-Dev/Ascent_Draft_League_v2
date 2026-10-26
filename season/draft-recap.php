@@ -54,6 +54,7 @@
     ON draft_picks.showdown_pokemon_id = showdown_pokemon.id
     JOIN pokemon_tier_per_season
     ON draft_picks.showdown_pokemon_id = pokemon_tier_per_season.showdown_pokemon_id
+    AND draft_picks.season_id = pokemon_tier_per_season.season_id
     WHERE draft_picks.season_id = ?
     ORDER BY draft_picks.pick_number ASC;
     ";

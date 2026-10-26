@@ -53,6 +53,24 @@
     </nav>
     <main class="bg-white p-3 container">
         <h1 class="fs-3">Profile</h1>
+        <hr>
+
+
+            <!-- Change Name -->
+            <form action="">
+                <label for="">Previous Team Name</label>
+                <input type="text">
+
+                <label for="">New Team Name:</label>
+                <input type="text">
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Change Team Name</button>
+                </div>
+                
+            </form>
+
+
     </main>
 <script src="../javascript/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

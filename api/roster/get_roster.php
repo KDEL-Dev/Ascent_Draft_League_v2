@@ -23,7 +23,7 @@
 
     // Get season ID from POST
     $seasonId = filter_input(
-        INPUT_POST,
+        INPUT_GET,
         'seasonId',
         FILTER_VALIDATE_INT,
         ['options' => ['min_range' => 1]]
