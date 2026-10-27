@@ -47,7 +47,11 @@
 
     
 
-    $rosterSql ="SELECT users.default_team_name, users.default_team_mascot, showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2, pokemon_tier_per_season.tier
+    $rosterSql ="SELECT users.default_team_name, users.default_team_mascot, 
+                        showdown_pokemon.name, showdown_pokemon.type1, showdown_pokemon.type2,
+                        showdown_pokemon.hp, showdown_pokemon.attack, showdown_pokemon.defense,
+                        showdown_pokemon.sp_attack, showdown_pokemon.sp_defense, showdown_pokemon.speed,
+                        pokemon_tier_per_season.tier
                 FROM roster_pkmn
                 JOIN active_users
                 ON roster_pkmn.active_user_id = active_users.id
@@ -98,6 +102,12 @@
             'tier' => $row['tier'],
             'type1' => $row['type1'],
             'type2' => $row['type2'],
+            'attack' => $row['attack'],
+            'defense' => $row['defense'],
+            'hp' => $row['hp'],
+            'sp_attack' => $row['sp_attack'],
+            'sp_defense' => $row['sp_defense'],
+            'speed' => $row['speed']
         ];
     }
 
@@ -196,7 +206,7 @@
 
                 <?php foreach ($rosters as $teamName => $roster): ?>
 
-                    <div class="mb-3 col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="mb-3 col-12 col-sm-6 col-md-5 col-lg-3">
 
                         <div class="rosterCard card">
 
@@ -219,21 +229,47 @@
                                                 <?= htmlspecialchars($tier) ?>
                                             </div>
 
-                                            <div class="rosterCardPkmn d-flex flex-column align-items-start">
-                                                <div>
-                                                    <p class="">
-                                                        <?= htmlspecialchars($pokemon['name']) ?>
-                                                    </p>
-                                                </div>
-                                                
-                                                <div class="mb-1 d-flex">
-                                                    <div class="me-1 badge typeBadge-<?= strtolower(htmlspecialchars($pokemon['type1'])) ?>">
-                                                        <?= htmlspecialchars($pokemon['type1']) ?>
+                                            <!-- added to seperate menu from text -->
+                                            <div class="w-100 d-flex">
+
+                                                <div class="rosterCardPkmn d-flex flex-column align-items-start">
+                                                    <div>
+                                                        <p class="">
+                                                            <?= htmlspecialchars($pokemon['name']) ?>
+                                                        </p>
                                                     </div>
-                                                    <div class="badge typeBadge-<?= strtolower(htmlspecialchars($pokemon['type2'])) ?>">
-                                                        <?= htmlspecialchars($pokemon['type2']) ?>
+                                                    
+                                                    <div class="mb-1 d-flex">
+                                                        <div class="me-1 badge typeBadge-<?= strtolower(htmlspecialchars($pokemon['type1'])) ?>">
+                                                            <?= htmlspecialchars($pokemon['type1']) ?>
+                                                        </div>
+                                                        <div class="badge typeBadge-<?= strtolower(htmlspecialchars($pokemon['type2'])) ?>">
+                                                            <?= htmlspecialchars($pokemon['type2']) ?>
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="pe-1">
+                                                    <button type="button" 
+                                                            data-bs-container="body" 
+                                                            data-bs-toggle="popover" 
+                                                            data-bs-placement="right" 
+                                                            data-bs-title="<?= $pokemon['name'] ?> stats"
+                                                            data-bs-content="Hp: <?= $pokemon['hp'] ?>
+                                                                             Attack: <?= $pokemon['attack'] ?>
+                                                                             Defense: <?= $pokemon['defense'] ?>
+                                                                             SpAtk: <?= $pokemon['sp_attack'] ?>
+                                                                             SpDef: <?= $pokemon['sp_defense'] ?>
+                                                                             Speed: <?= $pokemon['speed'] ?>
+                                                                            " 
+
+                                                            class="statsBtn btn" >
+                                                    
+                                                        <i class="fa-solid fa-bars"></i>
+
+                                                    </button>
+                                                </div>
+
                                             </div>
 
                                             

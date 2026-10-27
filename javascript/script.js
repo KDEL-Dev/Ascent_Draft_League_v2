@@ -2299,3 +2299,12 @@ socket.onerror = function(error) {
     console.error('WebSocket error:', error);
 };
 
+
+// POPOVER
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-bs-toggle="popover"]')
+        .forEach(button => {
+            new bootstrap.Popover(button);
+        });
+});

@@ -178,8 +178,8 @@
                             <h2 class="mx-3 fs-5 text-center fw-bold mb-0">About - Ascent Draft League</h2>
                             <i class="fa-solid fa-play"></i>
                         </div>
-                        <p>Ascent Pokemon Draft League is a competitive Draft format league played amongst friends. This league is based off of the UCL which was made in X year and we've
-                            been playing this league for over 10+ years. Click Read more if you want to find out more about our league.
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi, quo tempore consequuntur ducimus inventore iure accusamus quas veritatis incidunt adipisci deserunt et asperiores reprehenderit mollitia. Numquam tempora quos iste iure.
                         </p>
                         <div class="d-flex justify-content-center">
                             <a href="about.php" class="btn btn-primary">Read More</a>
