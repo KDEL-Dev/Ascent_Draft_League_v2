@@ -167,7 +167,7 @@
 
                             </a>
 
-                        <? endif ?>
+                        <?php endif; ?>
 
                     </div>
                 </div>

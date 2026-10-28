@@ -13,8 +13,12 @@
 
     if (!isset($_SESSION['user_id'])) {
         // Path below might need to change when I put it online.
-        header("Location: /ascent_draft_league_v2/login.php");
-        exit;
+
+        // header("Location: /ascent_draft_league_v2/login.php");
+        // exit;
+        
+        header("Location: " . BASE_URL . "login.php");
+        exit;   
     }
 
 
@@ -61,7 +65,10 @@
         session_unset();
         session_destroy();
 
-        header("Location: ../login.php");
+        // header("Location: ../login.php");
+        // exit;
+
+        header("Location: " . BASE_URL . "login.php");
         exit;
     }
 
