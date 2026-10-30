@@ -128,13 +128,13 @@
             </div>
         </div>
     </nav>
-    <main class="bg-white p-3 container">
+    <main id="profile" class="bg-white p-3 container">
+
         <h1 class="fs-3">Profile</h1>
+
         <hr>
 
-
             <a href="change-team-info.php" class="btn btn-primary">Change Team Name and Mascot</a>
-
 
     </main>
 <script src="../javascript/script.js"></script>

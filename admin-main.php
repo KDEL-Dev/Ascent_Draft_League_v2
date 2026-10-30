@@ -52,7 +52,20 @@
         </div>
     </nav>
     <main class="p-3 bg-white container">
+
         <h1 class="fs-3">Admin Settings</h1>
+        <hr>
+
+        <div class="row">
+            <div class="mb-3">
+                <a href="" class="btn btn-primary">Member List</a>
+            </div>
+            <div>
+                <a href="season-list.php" class="btn btn-primary">Season List</a>
+            </div>
+        </div>
+        
+
     </main>
 <script src="javascript/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

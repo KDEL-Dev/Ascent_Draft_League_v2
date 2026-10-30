@@ -41,7 +41,7 @@ button
 /* Figure out proper way to change primary button color */
 .btn-primary
 {
-    background-color: var(--main-color) ;
+    background-color: var(--main-color);
     border-color: var(--main-color);
 }
 
@@ -1094,6 +1094,36 @@ li
 {
     width: 100%;
     max-width: 480px;
+}
 
- 
+/* -----------------------------------------------------------------------
+--------------------------------- PROFILE --------------------------------
+------------------------------------------------------------------------*/
+
+#profile .btn-primary
+{
+    background-color: var(--main-color);
+    border: var(--main-color);
+}
+
+#profile .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border: var(--main-color-hover);
+}
+
+/* -----------------------------------------------------------------------
+---------------------------- CHANGE TEAM INFO ----------------------------
+------------------------------------------------------------------------*/
+
+#changeTeamInfo .btn-primary
+{
+    background-color: var(--main-color);
+    border: var(--main-color);
+}
+
+#changeTeamInfo .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border: var(--main-color-hover);
 }
