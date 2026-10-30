@@ -134,6 +134,7 @@
    
     <main id="indexPage" class="container my-3 p-3 bg-white rounded-2">
             <h1 class="fs-3 text-center">Ascent Draft League</h1>
+            <hr>
             <!-- Current Season -->
             <div id="indexTopCont" class="row p-3">
                 <div class="col-12 col-lg-6 px-0">

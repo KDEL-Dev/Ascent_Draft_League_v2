@@ -210,7 +210,7 @@
 
                         <div class="rosterCard card">
 
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-center">
                                 <h2 class="fs-5">
                                     <?php echo htmlspecialchars($teamName); ?>
                                     <?php echo htmlspecialchars($roster['mascot']); ?>
@@ -249,7 +249,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="pe-1">
+                                                <div class="pe-1 ps-2 border-start">
                                                     <button type="button" 
                                                             data-bs-container="body" 
                                                             data-bs-toggle="popover" 
@@ -263,9 +263,10 @@
                                                                              Speed: <?= $pokemon['speed'] ?>
                                                                             " 
 
-                                                            class="statsBtn btn" >
+                                                            class="statsBtn-<?= strtolower($tier) ?> btn btn-sm btn-primary" >
                                                     
-                                                        <i class="fa-solid fa-bars"></i>
+                                                        <!-- <i class="fa-solid fa-bars"></i> -->
+                                                        Stats
 
                                                     </button>
                                                 </div>

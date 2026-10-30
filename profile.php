@@ -1,3 +1,72 @@
+<?php 
+
+    require_once __DIR__ . '/includes/auth.php';
+
+    $userId = $_SESSION['user_id'];
+
+    //------------------------------
+    //----- RETRIEVE TEAM NAME -----
+    //------------------------------
+
+    $sql = "SELECT default_team_name 
+            FROM users
+            WHERE users.id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt-> bind_param("i",$userId);
+    $stmt->execute();
+
+    $teamNameResult = $stmt->get_result();
+
+    $teamName = $teamNameResult->fetch_assoc()['default_team_name'];
+
+    // Must I close the connection here?
+
+
+    $seasonsSql = "SELECT
+                        id,
+                        season_number,
+                        season_name,
+                        draft_date,
+                        start_date,
+                        created_at,
+                        is_active,
+                        format
+                    FROM seasons
+                    ORDER BY season_number ASC
+    ";
+
+    $seasonsResult = $conn->query($seasonsSql);
+
+    if (!$seasonsResult) {
+        die("Failed to retrieve seasons: " . $conn->error);
+    }
+
+    // --------------
+    // CURRENT SEASON
+    // --------------
+
+    $currentSql ="SELECT s.id, s.season_number, s.season_name, s.format, s.is_active
+                        FROM seasons s
+                        WHERE s.is_active = 1
+                        ORDER BY s.id DESC
+                        LIMIT 1;
+    ";
+
+    $currentStmt = $conn->prepare($currentSql);
+    $currentStmt->execute();
+
+    $currentResults = $currentStmt->get_result();
+    $currentSeason = $currentResults->fetch_assoc();
+
+    // echo '<pre>';
+    // print_r($currentSeason);
+    // echo '</pre>';
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,14 +107,22 @@
                     <li class="nav-item" href="#">
                         <a class="nav-link" href="about.php">About</a>
                     </li>
-                    <li class="nav-item" href="#">
+                    <!-- <li class="nav-item" href="#">
                         <a class="nav-link" href="profile.php">Profile</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="admin-main.php">Admin Settings</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>
+                    </li> -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?= $teamName ?></a>
+                        <ul class="dropdown-menu px-3"> 
+                            <li><a href="profile.php">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a href="logout.php">Logout</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -56,19 +133,7 @@
         <hr>
 
 
-            <!-- Change Name -->
-            <form action="">
-                <label for="">Previous Team Name</label>
-                <input type="text">
-
-                <label for="">New Team Name:</label>
-                <input type="text">
-
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-primary">Change Team Name</button>
-                </div>
-                
-            </form>
+            <a href="change-team-info.php" class="btn btn-primary">Change Team Name and Mascot</a>
 
 
     </main>

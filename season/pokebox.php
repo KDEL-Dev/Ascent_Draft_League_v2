@@ -95,9 +95,10 @@ $rosterSql ="SELECT
             JOIN showdown_pokemon
                 ON showdown_pokemon.id = roster_pkmn.showdown_pokemon_id
 
-            JOIN pokemon_tier_per_season
-                ON showdown_pokemon.id = pokemon_tier_per_season.showdown_pokemon_id
-
+             JOIN pokemon_tier_per_season
+                ON roster_pkmn.showdown_pokemon_id = pokemon_tier_per_season.showdown_pokemon_id
+                AND roster_pkmn.season_id = pokemon_tier_per_season.season_id
+                
             WHERE roster_pkmn.active_user_id = ?
             AND roster_pkmn.status = 'active'
         ";

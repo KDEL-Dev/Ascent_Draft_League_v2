@@ -13,6 +13,7 @@
 
     --info-header: rgb(70, 70, 70);
     --nav-color: rgb(48, 48, 48);
+    --soft-white: #FAFAFA;
 
     --pkmn-red: rgb(131, 18, 18);
 
@@ -33,7 +34,7 @@ p,span,li,h1,h2,h3
 button
 {
     background-color: var(--main-color);
-    color: white;
+    color: var(--soft-white);
     font-family: "jura";
 }
 
@@ -46,7 +47,7 @@ button
 
 .btn-primary:hover
 {
-    background-color: var(--main-color-hover) !important;
+    background-color: var(--main-color-hover);
 }
 
 a,
@@ -265,7 +266,7 @@ li
 #draftDashboard > div
 {
     background-color: var(--info-header);
-    border-radius: 16px;
+    border-radius: 8px;
 }
 
 
@@ -688,8 +689,8 @@ li
 
 .rosterCard .card-header
 {
-    background-color: var(--main-color);
-    color: white;
+    background-color: var(--nav-color);
+    color: var(--soft-white);
 }
 
 .rosterCard .card-header h2
@@ -728,10 +729,59 @@ li
     border-right: solid rgba(0, 0, 0, 0.2) 1px;
 }
 
+/* STATS Buttons */
+.statsBtn-ou.btn-primary
+{
+    background-color: var(--ou-tier-color);
+    border: var(--ou-tier-color);
+}
+
+.statsBtn-ou.btn-primary:hover
+{
+    background-color: color-mix(in srgb, var(--ou-tier-color), black 25%);
+}
+
+
+.statsBtn-uu.btn-primary
+{
+    background-color: var(--uu-tier-color);
+    border: var(--ou-tier-color);
+}
+
+.statsBtn-uu.btn-primary:hover
+{
+    background-color: color-mix(in srgb, var(--uu-tier-color), black 25%);
+}
+
+
+.statsBtn-ru.btn-primary
+{
+    background-color: var(--ru-tier-color);
+    border: var(--ou-tier-color);
+}
+
+.statsBtn-ru.btn-primary:hover
+{
+    background-color: color-mix(in srgb, var(--ru-tier-color), black 25%);
+}
+
+
+.statsBtn-nu.btn-primary
+{
+    background-color: var(--nu-tier-color);
+    border: var(--ou-tier-color);
+}
+
+.statsBtn-nu.btn-primary:hover
+{
+    background-color: color-mix(in srgb, var(--nu-tier-color), black 25%);
+}
+
+
 /* TIER COLORS */
 .rosterCardTier.tier-ou 
 {
-    color: white;
+    color: var(--soft-white);
     background-color: var(--ou-tier-color);
 
     font-weight: 700;
@@ -740,7 +790,7 @@ li
 
 .rosterCardTier.tier-uu 
 {
-    color: white;
+    color: var(--soft-white);
     background-color: var(--uu-tier-color);
 
     font-weight: 700;
@@ -749,7 +799,7 @@ li
 
 .rosterCardTier.tier-ru 
 {
-    color: white;
+    color: var(--soft-white);
     background-color: var(--ru-tier-color);
 
     font-weight: 700;
@@ -758,7 +808,7 @@ li
 
 .rosterCardTier.tier-nu 
 {
-    color: white;
+    color: var(--soft-white);
     background-color: var(--nu-tier-color);
 
     font-weight: 700;
@@ -781,8 +831,8 @@ li
 -------------------------------------------------------------------------*/
 #standingsTable th
 {
-    background-color: var(--main-color);
-    color: white;
+    background-color: var(--nav-color);
+    color: var(--soft-white);
 }
 
 #standingsTable
@@ -856,7 +906,7 @@ li
 .matchTeamName
 {
     background-color: var(--nav-color);
-    color: white;
+    color: var(--soft-white);
 }   
 
 .matchupBoxes h2
@@ -872,7 +922,7 @@ li
 
     background-color: var(--main-color);
     font-family: 'electrolize';
-    color: white;
+    color: var(--soft-white);
 }
 
 .matchVsDivider div:last-child
@@ -916,11 +966,11 @@ li
 
 .statsTable thead th
 {
-    background-color: var(--main-color);
-    color: white;
+    background-color: var(--nav-color);
+    color: var(--soft-white);
 
     border: none;
-    border-right: 1px solid white;
+    border-right: 1px solid var(--soft-white)
 }
 
 .statsTable thead th:last-child
@@ -983,7 +1033,7 @@ li
 #previousSeasonCont .card-header
 {
     background-color: var(--nav-color);
-    color: white;
+    color: var(--soft-white);
 }
 
 #previousSeasonCont .card-header p span
@@ -1014,7 +1064,7 @@ li
 
 #previousSeasonCont .card-footer button
 {
-    color: white;
+    color: var(--soft-white);
 }
 
 #previousSeasonCont .card-footer:hover
