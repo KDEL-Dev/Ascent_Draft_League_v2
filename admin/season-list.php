@@ -1,6 +1,51 @@
 <?php
-    require_once  __DIR__ . '/includes/auth.php';
+    require_once  __DIR__ . '/../includes/auth.php';
 
+    $userId = $_SESSION['user_id'];
+
+    //------------------------------
+    //----- RETRIEVE TEAM NAME -----
+    //------------------------------
+
+    $sql = "SELECT default_team_name 
+            FROM users
+            WHERE users.id = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt-> bind_param("i",$userId);
+    $stmt->execute();
+
+    $teamNameResult = $stmt->get_result();
+
+    $teamName = $teamNameResult->fetch_assoc()['default_team_name'];
+
+    // Must I close the connection here?
+
+
+    $seasonsSql = "SELECT
+                        id,
+                        season_number,
+                        season_name,
+                        draft_date,
+                        start_date,
+                        created_at,
+                        is_active,
+                        format
+                    FROM seasons
+                    ORDER BY season_number ASC
+    ";
+
+    $seasonsResult = $conn->query($seasonsSql);
+
+    if (!$seasonsResult) {
+        die("Failed to retrieve seasons: " . $conn->error);
+    }
+
+    // ----------------
+    // GRAB ALL SEASONS
+    // ----------------
+    
     $sql ="SELECT s.id, s.season_number, s.season_name, s.created_at, s.format
            FROM seasons s
     ";
@@ -42,44 +87,7 @@
 </head>
 <body class="bg-body-secondary">
     <nav class="px-3 mb-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-        <div class="container-fluid position-relative">
-            <!-- Logo -->
-            <a href="index.php" class="navbar-brand">
-                <img
-                    src="img/Ascent_Horizontal_Text_GRAD_2.png"
-                    alt="Ascent Grad Logo"
-                    height="50"
-                    style="width: auto;"
-                >
-            </a>
-            <!-- Collapse Button -->
-            <button 
-            type="button" data-bs-toggle = "collapse" data-bs-target="#navbarSupportedContentHome" 
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" 
-            class="navbar-toggler">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Main Nav Buttons -->
-            <div id="navbarSupportedContentHome" class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item" href="#">
-                        <a class="nav-link" href="about.php">About</a>
-                    </li>
-                    <li class="nav-item" href="#">
-                        <a class="nav-link" href="profile.php">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-main.php">Admin Settings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <?php include '../includes/nav-main.php' ?>
     </nav>
     <main class="p-3 bg-white container">
 
