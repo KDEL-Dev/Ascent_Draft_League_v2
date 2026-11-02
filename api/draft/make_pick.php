@@ -11,32 +11,74 @@
 
     $userId = $_SESSION['user_id'] ?? null;
 
-    // BROADCAST TEST
+    // BROADCAST OLD VERSION BELOW
+    // function broadcastDraftEvent(array $data): void
+    // {
+    //     file_put_contents(
+    //         __DIR__ . '/broadcast_debug.txt',
+    //         date('Y-m-d H:i:s') . " BROADCAST CALLED\n" .
+    //         json_encode($data) . "\n\n",
+    //         FILE_APPEND
+    //     );
+
+    //     $url = 'http://localhost/ascent_draft_league_v2/api/draft/broadcast.php';
+
+    //     $ch = curl_init($url);
+
+    //     curl_setopt($ch, CURLOPT_POST, true);
+    //     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    //     curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    //         'Content-Type: application/json'
+    //     ]);
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    //     $response = curl_exec($ch);
+
+    //     file_put_contents(
+    //         __DIR__ . '/broadcast_debug.txt',
+    //         "HTTP CODE: " . curl_getinfo($ch, CURLINFO_HTTP_CODE) . "\n" .
+    //         "RESPONSE: " . $response . "\n\n",
+    //         FILE_APPEND
+    //     );
+
+    //     if ($response === false) {
+    //         file_put_contents(
+    //             __DIR__ . '/broadcast_debug.txt',
+    //             "CURL ERROR: " . curl_error($ch) . "\n\n",
+    //             FILE_APPEND
+    //         );
+    //     }
+
+    //     curl_close($ch);
+    // }
+
+
+
+
+    // BROADCAST NEW - ONLINE
     function broadcastDraftEvent(array $data): void
     {
-        file_put_contents(
-            __DIR__ . '/broadcast_debug.txt',
-            date('Y-m-d H:i:s') . " BROADCAST CALLED\n" .
-            json_encode($data) . "\n\n",
-            FILE_APPEND
-        );
-
-        $url = 'http://localhost/ascent_draft_league_v2/api/draft/broadcast.php';
+        // Replace with your actual Render URL and secret key
+        $url = 'https://ascent-web-server.onrender.com/broadcast';
+        $secret = getenv('BROADCAST_SECRET') ?: 'YOUR_BROADCAST_SECRET';
 
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json'
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $secret
         ]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         file_put_contents(
             __DIR__ . '/broadcast_debug.txt',
-            "HTTP CODE: " . curl_getinfo($ch, CURLINFO_HTTP_CODE) . "\n" .
+            date('Y-m-d H:i:s') . " BROADCAST CALLED\n" .
+            "HTTP CODE: " . $httpCode . "\n" .
             "RESPONSE: " . $response . "\n\n",
             FILE_APPEND
         );
@@ -51,8 +93,6 @@
 
         curl_close($ch);
     }
-
-
 
 
     // ----------------------
@@ -517,14 +557,13 @@
         }
     }
 
-    $sql = "
-        UPDATE draft_state
-        SET
-            total_picks = ?,
-            draft_position = ?,
-            current_round = ?,
-            pick_started_at = NOW()
-        WHERE season_id = ?
+    $sql = "UPDATE draft_state
+            SET
+                total_picks = ?,
+                draft_position = ?,
+                current_round = ?,
+                pick_started_at = NOW()
+            WHERE season_id = ?
     ";
 
     $stmt = $conn->prepare($sql);

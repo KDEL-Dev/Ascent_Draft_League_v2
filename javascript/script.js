@@ -74,17 +74,23 @@ if(randomizeBtn)
 
 const startDraftBtn = document.getElementById("startDraft");
 
-if(startDraftBtn)
+console.log("START DRAFT BUTTON:", startDraftBtn);
+
+if (startDraftBtn)
 {
     startDraftBtn.addEventListener("click", async function()
     {
+        console.log("START DRAFT BUTTON CLICKED!");
+
         try
         {
-            // 1. Get seasonId from the current page URL
             const params = new URLSearchParams(window.location.search);
             const seasonId = params.get("seasonId");
 
-            // 2. Send seasonId to API using post
+            console.log("Season ID:", seasonId);
+
+            console.log("Sending request to start_draft.php...");
+
             const response = await fetch(
                 "../api/draft/start_draft.php",
                 {
@@ -98,24 +104,30 @@ if(startDraftBtn)
                 }
             );
 
+            console.log("HTTP STATUS:", response.status);
+
             const data = await response.json();
 
-            // console.log("START RESPONSE:", data);
+            console.log("START DRAFT RESPONSE:", data);
 
             if (!data.success)
             {
-                console.error(data.message);
+                console.error("START FAILED:", data.message);
                 return;
             }
 
-            // await loadDraftState();
+            console.log("DRAFT STARTED SUCCESSFULLY!");
+
         }
         catch(error)
         {
-            console.error("Starting draft failed:", error);
+            console.error("STARTING DRAFT FAILED:", error);
         }
     });
-
+}
+else
+{
+    console.error("START DRAFT BUTTON NOT FOUND!");
 }
 
 
@@ -2185,105 +2197,117 @@ document.querySelectorAll('.competitor-status').forEach(select => {
 // ------------------ WEB SOCKET -------------------
 // -------------------------------------------------
 
-const socket = new WebSocket('ws://localhost:8080');
+// const socket = new WebSocket('ws://localhost:8080');
+const socket = new WebSocket('wss://ascent-web-server.onrender.com');
+
+// Automatically use localhost when testing locally, and Render when live
+// const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+// const wsHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+//     ? 'localhost:8080' 
+//     : 'ascent-web-server.onrender.com';
+
+// const socket = new WebSocket(`${wsProtocol}${wsHost}`);
+
+
 
 socket.onopen = function() {
-    console.log('WebSocket connected');
-
+    console.log('WebSocket connected successfully.');
+    console.log('Connected to:', socket.url);
 };
 
 socket.onmessage = async function(event) 
 {
-    const data = JSON.parse(event.data);
+    // const data = JSON.parse(event.data);
 
-    console.log("DRAFT EVENT RECEIVED:", data);
+    // console.log("DRAFT EVENT RECEIVED:", data);
 
-    //----- DRAFT STARTED -----
+    // //----- DRAFT STARTED -----
 
-    if (data.type === "draft_started")
+    // if (data.type === "draft_started")
+    // {
+    //     console.log("DRAFT HAS STARTED!");
+        
+    //     // ADDED RELOAD
+    //     window.location.reload();
+
+    //     // If I remove reload() then turn these back on
+
+    //     // await loadDraftState();
+    //     // await loadUserDraftRoster();
+    //     // await loadAllDraftedPokemon();
+    //     // await loadDraftedDisplay();
+    //     // await loadDraftLog();
+    // }
+
+    socket.onmessage = async function(event)
     {
-        console.log("DRAFT HAS STARTED!");
+        console.log("RAW WEBSOCKET MESSAGE:", event.data);
 
-        await loadDraftState();
-        await loadUserDraftRoster();
-        await loadAllDraftedPokemon();
-        await loadDraftedDisplay();
-        await loadDraftLog();
-    }
+        let data;
 
-    // -----DRAFT PAUSED -----
-
-     if (data.type === "draft_paused")
-    {
-        console.log("DRAFT PAUSED!");
-
-        console.log(
-            "Timer remaining:",
-            data.timer_remaining
-        );
-
-        // Stop timer on THIS browser
-        stopTimer();
-
-        // Load paused state from database
-        await loadDraftState();
-    }
-
-    //----- DRAFT RESUMED -----
-    if (data.type === "draft_resumed")
-    {
-        console.log("DRAFT RESUMED");
-
-        await loadDraftState();
-    }
-
-    //----- DRAFT PICK ------
-
-    if (data.type === "draft_pick") 
-    {
-        console.log("Pokemon drafted:", data.pokemon_id);
-        console.log("Team:", data.team_name);
-        console.log("Pick number:", data.pick_number);
-
-        // Refresh draft information
-        await loadUserDraftRoster();
-        await loadAllDraftedPokemon();
-        await loadDraftedDisplay();
-        await loadDraftState();
-        await loadDraftLog();
-    }
-
-    // -----SKIP PICK ------
-
-    if (data.type === "draft_skipped")
-    {
-        console.log("DRAFT PICK SKIPPED");
-
-        await loadDraftState();
-        await loadDraftedDisplay();
-        await loadDraftLog();
-    }
-
-    //----- DRAFT ENDED -----
-
-    if (data.type === "draft_ended")
-    {
-        console.log("DRAFT HAS ENDED!");
-
-        stopTimer();
-
-        const seasonId = data.season_id;
-
-        if (!seasonId) {
-            console.error(
-                "Cannot redirect: season ID missing from draft_ended event.",
-                data
-            );
+        try {
+            data = JSON.parse(event.data);
+        }
+        catch(error) {
+            console.error("Invalid WebSocket JSON:", error);
             return;
         }
 
-        window.location.href = `roster.php?seasonId=${encodeURIComponent(seasonId)}`;
-    }
+        console.log("DRAFT EVENT RECEIVED:", data);
+
+        if (data.type === "draft_started")
+        {
+            console.log("DRAFT HAS STARTED!");
+            window.location.reload();
+            return;
+        }
+
+        if (data.type === "draft_ended")
+        {
+            console.log("DRAFT HAS ENDED!");
+
+            stopTimer();
+
+            const seasonId = data.season_id;
+
+            if (!seasonId) {
+                console.error("Season ID missing.");
+                return;
+            }
+
+            window.location.href =
+                `roster.php?seasonId=${encodeURIComponent(seasonId)}`;
+
+            return;
+        }
+
+        if (data.type === "draft_paused")
+        {
+            stopTimer();
+            await loadDraftState();
+        }
+
+        if (data.type === "draft_resumed")
+        {
+            await loadDraftState();
+        }
+
+        if (data.type === "draft_pick")
+        {
+            await loadUserDraftRoster();
+            await loadAllDraftedPokemon();
+            await loadDraftedDisplay();
+            await loadDraftState();
+            await loadDraftLog();
+        }
+
+        if (data.type === "draft_skipped")
+        {
+            await loadDraftState();
+            await loadDraftedDisplay();
+            await loadDraftLog();
+        }
+    };
 
 
 };

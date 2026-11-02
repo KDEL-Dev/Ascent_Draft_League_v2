@@ -72,143 +72,173 @@
 
 
     // =====================================================
-    // BROADCAST WEBSOCKET EVENT
+    // BROADCAST WEBSOCKET EVENT - LOCAL
+    // =====================================================
+
+    // function broadcastDraftEvent(array $data): bool
+    // {
+    //     $host = '127.0.0.1';
+    //     $port = 8080;
+
+    //     $socket = @fsockopen(
+    //         $host,
+    //         $port,
+    //         $errno,
+    //         $errstr,
+    //         2
+    //     );
+
+    //     if (!$socket)
+    //     {
+    //         error_log(
+    //             "WebSocket connection failed: {$errstr} ({$errno})"
+    //         );
+
+    //         return false;
+    //     }
+
+    //     // WebSocket handshake
+
+    //     $key = base64_encode(random_bytes(16));
+
+    //     $headers =
+    //         "GET / HTTP/1.1\r\n" .
+    //         "Host: {$host}:{$port}\r\n" .
+    //         "Upgrade: websocket\r\n" .
+    //         "Connection: Upgrade\r\n" .
+    //         "Sec-WebSocket-Key: {$key}\r\n" .
+    //         "Sec-WebSocket-Version: 13\r\n" .
+    //         "\r\n";
+
+    //     fwrite($socket, $headers);
+
+
+    //     // Read handshake response
+
+    //     $response = '';
+
+    //     while (!feof($socket))
+    //     {
+    //         $line = fgets($socket);
+
+    //         if ($line === false)
+    //         {
+    //             break;
+    //         }
+
+    //         $response .= $line;
+
+    //         if (rtrim($line) === '')
+    //         {
+    //             break;
+    //         }
+    //     }
+
+    //     if (strpos($response, '101') === false)
+    //     {
+    //         fclose($socket);
+
+    //         error_log(
+    //             "WebSocket handshake failed: " . $response
+    //         );
+
+    //         return false;
+    //     }
+
+
+    //     // Encode message
+
+    //     $message = json_encode($data);
+
+    //     if ($message === false)
+    //     {
+    //         fclose($socket);
+    //         return false;
+    //     }
+
+
+    //     // Create masked WebSocket frame
+
+    //     $length = strlen($message);
+
+    //     $mask = random_bytes(4);
+
+    //     $maskedMessage = '';
+
+    //     for ($i = 0; $i < $length; $i++)
+    //     {
+    //         $maskedMessage .=
+    //             $message[$i] ^
+    //             $mask[$i % 4];
+    //     }
+
+
+    //     if ($length <= 125)
+    //     {
+    //         $frame =
+    //             chr(0x81) .
+    //             chr(0x80 | $length) .
+    //             $mask .
+    //             $maskedMessage;
+    //     }
+    //     elseif ($length <= 65535)
+    //     {
+    //         $frame =
+    //             chr(0x81) .
+    //             chr(0x80 | 126) .
+    //             pack('n', $length) .
+    //             $mask .
+    //             $maskedMessage;
+    //     }
+    //     else
+    //     {
+    //         $frame =
+    //             chr(0x81) .
+    //             chr(0x80 | 127) .
+    //             pack('J', $length) .
+    //             $mask .
+    //             $maskedMessage;
+    //     }
+
+
+    //     // Send frame
+
+    //     $result = fwrite($socket, $frame);
+
+    //     fclose($socket);
+
+    //     return $result !== false;
+    // }
+
+
+    // =====================================================
+    // BROADCAST WEBSOCKET EVENT (HTTP cURL to Render)
     // =====================================================
 
     function broadcastDraftEvent(array $data): bool
     {
-        $host = '127.0.0.1';
-        $port = 8080;
+        $url = 'https://ascent-web-server.onrender.com/broadcast';
+        $secret = getenv('BROADCAST_SECRET') ?: 'YOUR_BROADCAST_SECRET';
 
-        $socket = @fsockopen(
-            $host,
-            $port,
-            $errno,
-            $errstr,
-            2
-        );
+        $ch = curl_init($url);
 
-        if (!$socket)
-        {
-            error_log(
-                "WebSocket connection failed: {$errstr} ({$errno})"
-            );
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $secret
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            return false;
-        }
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // WebSocket handshake
+        curl_close($ch);
 
-        $key = base64_encode(random_bytes(16));
-
-        $headers =
-            "GET / HTTP/1.1\r\n" .
-            "Host: {$host}:{$port}\r\n" .
-            "Upgrade: websocket\r\n" .
-            "Connection: Upgrade\r\n" .
-            "Sec-WebSocket-Key: {$key}\r\n" .
-            "Sec-WebSocket-Version: 13\r\n" .
-            "\r\n";
-
-        fwrite($socket, $headers);
-
-
-        // Read handshake response
-
-        $response = '';
-
-        while (!feof($socket))
-        {
-            $line = fgets($socket);
-
-            if ($line === false)
-            {
-                break;
-            }
-
-            $response .= $line;
-
-            if (rtrim($line) === '')
-            {
-                break;
-            }
-        }
-
-        if (strpos($response, '101') === false)
-        {
-            fclose($socket);
-
-            error_log(
-                "WebSocket handshake failed: " . $response
-            );
-
-            return false;
-        }
-
-
-        // Encode message
-
-        $message = json_encode($data);
-
-        if ($message === false)
-        {
-            fclose($socket);
-            return false;
-        }
-
-
-        // Create masked WebSocket frame
-
-        $length = strlen($message);
-
-        $mask = random_bytes(4);
-
-        $maskedMessage = '';
-
-        for ($i = 0; $i < $length; $i++)
-        {
-            $maskedMessage .=
-                $message[$i] ^
-                $mask[$i % 4];
-        }
-
-
-        if ($length <= 125)
-        {
-            $frame =
-                chr(0x81) .
-                chr(0x80 | $length) .
-                $mask .
-                $maskedMessage;
-        }
-        elseif ($length <= 65535)
-        {
-            $frame =
-                chr(0x81) .
-                chr(0x80 | 126) .
-                pack('n', $length) .
-                $mask .
-                $maskedMessage;
-        }
-        else
-        {
-            $frame =
-                chr(0x81) .
-                chr(0x80 | 127) .
-                pack('J', $length) .
-                $mask .
-                $maskedMessage;
-        }
-
-
-        // Send frame
-
-        $result = fwrite($socket, $frame);
-
-        fclose($socket);
-
-        return $result !== false;
+        return ($httpCode === 200);
     }
+
+
 
 
     // =====================================================

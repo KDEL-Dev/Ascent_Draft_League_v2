@@ -72,165 +72,228 @@
 
     
     // =====================================================
-    // BROADCAST WEBSOCKET EVENT
+    // BROADCAST WEBSOCKET EVENT - LOCAL
+    // =====================================================
+
+    // function broadcastDraftEvent(array $data): bool
+    // {
+    //     $host = '127.0.0.1';
+    //     $port = 8080;
+
+    //     $socket = @fsockopen(
+    //         $host,
+    //         $port,
+    //         $errno,
+    //         $errstr,
+    //         2
+    //     );
+
+    //     if (!$socket) {
+
+    //         error_log(
+    //             "WebSocket connection failed: {$errstr} ({$errno})"
+    //         );
+
+    //         return false;
+    //     }
+
+
+    //     // ---------------------------------------------
+    //     // WebSocket handshake
+    //     // ---------------------------------------------
+
+    //     $key = base64_encode(random_bytes(16));
+
+    //     $headers =
+    //         "GET / HTTP/1.1\r\n" .
+    //         "Host: {$host}:{$port}\r\n" .
+    //         "Upgrade: websocket\r\n" .
+    //         "Connection: Upgrade\r\n" .
+    //         "Sec-WebSocket-Key: {$key}\r\n" .
+    //         "Sec-WebSocket-Version: 13\r\n" .
+    //         "\r\n";
+
+    //     fwrite($socket, $headers);
+
+
+    //     // ---------------------------------------------
+    //     // Read handshake response
+    //     // ---------------------------------------------
+
+    //     $response = '';
+
+    //     while (!feof($socket)) {
+
+    //         $line = fgets($socket);
+
+    //         if ($line === false) {
+    //             break;
+    //         }
+
+    //         $response .= $line;
+
+    //         if (rtrim($line) === '') {
+    //             break;
+    //         }
+    //     }
+
+
+    //     if (strpos($response, '101') === false) {
+
+    //         fclose($socket);
+
+    //         error_log(
+    //             "WebSocket handshake failed: " . $response
+    //         );
+
+    //         return false;
+    //     }
+
+
+    //     // ---------------------------------------------
+    //     // Encode message
+    //     // ---------------------------------------------
+
+    //     $message = json_encode($data);
+
+    //     if ($message === false) {
+
+    //         fclose($socket);
+
+    //         return false;
+    //     }
+
+
+    //     // ---------------------------------------------
+    //     // Create masked WebSocket frame
+    //     // ---------------------------------------------
+
+    //     $length = strlen($message);
+
+    //     $mask = random_bytes(4);
+
+    //     $maskedMessage = '';
+
+    //     for ($i = 0; $i < $length; $i++) {
+
+    //         $maskedMessage .=
+    //             $message[$i] ^
+    //             $mask[$i % 4];
+    //     }
+
+
+    //     if ($length <= 125) {
+
+    //         $frame =
+    //             chr(0x81) .
+    //             chr(0x80 | $length) .
+    //             $mask .
+    //             $maskedMessage;
+
+    //     } elseif ($length <= 65535) {
+
+    //         $frame =
+    //             chr(0x81) .
+    //             chr(0x80 | 126) .
+    //             pack('n', $length) .
+    //             $mask .
+    //             $maskedMessage;
+
+    //     } else {
+
+    //         $frame =
+    //             chr(0x81) .
+    //             chr(0x80 | 127) .
+    //             pack('J', $length) .
+    //             $mask .
+    //             $maskedMessage;
+    //     }
+
+
+    //     // ---------------------------------------------
+    //     // Send frame
+    //     // ---------------------------------------------
+
+    //     $result = fwrite($socket, $frame);
+
+    //     fclose($socket);
+
+    //     return $result !== false;
+    // }
+
+
+    // =====================================================
+    // BROADCAST WEBSOCKET EVENT (HTTP cURL to Render)
     // =====================================================
 
     function broadcastDraftEvent(array $data): bool
     {
-        $host = '127.0.0.1';
-        $port = 8080;
+        $url = 'https://ascent-web-server.onrender.com/broadcast';
 
-        $socket = @fsockopen(
-            $host,
-            $port,
-            $errno,
-            $errstr,
-            2
-        );
+        // $secret = getenv('BROADCAST_SECRET');
+        $secret = '3345d8070c88980f3724485a32d9a844b39abb2f66972696f1c28d0d87af8683';
+        
+        error_log("Secret loaded: " . (!empty($secret) ? "YES" : "NO"));
 
-        if (!$socket) {
-
-            error_log(
-                "WebSocket connection failed: {$errstr} ({$errno})"
-            );
-
+        if (!$secret) {
+            error_log("BROADCAST_SECRET is missing.");
             return false;
         }
 
+        $ch = curl_init($url);
 
-        // ---------------------------------------------
-        // WebSocket handshake
-        // ---------------------------------------------
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $secret
+            ],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 20
+        ]);
 
-        $key = base64_encode(random_bytes(16));
-
-        $headers =
-            "GET / HTTP/1.1\r\n" .
-            "Host: {$host}:{$port}\r\n" .
-            "Upgrade: websocket\r\n" .
-            "Connection: Upgrade\r\n" .
-            "Sec-WebSocket-Key: {$key}\r\n" .
-            "Sec-WebSocket-Version: 13\r\n" .
-            "\r\n";
-
-        fwrite($socket, $headers);
-
-
-        // ---------------------------------------------
-        // Read handshake response
-        // ---------------------------------------------
-
-        $response = '';
-
-        while (!feof($socket)) {
-
-            $line = fgets($socket);
-
-            if ($line === false) {
-                break;
-            }
-
-            $response .= $line;
-
-            if (rtrim($line) === '') {
-                break;
-            }
-        }
+        // ADDED for testing
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 
-        if (strpos($response, '101') === false) {
+        $response = curl_exec($ch);
 
-            fclose($socket);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            error_log(
-                "WebSocket handshake failed: " . $response
-            );
+        $curlError = curl_error($ch);
 
+        error_log("========== BROADCAST DEBUG ==========");
+        error_log("URL: " . $url);
+        error_log("cURL Error: " . $curlError);
+        error_log("HTTP Code: " . $httpCode);
+        error_log("Response: " . $response);
+        error_log("=====================================");
+
+        curl_close($ch);
+
+        if ($curlError) {
+            error_log("Render cURL Error: " . $curlError);
             return false;
         }
 
+        error_log("Render HTTP Code: " . $httpCode);
+        error_log("Render Response: " . $response);
 
-        // ---------------------------------------------
-        // Encode message
-        // ---------------------------------------------
-
-        $message = json_encode($data);
-
-        if ($message === false) {
-
-            fclose($socket);
-
-            return false;
-        }
-
-
-        // ---------------------------------------------
-        // Create masked WebSocket frame
-        // ---------------------------------------------
-
-        $length = strlen($message);
-
-        $mask = random_bytes(4);
-
-        $maskedMessage = '';
-
-        for ($i = 0; $i < $length; $i++) {
-
-            $maskedMessage .=
-                $message[$i] ^
-                $mask[$i % 4];
-        }
-
-
-        if ($length <= 125) {
-
-            $frame =
-                chr(0x81) .
-                chr(0x80 | $length) .
-                $mask .
-                $maskedMessage;
-
-        } elseif ($length <= 65535) {
-
-            $frame =
-                chr(0x81) .
-                chr(0x80 | 126) .
-                pack('n', $length) .
-                $mask .
-                $maskedMessage;
-
-        } else {
-
-            $frame =
-                chr(0x81) .
-                chr(0x80 | 127) .
-                pack('J', $length) .
-                $mask .
-                $maskedMessage;
-        }
-
-
-        // ---------------------------------------------
-        // Send frame
-        // ---------------------------------------------
-
-        $result = fwrite($socket, $frame);
-
-        fclose($socket);
-
-        return $result !== false;
+        return $httpCode === 200;
     }
 
     // -------------------------
     // GET CURRENT DRAFT STATE
     // -------------------------
 
-    $sql = "
-        SELECT
-            status,
-            timer_remaining
-        FROM draft_state
-        WHERE season_id = ?
+    $sql = "SELECT
+                status,
+                timer_remaining
+            FROM draft_state
+            WHERE season_id = ?
     ";
 
     $stmt = $conn->prepare($sql);
@@ -257,6 +320,7 @@
         ]);
         exit;
     }
+
 
 
     // =====================================================
@@ -364,16 +428,15 @@
 
         $elapsedBeforePause = 60 - $timerRemaining;
 
-        $sql = "
-            UPDATE draft_state
-            SET
-                is_active = 1,
-                status = 'active',
-                pick_started_at = DATE_SUB(NOW(), INTERVAL ? SECOND),
-                paused_at = NULL,
-                timer_remaining = NULL
-            WHERE season_id = ?
-            AND status = 'paused'
+        $sql = "UPDATE draft_state
+                SET
+                    is_active = 1,
+                    status = 'active',
+                    pick_started_at = DATE_SUB(NOW(), INTERVAL ? SECOND),
+                    paused_at = NULL,
+                    timer_remaining = NULL
+                WHERE season_id = ?
+                AND status = 'paused'
         ";
 
         $stmt = $conn->prepare($sql);

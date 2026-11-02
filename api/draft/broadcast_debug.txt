@@ -448,3 +448,33 @@ RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick
 HTTP CODE: 200
 RESPONSE: {"success":true,"message":"Broadcast sent.","data":{"type":"draft_pick","pick_number":5,"round_number":3,"active_user_id":18,"team_name":"DZN","pokemon_id":806}}
 
+2026-11-02 18:26:04 BROADCAST CALLED
+HTTP CODE: 0
+RESPONSE: 
+
+CURL ERROR: SSL certificate problem: unable to get local issuer certificate
+
+2026-11-02 18:27:54 BROADCAST CALLED
+HTTP CODE: 0
+RESPONSE: 
+
+CURL ERROR: SSL certificate problem: unable to get local issuer certificate
+
+2026-11-02 21:52:46 BROADCAST CALLED
+HTTP CODE: 0
+RESPONSE: 
+
+CURL ERROR: SSL certificate problem: unable to get local issuer certificate
+
+2026-11-02 21:53:06 BROADCAST CALLED
+HTTP CODE: 0
+RESPONSE: 
+
+CURL ERROR: SSL certificate problem: unable to get local issuer certificate
+
+2026-11-02 21:53:14 BROADCAST CALLED
+HTTP CODE: 0
+RESPONSE: 
+
+CURL ERROR: SSL certificate problem: unable to get local issuer certificate
+
