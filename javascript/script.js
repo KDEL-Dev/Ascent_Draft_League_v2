@@ -2239,76 +2239,73 @@ socket.onmessage = async function(event)
     //     // await loadDraftLog();
     // }
 
-    socket.onmessage = async function(event)
+
+    console.log("RAW WEBSOCKET MESSAGE:", event.data);
+
+    let data;
+
+    try {
+        data = JSON.parse(event.data);
+    }
+    catch(error) {
+        console.error("Invalid WebSocket JSON:", error);
+        return;
+    }
+
+    console.log("DRAFT EVENT RECEIVED:", data);
+
+    if (data.type === "draft_started")
     {
-        console.log("RAW WEBSOCKET MESSAGE:", event.data);
+        console.log("DRAFT HAS STARTED!");
+        window.location.reload();
+        return;
+    }
 
-        let data;
+    if (data.type === "draft_ended")
+    {
+        console.log("DRAFT HAS ENDED!");
 
-        try {
-            data = JSON.parse(event.data);
-        }
-        catch(error) {
-            console.error("Invalid WebSocket JSON:", error);
+        stopTimer();
+
+        const seasonId = data.season_id;
+
+        if (!seasonId) {
+            console.error("Season ID missing.");
             return;
         }
 
-        console.log("DRAFT EVENT RECEIVED:", data);
+        window.location.href =
+            `roster.php?seasonId=${encodeURIComponent(seasonId)}`;
 
-        if (data.type === "draft_started")
-        {
-            console.log("DRAFT HAS STARTED!");
-            window.location.reload();
-            return;
-        }
+        return;
+    }
 
-        if (data.type === "draft_ended")
-        {
-            console.log("DRAFT HAS ENDED!");
+    if (data.type === "draft_paused")
+    {
+        stopTimer();
+        await loadDraftState();
+    }
 
-            stopTimer();
+    if (data.type === "draft_resumed")
+    {
+        await loadDraftState();
+    }
 
-            const seasonId = data.season_id;
+    if (data.type === "draft_pick")
+    {
+        await loadUserDraftRoster();
+        await loadAllDraftedPokemon();
+        await loadDraftedDisplay();
+        await loadDraftState();
+        await loadDraftLog();
+    }
 
-            if (!seasonId) {
-                console.error("Season ID missing.");
-                return;
-            }
-
-            window.location.href =
-                `roster.php?seasonId=${encodeURIComponent(seasonId)}`;
-
-            return;
-        }
-
-        if (data.type === "draft_paused")
-        {
-            stopTimer();
-            await loadDraftState();
-        }
-
-        if (data.type === "draft_resumed")
-        {
-            await loadDraftState();
-        }
-
-        if (data.type === "draft_pick")
-        {
-            await loadUserDraftRoster();
-            await loadAllDraftedPokemon();
-            await loadDraftedDisplay();
-            await loadDraftState();
-            await loadDraftLog();
-        }
-
-        if (data.type === "draft_skipped")
-        {
-            await loadDraftState();
-            await loadDraftedDisplay();
-            await loadDraftLog();
-        }
-    };
-
+    if (data.type === "draft_skipped")
+    {
+        await loadDraftState();
+        await loadDraftedDisplay();
+        await loadDraftLog();
+    }
 
 };
 

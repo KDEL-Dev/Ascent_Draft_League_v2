@@ -1,203 +1,97 @@
-<?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+<?php
 
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (!is_array($data)) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Invalid JSON"
-    ]);
-    exit;
-}
-
-$host = '127.0.0.1';
-$port = 8080;
-
-$socket = @fsockopen(
-    $host,
-    $port,
-    $errno,
-    $errstr,
-    2
-);
-
-if (!$socket) {
-
-    error_log("WebSocket connection failed: {$errstr} ({$errno})");
+    http_response_code(400);
 
     echo json_encode([
         "success" => false,
-        "message" => "Could not connect to WebSocket server."
+        "message" => "Invalid JSON."
     ]);
 
     exit;
 }
 
+// Render broadcast endpoint
+$url = 'https://ascent-web-server.onrender.com/broadcast';
 
-/*
-|--------------------------------------------------------------------------
-| WebSocket handshake
-|--------------------------------------------------------------------------
-*/
+// Load shared secret from Hostinger environment
+$secret = getenv('BROADCAST_SECRET');
 
-$key = base64_encode(random_bytes(16));
+if (!$secret) {
+    error_log("BROADCAST_SECRET is missing.");
 
-$headers =
-    "GET / HTTP/1.1\r\n" .
-    "Host: {$host}:{$port}\r\n" .
-    "Upgrade: websocket\r\n" .
-    "Connection: Upgrade\r\n" .
-    "Sec-WebSocket-Key: {$key}\r\n" .
-    "Sec-WebSocket-Version: 13\r\n" .
-    "\r\n";
-
-fwrite($socket, $headers);
-
-
-/*
-|--------------------------------------------------------------------------
-| Read handshake response
-|--------------------------------------------------------------------------
-*/
-
-$response = '';
-
-while (!feof($socket)) {
-
-    $line = fgets($socket);
-
-    if ($line === false) {
-        break;
-    }
-
-    $response .= $line;
-
-    if (rtrim($line) === '') {
-        break;
-    }
-}
-
-if (strpos($response, '101') === false) {
-
-    fclose($socket);
-
-    error_log("WebSocket handshake failed: " . $response);
+    http_response_code(500);
 
     echo json_encode([
         "success" => false,
-        "message" => "WebSocket handshake failed."
+        "message" => "Broadcast configuration missing."
     ]);
 
     exit;
 }
 
+$ch = curl_init($url);
 
-/*
-|--------------------------------------------------------------------------
-| Encode message
-|--------------------------------------------------------------------------
-*/
+curl_setopt_array($ch, [
+    CURLOPT_POST => true,
+    CURLOPT_POSTFIELDS => json_encode($data),
+    CURLOPT_HTTPHEADER => [
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $secret
+    ],
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_CONNECTTIMEOUT => 15,
+    CURLOPT_TIMEOUT => 30
+]);
 
-$message = json_encode($data);
+$response = curl_exec($ch);
 
-if ($message === false) {
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    fclose($socket);
+$curlError = curl_error($ch);
+
+curl_close($ch);
+
+// Log results
+error_log("========== BROADCAST DEBUG ==========");
+error_log("HTTP Code: " . $httpCode);
+error_log("cURL Error: " . $curlError);
+error_log("Response: " . $response);
+error_log("=====================================");
+
+if ($curlError) {
+    http_response_code(502);
 
     echo json_encode([
         "success" => false,
-        "message" => "Could not encode message."
+        "message" => "Could not contact Render.",
+        "error" => $curlError
     ]);
 
     exit;
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| Create MASKED WebSocket frame
-|--------------------------------------------------------------------------
-|
-| Client -> server WebSocket frames MUST be masked.
-|
-*/
-
-$length = strlen($message);
-
-$mask = random_bytes(4);
-
-$maskedMessage = '';
-
-for ($i = 0; $i < $length; $i++) {
-    $maskedMessage .= $message[$i] ^ $mask[$i % 4];
-}
-
-
-if ($length <= 125) {
-
-    $frame =
-        chr(0x81) .
-        chr(0x80 | $length) .
-        $mask .
-        $maskedMessage;
-
-}
-elseif ($length <= 65535) {
-
-    $frame =
-        chr(0x81) .
-        chr(0x80 | 126) .
-        pack('n', $length) .
-        $mask .
-        $maskedMessage;
-
-}
-else {
-
-    $frame =
-        chr(0x81) .
-        chr(0x80 | 127) .
-        pack('J', $length) .
-        $mask .
-        $maskedMessage;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Send frame
-|--------------------------------------------------------------------------
-*/
-
-$result = fwrite($socket, $frame);
-
-if ($result === false) {
-
-    fclose($socket);
+if ($httpCode !== 200) {
+    http_response_code(502);
 
     echo json_encode([
         "success" => false,
-        "message" => "Failed to send WebSocket message."
+        "message" => "Render rejected the broadcast.",
+        "http_code" => $httpCode,
+        "response" => $response
     ]);
 
     exit;
 }
-
-fclose($socket);
-
-
-/*
-|--------------------------------------------------------------------------
-| Response
-|--------------------------------------------------------------------------
-*/
 
 echo json_encode([
     "success" => true,
     "message" => "Broadcast sent.",
     "data" => $data
 ]);
+

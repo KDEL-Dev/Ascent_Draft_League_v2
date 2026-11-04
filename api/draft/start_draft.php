@@ -226,19 +226,22 @@
     // BROADCAST WEBSOCKET EVENT (HTTP cURL to Render)
     // =====================================================
 
-    function broadcastDraftEvent(array $data): bool
-    {
+    function broadcastDraftEvent(array $data): array    {
         $url = 'https://ascent-web-server.onrender.com/broadcast';
 
         // $secret = getenv('BROADCAST_SECRET');
-        $secret = '3345d8070c88980f3724485a32d9a844b39abb2f66972696f1c28d0d87af8683';
+        $secret = '610d982f13ac70e4dede0260f003160adea30b4de0252866f49a9546a2e79739';
         
         error_log("Secret loaded: " . (!empty($secret) ? "YES" : "NO"));
 
         if (!$secret) {
-            error_log("BROADCAST_SECRET is missing.");
-            return false;
-        }
+        error_log("BROADCAST_SECRET is missing.");
+
+        return [
+            "success" => false,
+            "error" => "Missing broadcast secret."
+        ];
+    }
 
         $ch = curl_init($url);
 
@@ -265,24 +268,26 @@
 
         $curlError = curl_error($ch);
 
-        error_log("========== BROADCAST DEBUG ==========");
-        error_log("URL: " . $url);
-        error_log("cURL Error: " . $curlError);
-        error_log("HTTP Code: " . $httpCode);
-        error_log("Response: " . $response);
-        error_log("=====================================");
+        $curlErrno = curl_errno($ch);
 
         curl_close($ch);
 
-        if ($curlError) {
-            error_log("Render cURL Error: " . $curlError);
-            return false;
-        }
+        $debug = [
+            "url" => $url,
+            "secret_loaded" => !empty($secret),
+            "curl_errno" => $curlErrno,
+            "curl_error" => $curlError,
+            "http_code" => $httpCode,
+            "render_response" => $response
+        ];
 
-        error_log("Render HTTP Code: " . $httpCode);
-        error_log("Render Response: " . $response);
+        error_log("BROADCAST DEBUG: " . json_encode($debug));
 
-        return $httpCode === 200;
+        return [
+            "success" => !$curlError && $httpCode === 200,
+            "debug" => $debug
+        ];
+
     }
 
     // -------------------------
