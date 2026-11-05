@@ -1,6 +1,16 @@
 
 <?php
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
+
+
+
+
+
+
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents("php://input"), true);
@@ -20,7 +30,8 @@ if (!is_array($data)) {
 $url = 'https://ascent-web-server.onrender.com/broadcast';
 
 // Load shared secret from Hostinger environment
-$secret = getenv('BROADCAST_SECRET');
+// $secret = getenv('BROADCAST_SECRET');
+$secret = $_ENV['BROADCAST_SECRET'] ?? '';
 
 if (!$secret) {
     error_log("BROADCAST_SECRET is missing.");

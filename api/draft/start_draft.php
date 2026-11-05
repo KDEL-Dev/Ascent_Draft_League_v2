@@ -1,5 +1,17 @@
 <?php
 
+    // Load environment variables
+    require_once __DIR__ . '/../../vendor/autoload.php';
+
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+    $dotenv->load();
+
+
+
+
+
+
+
     // require_once __DIR__ . '/../../includes/connection.php';
     require_once __DIR__ . '/../../includes/auth.php';
 
@@ -229,8 +241,8 @@
     function broadcastDraftEvent(array $data): array    {
         $url = 'https://ascent-web-server.onrender.com/broadcast';
 
-        // $secret = getenv('BROADCAST_SECRET');
-        $secret = '610d982f13ac70e4dede0260f003160adea30b4de0252866f49a9546a2e79739';
+        $secret = $_ENV['BROADCAST_SECRET'];
+        // $secret = '610d982f13ac70e4dede0260f003160adea30b4de0252866f49a9546a2e79739';
         
         error_log("Secret loaded: " . (!empty($secret) ? "YES" : "NO"));
 

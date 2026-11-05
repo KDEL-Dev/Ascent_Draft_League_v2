@@ -1,5 +1,12 @@
 <?php
 
+    // Load environment variables
+    require_once __DIR__ . '/../../vendor/autoload.php';
+
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+    $dotenv->load();
+
+
     require_once __DIR__ . '/../../includes/auth.php';
 
     header('Content-Type: application/json');
@@ -218,8 +225,19 @@
     function broadcastDraftEvent(array $data): bool
     {
         $url = 'https://ascent-web-server.onrender.com/broadcast';
-        $secret = getenv('BROADCAST_SECRET') ?: 'YOUR_BROADCAST_SECRET';
+        // $secret = getenv('BROADCAST_SECRET') ?: 'YOUR_BROADCAST_SECRET';
 
+        $secret = $_ENV['BROADCAST_SECRET'] ?? '';
+
+        if ($secret === '') {
+            error_log("BROADCAST_SECRET is missing.");
+            return false;
+        }
+
+
+
+
+        
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_POST, true);

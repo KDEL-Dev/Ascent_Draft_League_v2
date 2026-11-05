@@ -1,8 +1,31 @@
 <?php
 
+    // ini_set('display_errors', '0');
+    // ini_set('log_errors', '1');
     // error_reporting(E_ALL);
-    // ini_set('display_errors', 1);    
 
+    // register_shutdown_function(function () {
+
+    //     $error = error_get_last();
+
+    //     if ($error !== null) {
+
+    //         error_log(
+    //             "MAKE_PICK FATAL ERROR: " .
+    //             json_encode($error)
+    //         );
+    //     }
+
+    // });
+
+    // Load environment variables
+    require_once __DIR__ . '/../../vendor/autoload.php';
+
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+    $dotenv->load();
+
+
+    
     
 
     require_once __DIR__ . '/../../includes/auth.php';
@@ -56,43 +79,91 @@
 
 
     // BROADCAST NEW - ONLINE
-    function broadcastDraftEvent(array $data): void
-    {
-        // Replace with your actual Render URL and secret key
-        $url = 'https://ascent-web-server.onrender.com/broadcast';
-        $secret = getenv('BROADCAST_SECRET') ?: 'YOUR_BROADCAST_SECRET';
+    // function broadcastDraftEvent(array $data): void
+    // {
+    //     // Replace with your actual Render URL and secret key
+    //     $url = 'https://ascent-web-server.onrender.com/broadcast';
+    //     // $secret = getenv('BROADCAST_SECRET') ?: 'YOUR_BROADCAST_SECRET';
+    //     $secret = $_ENV['BROADCAST_SECRET'];
 
-        $ch = curl_init($url);
+    //     $ch = curl_init($url);
 
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    //     curl_setopt($ch, CURLOPT_POST, true);
+    //     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    //     curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    //         'Content-Type: application/json',
+    //         'Authorization: Bearer ' . $secret
+    //     ]);
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    //     $response = curl_exec($ch);
+    //     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    //     file_put_contents(
+    //         __DIR__ . '/broadcast_debug.txt',
+    //         date('Y-m-d H:i:s') . " BROADCAST CALLED\n" .
+    //         "HTTP CODE: " . $httpCode . "\n" .
+    //         "RESPONSE: " . $response . "\n\n",
+    //         FILE_APPEND
+    //     );
+
+    //     if ($response === false) {
+    //         file_put_contents(
+    //             __DIR__ . '/broadcast_debug.txt',
+    //             "CURL ERROR: " . curl_error($ch) . "\n\n",
+    //             FILE_APPEND
+    //         );
+    //     }
+
+    //     curl_close($ch);
+    // }
+
+    function broadcastDraftEvent(array $data): bool
+{
+    $url = 'https://ascent-web-server.onrender.com/broadcast';
+
+    $secret = $_ENV['BROADCAST_SECRET'] ?? '';
+
+    if (empty($secret)) {
+        error_log("BROADCAST ERROR: Missing secret.");
+        return false;
+    }
+
+    $ch = curl_init($url);
+
+    if (!$ch) {
+        error_log("BROADCAST ERROR: Could not initialize cURL.");
+        return false;
+    }
+
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($data),
+        CURLOPT_HTTPHEADER => [
             'Content-Type: application/json',
             'Authorization: Bearer ' . $secret
-        ]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        ],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 15,
+        CURLOPT_TIMEOUT => 30
+    ]);
 
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
 
-        file_put_contents(
-            __DIR__ . '/broadcast_debug.txt',
-            date('Y-m-d H:i:s') . " BROADCAST CALLED\n" .
-            "HTTP CODE: " . $httpCode . "\n" .
-            "RESPONSE: " . $response . "\n\n",
-            FILE_APPEND
-        );
+    curl_close($ch);
 
-        if ($response === false) {
-            file_put_contents(
-                __DIR__ . '/broadcast_debug.txt',
-                "CURL ERROR: " . curl_error($ch) . "\n\n",
-                FILE_APPEND
-            );
-        }
-
-        curl_close($ch);
+    if ($response === false || $curlError) {
+        error_log("BROADCAST CURL ERROR: " . $curlError);
+        return false;
     }
+
+    error_log("BROADCAST HTTP CODE: " . $httpCode);
+    error_log("BROADCAST RESPONSE: " . $response);
+
+    return $httpCode === 200;
+}
 
 
     // ----------------------
@@ -599,9 +670,17 @@
     ];
 
     // broadcastDraftEvent($draftEvent);
-    error_log("ABOUT TO BROADCAST: " . json_encode($draftEvent));
+    // error_log("ABOUT TO BROADCAST: " . json_encode($draftEvent));
 
-    broadcastDraftEvent($draftEvent);
+    // broadcastDraftEvent($draftEvent);
+
+    // error_log("BROADCAST FUNCTION FINISHED");
+
+    error_log("ABOUT TO BROADCAST");
+
+    $broadcastResult = broadcastDraftEvent($draftEvent);
+
+    error_log("BROADCAST RESULT: " . ($broadcastResult ? "SUCCESS" : "FAILED"));
 
     error_log("BROADCAST FUNCTION FINISHED");
 

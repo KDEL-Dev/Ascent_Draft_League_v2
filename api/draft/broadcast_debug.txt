@@ -484,3 +484,9 @@ RESPONSE:
 
 CURL ERROR: SSL certificate problem: unable to get local issuer certificate
 
+2026-11-04 18:05:07 BROADCAST CALLED
+HTTP CODE: 0
+RESPONSE: 
+
+CURL ERROR: SSL certificate problem: unable to get local issuer certificate
+

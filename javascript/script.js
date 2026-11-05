@@ -1014,8 +1014,14 @@ function startTimer(pickStartedAt)
     async function updateTimer()
     {
         const startTime = new Date(
+            // Use this when on hostinger
+            // pickStartedAt.replace(" ", "T") + "Z"
+
+            // Use this when testing Locally
             pickStartedAt.replace(" ", "T")
+
         );
+
 
         const now = new Date();
 
