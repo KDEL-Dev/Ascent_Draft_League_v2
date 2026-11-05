@@ -242,7 +242,6 @@
         $url = 'https://ascent-web-server.onrender.com/broadcast';
 
         $secret = $_ENV['BROADCAST_SECRET'];
-        // $secret = '610d982f13ac70e4dede0260f003160adea30b4de0252866f49a9546a2e79739';
         
         error_log("Secret loaded: " . (!empty($secret) ? "YES" : "NO"));
 

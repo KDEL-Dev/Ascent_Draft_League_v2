@@ -1,5 +1,14 @@
 <?php
 
+    // Load environment variables
+    require_once __DIR__ . '/../../vendor/autoload.php';
+
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+    $dotenv->load();
+
+
+
+
     require_once __DIR__ . '/../../includes/connection.php';
 
     header('Content-Type: application/json');
@@ -96,27 +105,91 @@
     // BROADCAST WEBSOCKET EVENT
     // =====================================================
 
-    function broadcastDraftEvent(array $data): bool
-    {
-        $host = '127.0.0.1';
-        $port = 8080;
+    // function broadcastDraftEvent(array $data): bool
+    // {
+    //     $host = '127.0.0.1';
+    //     $port = 8080;
 
-        $socket = @fsockopen(
-            $host,
-            $port,
-            $errno,
-            $errstr,
-            2
-        );
+    //     $socket = @fsockopen(
+    //         $host,
+    //         $port,
+    //         $errno,
+    //         $errstr,
+    //         2
+    //     );
 
-        if (!$socket)
-        {
-            error_log(
-                "WebSocket connection failed: {$errstr} ({$errno})"
-            );
+    //     if (!$socket)
+    //     {
+    //         error_log(
+    //             "WebSocket connection failed: {$errstr} ({$errno})"
+    //         );
 
-            return false;
-        }
+    //         return false;
+    //     }
+
+    function broadcastDraftEvent(array $data): array    {
+        $url = 'https://ascent-web-server.onrender.com/broadcast';
+
+        $secret = $_ENV['BROADCAST_SECRET'];
+        
+        error_log("Secret loaded: " . (!empty($secret) ? "YES" : "NO"));
+
+        if (!$secret) {
+        error_log("BROADCAST_SECRET is missing.");
+
+        return [
+            "success" => false,
+            "error" => "Missing broadcast secret."
+        ];
+    }
+
+        $ch = curl_init($url);
+
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $secret
+            ],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 20
+        ]);
+
+        // ADDED for testing
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+
+        $response = curl_exec($ch);
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        $curlError = curl_error($ch);
+
+        $curlErrno = curl_errno($ch);
+
+        curl_close($ch);
+
+        $debug = [
+            "url" => $url,
+            "secret_loaded" => !empty($secret),
+            "curl_errno" => $curlErrno,
+            "curl_error" => $curlError,
+            "http_code" => $httpCode,
+            "render_response" => $response
+        ];
+
+        error_log("BROADCAST DEBUG: " . json_encode($debug));
+
+        return [
+            "success" => !$curlError && $httpCode === 200,
+            "debug" => $debug
+        ];
+
+    }
+
 
 
         // ---------------------------------------------
