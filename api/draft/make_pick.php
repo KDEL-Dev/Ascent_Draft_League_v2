@@ -1,5 +1,54 @@
 <?php
 
+    // =====================================
+// PHP ERROR LOGGING
+// =====================================
+
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
+
+// Save errors in this file
+ini_set('error_log', __DIR__ . '/make_pick_errors.log');
+
+register_shutdown_function(function () {
+
+    $error = error_get_last();
+
+    if ($error !== null) {
+
+        error_log(
+            "MAKE_PICK FATAL ERROR: " .
+            json_encode($error, JSON_PRETTY_PRINT)
+        );
+
+    }
+
+});
+
+// Catch uncaught exceptions
+set_exception_handler(function (Throwable $e) {
+
+    error_log(
+        "MAKE_PICK EXCEPTION: " .
+        $e->getMessage() .
+        " | FILE: " . $e->getFile() .
+        " | LINE: " . $e->getLine() .
+        " | TRACE: " . $e->getTraceAsString()
+    );
+
+    http_response_code(500);
+
+    header('Content-Type: application/json');
+
+    echo json_encode([
+        "success" => false,
+        "message" => "Internal server error."
+    ]);
+
+    exit;
+
+});
     // ini_set('display_errors', '0');
     // ini_set('log_errors', '1');
     // error_reporting(E_ALL);
@@ -466,33 +515,59 @@
 
     $tierCountSql ="SELECT COUNT(*) AS tier_count
                     FROM draft_picks dp
+
                     JOIN pokemon_tier_per_season pt
                         ON pt.showdown_pokemon_id = dp.showdown_pokemon_id
                         AND pt.season_id = dp.season_id
+
                     WHERE dp.season_id = ?
                     AND dp.active_user_id = ?
+
                     AND (
-                        (? = 'OU' AND pt.tier IN ('OU', 'UUBL'))
+                        (pt.tier IN ('OU', 'UUBL') AND ? = 1)
                         OR
-                        (? = 'UU' AND pt.tier IN ('UU', 'RUBL'))
+                        (pt.tier IN ('UU', 'RUBL') AND ? = 1)
                         OR
-                        (? = 'RU' AND pt.tier IN ('RU', 'NUBL'))
+                        (pt.tier IN ('RU', 'NUBL') AND ? = 1)
                         OR
-                        (? = 'NU' AND pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU'))
+                        (pt.tier IN ('NU', 'PUBL', 'PU', 'ZUBL', 'ZU') AND ? = 1)
                     )
     ";
+
+    // $stmt = $conn->prepare($tierCountSql);
+
+    // $stmt->bind_param(
+    //     "iissss",
+    //     $seasonId,
+    //     $activeUserId,
+    //     $tierGroup,
+    //     $tierGroup,
+    //     $tierGroup,
+    //     $tierGroup
+    // );
+
+    $isOU = ($tierGroup === 'OU') ? 1 : 0;
+    $isUU = ($tierGroup === 'UU') ? 1 : 0;
+    $isRU = ($tierGroup === 'RU') ? 1 : 0;
+    $isNU = ($tierGroup === 'NU') ? 1 : 0;
 
     $stmt = $conn->prepare($tierCountSql);
 
     $stmt->bind_param(
-        "iissss",
+        "iiiiii",
         $seasonId,
         $activeUserId,
-        $tierGroup,
-        $tierGroup,
-        $tierGroup,
-        $tierGroup
+        $isOU,
+        $isUU,
+        $isRU,
+        $isNU
     );
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $tierCount = (int)$result->fetch_assoc()['tier_count'];
 
     $stmt->execute();
 
