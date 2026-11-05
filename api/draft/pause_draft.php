@@ -127,54 +127,63 @@
     //         return false;
     //     }
 
-    function broadcastDraftEvent(array $data): array    {
+    
+    function broadcastDraftEvent(array $data): array
+    {
         $url = 'https://ascent-web-server.onrender.com/broadcast';
 
-        $secret = $_ENV['BROADCAST_SECRET'];
-        
-        error_log("Secret loaded: " . (!empty($secret) ? "YES" : "NO"));
+        $secret = $_ENV['BROADCAST_SECRET'] ?? '';
 
-        if (!$secret) {
-        error_log("BROADCAST_SECRET is missing.");
+        if ($secret === '') {
+            error_log("BROADCAST_SECRET is missing.");
 
-        return [
-            "success" => false,
-            "error" => "Missing broadcast secret."
-        ];
-    }
+            return [
+                "success" => false,
+                "error" => "Missing broadcast secret."
+            ];
+        }
+
+        $jsonData = json_encode($data);
+
+        if ($jsonData === false) {
+            return [
+                "success" => false,
+                "error" => "Failed to encode broadcast data."
+            ];
+        }
 
         $ch = curl_init($url);
 
         curl_setopt_array($ch, [
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_POSTFIELDS => $jsonData,
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
                 'Authorization: Bearer ' . $secret
             ],
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => 20
+            CURLOPT_CONNECTTIMEOUT => 15,
+            CURLOPT_TIMEOUT => 30
         ]);
-
-        // ADDED for testing
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-
 
         $response = curl_exec($ch);
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         $curlError = curl_error($ch);
-
         $curlErrno = curl_errno($ch);
 
         curl_close($ch);
 
+        $success = (
+            $response !== false &&
+            $curlErrno === 0 &&
+            $httpCode === 200
+        );
+
         $debug = [
             "url" => $url,
-            "secret_loaded" => !empty($secret),
+            "secret_loaded" => true,
             "curl_errno" => $curlErrno,
             "curl_error" => $curlError,
             "http_code" => $httpCode,
@@ -184,11 +193,11 @@
         error_log("BROADCAST DEBUG: " . json_encode($debug));
 
         return [
-            "success" => !$curlError && $httpCode === 200,
+            "success" => $success,
             "debug" => $debug
         ];
-
     }
+
 
 
 
@@ -196,137 +205,136 @@
         // WebSocket handshake
         // ---------------------------------------------
 
-        $key = base64_encode(random_bytes(16));
+        // $key = base64_encode(random_bytes(16));
 
-        $headers =
-            "GET / HTTP/1.1\r\n" .
-            "Host: {$host}:{$port}\r\n" .
-            "Upgrade: websocket\r\n" .
-            "Connection: Upgrade\r\n" .
-            "Sec-WebSocket-Key: {$key}\r\n" .
-            "Sec-WebSocket-Version: 13\r\n" .
-            "\r\n";
+        // $headers =
+        //     "GET / HTTP/1.1\r\n" .
+        //     "Host: {$host}:{$port}\r\n" .
+        //     "Upgrade: websocket\r\n" .
+        //     "Connection: Upgrade\r\n" .
+        //     "Sec-WebSocket-Key: {$key}\r\n" .
+        //     "Sec-WebSocket-Version: 13\r\n" .
+        //     "\r\n";
 
-        fwrite($socket, $headers);
+        // fwrite($socket, $headers);
 
 
         // ---------------------------------------------
         // Read handshake response
         // ---------------------------------------------
 
-        $response = '';
+        // $response = '';
 
-        while (!feof($socket))
-        {
-            $line = fgets($socket);
+        // while (!feof($socket))
+        // {
+        //     $line = fgets($socket);
 
-            if ($line === false)
-            {
-                break;
-            }
+        //     if ($line === false)
+        //     {
+        //         break;
+        //     }
 
-            $response .= $line;
+        //     $response .= $line;
 
-            if (rtrim($line) === '')
-            {
-                break;
-            }
-        }
+        //     if (rtrim($line) === '')
+        //     {
+        //         break;
+        //     }
+        // }
 
 
-        if (strpos($response, '101') === false)
-        {
-            fclose($socket);
+        // if (strpos($response, '101') === false)
+        // {
+        //     fclose($socket);
 
-            error_log(
-                "WebSocket handshake failed: " . $response
-            );
+        //     error_log(
+        //         "WebSocket handshake failed: " . $response
+        //     );
 
-            return false;
-        }
+        //     return false;
+        // }
 
 
         // ---------------------------------------------
         // Encode message
         // ---------------------------------------------
 
-        $message = json_encode($data);
+        // $message = json_encode($data);
 
-        if ($message === false)
-        {
-            fclose($socket);
+        // if ($message === false)
+        // {
+        //     fclose($socket);
 
-            return false;
-        }
+        //     return false;
+        // }
 
 
         // ---------------------------------------------
         // Create MASKED WebSocket frame
         // ---------------------------------------------
 
-        $length = strlen($message);
+        // $length = strlen($message);
 
-        $mask = random_bytes(4);
+        // $mask = random_bytes(4);
 
-        $maskedMessage = '';
+        // $maskedMessage = '';
 
-        for ($i = 0; $i < $length; $i++)
-        {
-            $maskedMessage .=
-                $message[$i] ^
-                $mask[$i % 4];
-        }
+        // for ($i = 0; $i < $length; $i++)
+        // {
+        //     $maskedMessage .=
+        //         $message[$i] ^
+        //         $mask[$i % 4];
+        // }
 
 
-        if ($length <= 125)
-        {
-            $frame =
-                chr(0x81) .
-                chr(0x80 | $length) .
-                $mask .
-                $maskedMessage;
-        }
-        elseif ($length <= 65535)
-        {
-            $frame =
-                chr(0x81) .
-                chr(0x80 | 126) .
-                pack('n', $length) .
-                $mask .
-                $maskedMessage;
-        }
-        else
-        {
-            $frame =
-                chr(0x81) .
-                chr(0x80 | 127) .
-                pack('J', $length) .
-                $mask .
-                $maskedMessage;
-        }
+        // if ($length <= 125)
+        // {
+        //     $frame =
+        //         chr(0x81) .
+        //         chr(0x80 | $length) .
+        //         $mask .
+        //         $maskedMessage;
+        // }
+        // elseif ($length <= 65535)
+        // {
+        //     $frame =
+        //         chr(0x81) .
+        //         chr(0x80 | 126) .
+        //         pack('n', $length) .
+        //         $mask .
+        //         $maskedMessage;
+        // }
+        // else
+        // {
+        //     $frame =
+        //         chr(0x81) .
+        //         chr(0x80 | 127) .
+        //         pack('J', $length) .
+        //         $mask .
+        //         $maskedMessage;
+        // }
 
 
         // ---------------------------------------------
         // Send frame
         // ---------------------------------------------
 
-        $result = fwrite($socket, $frame);
+        // $result = fwrite($socket, $frame);
 
-        fclose($socket);
+        // fclose($socket);
 
-        return $result !== false;
-    }
+        // return $result !== false;
+    // }
 
 
     //------ PAUSE DRAFT ------
-    $sql = "
-        UPDATE draft_state
-        SET
-            is_active = 0,
-            status = 'paused',
-            timer_remaining = ?
-        WHERE season_id = ?
-        AND status = 'active'
+    $sql = "UPDATE draft_state
+            SET
+                is_active = 0,
+                status = 'paused',
+                timer_remaining = ?
+            WHERE season_id = ?
+            AND status = 'active'
     ";
 
     $stmt = $conn->prepare($sql);
