@@ -73,9 +73,13 @@ header('Content-Type: application/json');
 
 
     // GET TEAMS
-$team1Id = $_GET['team1_id'] ?? null;
-$team2Id = $_GET['team2_id'] ?? null;
+    // $team1Id = $_GET['team1_id'] ?? null;
+    // $team2Id = $_GET['team2_id'] ?? null;
 
+    $team1Id = $_POST['team1_id'] ?? null;
+    $team2Id = $_POST['team2_id'] ?? null;
+
+    
 if (!$team1Id || !$team2Id) {
     echo json_encode([
         "success" => false,

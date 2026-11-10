@@ -122,7 +122,10 @@
                     </select>
                 </div>
                 <div class="pt-3 my-3">
-                    <button type="button" id="selectTeams" class="btn btn-primary">
+                    <button type="button" 
+                            id="selectTeams" 
+                            data-season-id="<?= (int) $seasonId ?>"
+                            class="btn btn-primary">
                         Select Teams
                     </button>
                 </div>

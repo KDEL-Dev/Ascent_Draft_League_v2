@@ -1642,10 +1642,13 @@ if(selectTeams)
 {
 
 
-    selectTeams.addEventListener('click', function () {
+    selectTeams.addEventListener('click', function () 
+    {
 
         team1Id = document.getElementById('team1').value;
         team2Id = document.getElementById('team2').value;
+
+        const seasonId = document.getElementById('selectTeams').dataset.seasonId
 
 
         if (!team1Id || !team2Id) {
@@ -1658,11 +1661,30 @@ if(selectTeams)
             return;
         }
 
-        fetch(
-            '../api/matchup/get_matchup_roster.php' +
-            '?team1_id=' + encodeURIComponent(team1Id) +
-            '&team2_id=' + encodeURIComponent(team2Id)
-        )
+        // fetch(
+        //     '../api/matchup/get_matchup_roster.php' +
+        //     '?team1_id=' + encodeURIComponent(team1Id) +
+        //     '&team2_id=' + encodeURIComponent(team2Id)
+        // )
+        // .then(response => response.json())
+        // .then(data => {
+
+        //     if (!data.success) {
+        //         alert(data.message);
+        //         return;
+        //     }
+
+        // Create POST data
+        const formData = new FormData();
+
+        formData.append('seasonId', seasonId);
+        formData.append('team1_id', team1Id);
+        formData.append('team2_id', team2Id);
+
+        fetch('../api/matchup/get_matchup_roster.php', {
+            method: 'POST',
+            body: formData
+        })
         .then(response => response.json())
         .then(data => {
 
@@ -1670,6 +1692,8 @@ if(selectTeams)
                 alert(data.message);
                 return;
             }
+
+
 
             // Save team information for later
             team1Name = data.team1_name;
@@ -2083,7 +2107,7 @@ if(submitMatch)
 
             alert('Match saved successfully!');
 
-            window.location.href = 'matchups.php';
+            window.location.href = `matchups.php?seasonId=${encodeURIComponent(seasonId)}`;
 
         })
         .catch(error => {
