@@ -508,7 +508,7 @@
                                             <li>-</li>
                                         </ul>
                                     </div>
-                                    <div class="d-flex flex-column">
+                                    <div class="d-flex flex-column ">
                                         <div class="draftTierTitle tierBadge-RU d-flex align-items-center justify-content-center">
                                             <p class="mb-0">RU</p>
                                         </div>
@@ -540,7 +540,7 @@
                                     <div class="draftTierTitle tierBadge-OU">
                                         <p class="text-center">OU</p>
                                     </div>
-                                    <ul id="ouDraftRoster" class="p-0 d-flex flex-column align-items-center">
+                                    <ul id="ouDraftRoster" class="w-100 p-0 d-flex flex-column align-items-center">
                                         <li>—</li>
                                         <li>—</li>
                                         <li>—</li>

@@ -81,6 +81,8 @@
 
         <h1 class="fs-3">Load New Showdown Tiers</h1>
 
+            <a class="btn btn-secondary" href="../admin.php?seasonId=<?= (int)$seasonId ?>">Back</a>
+
         <hr>
         
         <!-- Form to upload JSON -->

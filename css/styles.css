@@ -460,6 +460,8 @@ li
 
 #draftDisplayTeamRoster li
 {
+    min-width: 100px;
+
     color: black;
     text-align: center;
 }
@@ -475,6 +477,15 @@ li
 {
     background-color: white;
 
+}
+
+.draftYourTeam li
+{
+    min-width: 100px;
+
+    display: flex;
+    justify-content: center;
+    
 }
 
 #draftRosterCount
