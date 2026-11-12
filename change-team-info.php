@@ -109,7 +109,20 @@
     </nav>
     <main id="changeTeamInfo" class="bg-white p-3 container">
 
-        <h1 class="fs-3">Change Team name and Mascot</h1>
+        
+        <div class="w-100 justify-self-start">
+            
+            <!-- <a href="<?= BASE_URL ?>index.php" class="btn btn-secondary">Back</a> -->
+
+             <a href="<?= BASE_URL ?>profile.php" class="d-flex align-items-center">
+                
+                <i class="backBtn fa-solid fa-arrow-left fa-2x"></i>
+
+             </a>
+             
+        </div>  
+
+        <h1 class="fs-3 text-center">Change Team name and Mascot</h1>
 
         <hr>
 
@@ -123,11 +136,6 @@
         <?php endif; ?>
 
 
-
-
-        <div class="mb-3">
-            <a href="profile.php" class="btn btn-secondary">Return to Profile</a>
-        </div>
 
         <div class="mb-3 p-3 border-top border-bottom bg-light">
             <h2 class="fs-5">Current Name and Mascot</h2>

@@ -132,8 +132,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/../css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    
     <script src="https://kit.fontawesome.com/4a4034fc29.js" crossorigin="anonymous"></script>
 
     <title>Create New Season</title>
@@ -146,10 +147,20 @@
 
     <main id="createNewSeasonPage" class="container p-3 bg-white rounded-2 d-flex flex-column align-items-center">
         
+        <div class="w-100 justify-self-start">
+            
+            <!-- <a href="<?= BASE_URL ?>index.php" class="btn btn-secondary">Back</a> -->
+
+             <a href="<?= BASE_URL ?>index.php" class="d-flex align-items-center">
+                
+                <i class="backBtn fa-solid fa-arrow-left fa-2x"></i>
+
+             </a>
+             
+        </div>   
+
         <h2 class="fs-5">Create New Season</h2>
-        <div class="">
-            <a href="<?= BASE_URL ?>index.php" class="btn btn-secondary">Back</a>
-        </div>    
+         
     
 
         <?php if ($successMessage !== ""): ?>

@@ -247,7 +247,7 @@
                         </div>
                         <p>Stats from all previous seasons</p>
                         <div class="flex-grow-1">
-                            <a class="btn btn-primary" href="statistics.php">Enter</a>
+                            <a class="btn btn-primary disabled" href="statistics.php">Enter</a>
                         </div>
                         
                     </div>
@@ -262,7 +262,7 @@
                         </div>    
                     
                         <p>List of all previous league winners and their teams</p>
-                        <a href="champions.php" class="btn btn-primary">Enter</a>
+                        <a href="champions.php" class="btn btn-primary disabled">Enter</a>
                     </div>
                 </div>
                 

@@ -28,7 +28,7 @@
                 <a class="nav-link" href="profile.php">Profile</a>
             </li> -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= BASE_URL ?>admin.php">Admin</a>
+                <a class="nav-link" href="<?= BASE_URL ?>admin.php">Admin Settings</a>
             </li>
             <!-- <li class="nav-item">
                 <a class="nav-link" href="logout.php">Logout</a>

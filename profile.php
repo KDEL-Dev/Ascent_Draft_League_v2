@@ -85,8 +85,21 @@
     </nav>
     <main id="profile" class="bg-white p-3 container">
 
-        <h1 class="fs-3">Profile</h1>
-        <a href="<?= BASE_URL ?>index.php" class="btn btn-secondary">Return</a>
+        
+        <div class="w-100 justify-self-start">
+            
+            <!-- <a href="<?= BASE_URL ?>index.php" class="btn btn-secondary">Back</a> -->
+
+             <a href="<?= BASE_URL ?>index.php" class="d-flex align-items-center">
+                
+                <i class="backBtn fa-solid fa-arrow-left fa-2x"></i>
+
+             </a>
+             
+        </div>  
+
+        <h1 class="fs-3 text-center">Profile</h1>
+
         <hr>
 
             <a href="change-team-info.php" class="btn btn-primary">Change Team Name and Mascot</a>

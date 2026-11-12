@@ -39,9 +39,21 @@
     <nav class="px-3 mb-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <?php include 'includes/nav-main.php' ?>
     </nav>
-    <main class="p-3 bg-white container">
+    <main id="adminSettingsPage" class="p-3 bg-white container">
 
-        <h1 class="fs-3">Admin Settings</h1>
+        <div class="w-100 justify-self-start">
+            
+            <!-- <a href="<?= BASE_URL ?>index.php" class="btn btn-secondary">Back</a> -->
+
+             <a href="<?= BASE_URL ?>index.php" class="d-flex align-items-center">
+                
+                <i class="backBtn fa-solid fa-arrow-left fa-2x"></i>
+
+             </a>
+             
+        </div> 
+
+        <h1 class="fs-3 text-center">Admin Settings</h1>
         <hr>
 
         <div class="row">

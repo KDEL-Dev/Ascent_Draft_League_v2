@@ -98,11 +98,140 @@ li
     min-height: 200px;
 }
 
-.seasonBanner
+/******************************/
+/******** SEASON BANNER *******/
+/******************************/
+
+.seasonBanner {
+    background:
+        /* White stars */
+        radial-gradient(white 1px, transparent 1.5px),
+
+        /* Gold stars */
+        radial-gradient(rgba(254, 211, 126, 0.9) 1px, transparent 1.5px),
+
+        /* Purple nebula */
+        radial-gradient(
+            ellipse at 80% 20%,
+            rgba(110, 50, 180, 0.4),
+            transparent 50%
+        ),
+
+        /* Emerald glow */
+        radial-gradient(
+            ellipse at 20% 30%,
+            rgba(22, 134, 100, 0.4),
+            transparent 45%
+        ),
+
+        /* Golden center glow */
+        radial-gradient(
+            ellipse at 50% 40%,
+            rgba(254, 211, 126, 0.18),
+            transparent 35%
+        ),
+
+        /* Dark space base */
+        linear-gradient(
+            135deg,
+            #030712,
+            #11102b,
+            #0d4937,
+            #080816
+        );
+
+    background-size:
+        100px 100px,
+        150px 150px,
+        auto,
+        auto,
+        auto,
+        auto;
+
+    background-position:
+        0 0,
+        40px 60px,
+        center,
+        center,
+        center,
+        center;
+
+    position: relative;
+    isolation: isolate;
+}
+
+.seasonBanner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.bannerCircle
+{  
+    min-width: 450px;
+    min-height: 450px;
+
+    border: 8px solid var(--secondary-grad-color);
+    border-radius: 100%;
+    
+    box-shadow: 0 0 15px var(--secondary-grad-color);
+
+
+}
+
+.bannerCircle::after {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    border: 4px solid var(--secondary-color);
+    border-radius: 50%;
+
+    animation: radiate 6s ease-out infinite;
+}
+
+@keyframes radiate {
+    0% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    33% {
+        transform: scale(2);
+        opacity: 0;
+    }
+
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+
+#bannerSeasonNum
+{   
+    border-bottom: 2px solid var(--soft-white);
+    
+    font-family: 'electrolize';
+    font-weight: 600;
+    font-size: 2.5rem;
+    color: var(--soft-white);
+    text-shadow: 0 0 25px var(--soft-white);
+}
+
+#bannerSeasonName
 {
-    min-height: 150px;
-    width: 100%;
-    background-color: grey;
+    margin-bottom: 0;
+
+    font-family: 'electrolize';
+    font-size: 1.5rem;
+    color: var(--soft-white);
+
+    /* -webkit-text-stroke: .5px black; */
+
 }
 
 /*****************************/
@@ -121,7 +250,10 @@ li
     z-index: 1101;
 }
 
-
+.navbar-nav li
+{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
 
 
 
@@ -275,6 +407,9 @@ li
 #draftDirection
 {
     min-width: 25px;
+    padding: 0 8px;
+
+
     background-color: white;
 }
 
@@ -1095,7 +1230,10 @@ li
     background-color: color-mix(in srgb,var(--nav-color), white 95%);
 }
 
-
+.indexTitleBg
+{
+    background-color: var(--nav-color);
+}
 
 /* -----------------------------------------------------------------------
 ----------------------------- CREATE SEASON PAGE ------------------------
@@ -1106,6 +1244,24 @@ li
     width: 100%;
     max-width: 480px;
 }
+
+.backBtn
+{
+    color: gray;
+}
+
+#createNewSeasonPage .btn-primary
+{
+    background-color: var(--main-color);
+    border: var(--main-color);
+}
+
+#createNewSeasonPage .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border: var(--main-color-hover);
+}
+
 
 /* -----------------------------------------------------------------------
 --------------------------------- PROFILE --------------------------------
@@ -1118,6 +1274,22 @@ li
 }
 
 #profile .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border: var(--main-color-hover);
+}
+
+/* -----------------------------------------------------------------------
+----------------------------- ADMIN SETTINGS -----------------------------
+------------------------------------------------------------------------*/
+
+#adminSettingsPage .btn-primary
+{
+    background-color: var(--main-color);
+    border: var(--main-color);
+}
+
+#adminSettingsPage .btn-primary:hover
 {
     background-color: var(--main-color-hover);
     border: var(--main-color-hover);

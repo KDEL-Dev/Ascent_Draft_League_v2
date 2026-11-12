@@ -1152,18 +1152,26 @@ async function loadDraftState()
 
     const draftDirection = document.getElementById('draftDirection');
 
-    if(draftDirection)
-    {
-        if (draftState.draft_direction === 'forward')
-        {
-            draftDirection.textContent = '↓';
-        }
-        else
-        {
-            draftDirection.textContent = '↑';
+    if (draftDirection) {
+        if (draftState.draft_direction === 'forward') {
+            draftDirection.innerHTML = `
+                <div class="d-flex flex-column align-items-center gap-5">
+                    <i class="fa-solid fa-arrow-down"></i>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    <i class="fa-solid fa-arrow-down"></i>
+                </div>
+            `;
+        } else {
+            draftDirection.innerHTML = `
+                <div class="d-flex flex-column align-items-center gap-5">
+                    <i class="fa-solid fa-arrow-up"></i>
+                    <i class="fa-solid fa-arrow-up"></i>
+                    <i class="fa-solid fa-arrow-up"></i>
+                </div>
+            `;
         }
     }
-    
+        
     // -------------------------
     // DRAFT IS NOT ACTIVE
     // -------------------------

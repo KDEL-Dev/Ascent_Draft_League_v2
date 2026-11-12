@@ -38,8 +38,20 @@
         <?php include 'includes/nav-main.php' ?>
     </nav>
     <main class="container p-3 bg-white">
+
+        <div class="w-100 justify-self-start">
+            
+            <!-- <a href="<?= BASE_URL ?>index.php" class="btn btn-secondary">Back</a> -->
+
+             <a href="<?= BASE_URL ?>index.php" class="d-flex align-items-center">
+                
+                <i class="backBtn fa-solid fa-arrow-left fa-2x"></i>
+
+             </a>
+             
+        </div> 
         
-        <h1 class="fs-3">About</h1>
+        <h1 class="fs-3 text-center">About</h1>
         <hr>
 
         <div class="d-flex align-items-center flex-column">
