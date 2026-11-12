@@ -94,7 +94,7 @@
             <div id="indexTopCont" class="row p-3">
                 <div class="col-12 col-lg-6 px-0">
                     <div class="h-100 p-3 mx-1 border rounded-2 bg-dark">
-                        <h2 class="fs-5 text-center fw-bold text-white">Current Season</h2>
+                        <h2 class="fs-5 text-center fw-bold">Current Season</h2>
                         
                         <?php if ($currentSeason): ?>
 

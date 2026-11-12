@@ -57,13 +57,49 @@
         <hr>
 
         <div class="row">
-            <div class="mb-3">
-                <a href="admin/member-list.php" class="btn btn-primary">Member List</a>
+
+            <div class="col-6 col-lg-4">
+
+                <a href="admin/member-list.php">
+
+                    <div class="card bg-light">
+
+                        <div class="card-body d-flex flex-column align-items-center">
+
+                            <h2 class="card-title fs-5 text-center">Member List</h2>
+
+                            <button class="btn btn-primary">Enter</button>
+                            
+                        </div>
+
+                    </div>
+
+                </a>
+
             </div>
-            <div>
-                <a href="<?= BASE_URL ?>admin/season-list.php" class="btn btn-primary">Season List</a>
+
+            <div class="col-6 col-lg-4">
+
+                <a href="<?= BASE_URL ?>admin/season-list.php">
+
+                    <div class="card bg-light">
+
+                        <div class="card-body d-flex flex-column align-items-center">
+
+                            <h2 class="text-black fs-5 text-center">Season List</h2>
+                            
+                            <button class="btn btn-primary">Enter</button>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
             </div>
+
         </div>
+        
         
 
     </main>
