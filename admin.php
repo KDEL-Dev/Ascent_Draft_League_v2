@@ -58,7 +58,7 @@
 
         <div class="row">
             <div class="mb-3">
-                <a href="" class="btn btn-primary">Member List</a>
+                <a href="admin/member-list.php" class="btn btn-primary">Member List</a>
             </div>
             <div>
                 <a href="<?= BASE_URL ?>admin/season-list.php" class="btn btn-primary">Season List</a>

@@ -238,9 +238,11 @@
                 <h2 class="fs-4">Pokemon Kill Leaders</h2>
 
                     <div class="card-group">
+                        
                         <!-- For every item, create a new card -->
                         <?php foreach ($pkmnLeader as $index => $pkmn): ?> <!-- colon is important for some reason - look into -->
-                        <div class="card d-sm-flex flex-row d-md-block">
+                        
+                            <div class="card d-sm-flex flex-row d-md-block">
                             
                             <?php
                                 $rankClass = match ($index) {
@@ -257,7 +259,7 @@
                             <div class="pkmnLeaderImgCont">
                                 <img src="" alt="<?= htmlspecialchars($pkmn['name']) ?>" data-pkmn-name="<?= htmlspecialchars($pkmn['name']) ?>" class="pkmnLeaderImg">
                             </div>
-                            <div class="card-body">
+                            <div class="card-body d-flex flex-column flex-grow-1">
                                 <div>
                                     <p class="card-title fw-bold mb-0"><?= htmlspecialchars($pkmn['name']) ?></p>
                                     <p class="tierBadge-<?= htmlspecialchars($pkmn['tier']) ?>  mb-0 badge rounded-5 d-inline-block"><?= htmlspecialchars($pkmn['tier']) ?></p>

@@ -86,8 +86,10 @@
         <?php include '../includes/nav.php' ?>
     </nav>
 
-    <main class="container p-3">
+    <main id="createMatchupPage" class="container p-3">
+
         <div class="p-3 bg-white">
+            
             <div class="my-3 pb-3 border-bottom">
                 <a href="matchups.php?seasonId=<?= (int)$seasonId ?>" class="btn btn-secondary">Return to Matchups</a>
             </div>

@@ -55,7 +55,9 @@
         <hr>
 
         <div class="d-flex align-items-center flex-column">
-            <img src="img/Ascent_Horizontal_Text_GRAD_2.png" height="150" alt="" class="img-fluid">
+
+            <img src="img/Ascent_Horizontal_Text_GRAD_2.png" height="100" alt="" class="">
+
             <p class="text-center">The Ascent Draft League is a competitive Pokémon draft-style league focused on strategy, team building, and player skill. Each participant drafts a unique roster of Pokémon across multiple tiers, creating balanced and diverse teams for the season. 
 
             The league is structured into a Round Robin stage followed by a Knockout stage, where players compete in Best-of-One matches. Success depends on preparation, adaptability, and smart roster management, including limited mid-season trades.

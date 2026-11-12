@@ -1088,6 +1088,21 @@ li
     font-size: 16px;
 }
 
+/* -----------------------------------------------------------------------
+---------------------------- MATCHUP CREATION ----------------------------
+------------------------------------------------------------------------*/
+#createMatchupPage .btn-primary
+{
+    background-color: var(--main-color);
+    border: var(--main-color);
+}
+
+#createMatchupPage .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border: var(--main-color-hover);
+}
+
 
 /* -----------------------------------------------------------------------
 ----------------------------- STATISTICS PAGE -------------------------------
