@@ -442,10 +442,16 @@ async function loadDraftedDisplay()
     // --------------------
 
     const draftPickOwner = document.getElementById('draftPickOwner');
+    const drafteeTeamName = document.getElementById('drafteeTeamName');
     
     if(draftPickOwner)
     {
         draftPickOwner.textContent = currentPick.team_name;
+    }
+
+    if(drafteeTeamName)
+    {
+        drafteeTeamName.textContent = currentPick.team_name;
     }
     
     // --------------------
@@ -453,10 +459,17 @@ async function loadDraftedDisplay()
     // --------------------
 
     const draftPickOwnerMasc = document.getElementById('draftPickOwnerMasc');
+    const drafteeTeamMasc = document.getElementById('drafteeTeamMasc');
+
     
     if(draftPickOwnerMasc)
     {
         draftPickOwnerMasc.textContent = currentPick.team_mascot;
+    }
+
+    if(drafteeTeamMasc)
+    {
+        drafteeTeamMasc.textContent = currentPick.team_mascot;
     }
 
     // --------------------

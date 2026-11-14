@@ -488,7 +488,13 @@
                             </div>
 
                             <div id="draftDisplayTeamRoster" class="m-3 p-3 bg-light border border-2 rounded-3 d-none d-md-flex flex-grow-1 align-items-center flex-column">
-                                <p class="fs-5">Roster</p>
+                                <div class="d-flex">
+                                    <p id="drafteeTeamName" class="fs-5 fw-bold me-1"></p>
+                                    <p id="drafteeTeamMasc" class="fs-5 me-1"></p>
+                                    <p class="fs-5 me-1">Roster</p>
+                                </div>
+                                
+
                                 <div class="w-100 p-3 bg-white border rounded-3 d-flex justify-content-around flex-wrap">
                                     <div class="d-flex flex-column">
                                         <div class="draftTierTitle tierBadge-OU d-flex align-items-center justify-content-center">
