@@ -92,7 +92,7 @@
             <hr>
             <!-- Current Season -->
             <div id="indexTopCont" class="row p-3">
-                <div class="col-12 col-lg-6 px-0">
+                <div id="homeCurrentSeason" class="col-12 col-lg-6 px-0">
                     <div class="h-100 p-3 mx-1 border rounded-2 bg-dark">
                         <h2 class="fs-5 text-center fw-bold">Current Season</h2>
                         
@@ -104,7 +104,7 @@
 
                                 <div class="card border border-2">
                                     <div class="row g-0">
-                                        <div class="col-md-4 bg-secondary">
+                                        <div id="currentSeasonImg" class="col-md-4 p-2">
                                             <img class="img-fluid" src="img/Ascent Grad Logo w Text.svg" alt="">
                                         </div>
                                         <div class="col-md-8">
@@ -272,11 +272,11 @@
                     <div id="homeCreateSeasonCont" class="p-3 border rounded-3 d-flex justify-content-center align-items-center flex-column">
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-plus"></i>
-                            <h2 class="fs-4 mx-3">Create New Season</h2>
+                            <h2 class="fs-3 fw-bold mx-3 mb-0">New Season</h2>
                             <i class="fa-solid fa-plus"></i>
                         </div>
                         <div>
-                            <p>Click Below to create a new  season</p>
+                            <p>Click button below to create a new season</p>
                         </div>
                         <div>
                             <a id="createNewSeason" href="admin/create-season.php" class="btn btn-primary">Create</a>

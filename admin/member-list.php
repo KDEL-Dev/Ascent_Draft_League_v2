@@ -70,6 +70,8 @@
 
     $stmt->close()
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +90,7 @@
     <nav class="px-3 mb-3 sticky-top navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <?php include '../includes/nav-main.php' ?>
     </nav>
-    <main class="p-3 bg-white container">
+    <main id="memberListPage" class="p-3 bg-white container">
 
         <div class="w-100 justify-self-start">
             
@@ -108,7 +110,7 @@
 
         <div class="table-responsive">
         
-            <table class="table">
+            <table id="memberListTableAdmin" class="table">
                 <thead>
                     <tr>
                         <th>Email</th>
@@ -125,7 +127,22 @@
                             <td><?= htmlspecialchars($member['default_team_name']) ?></td>
                             <td><?= htmlspecialchars($member['default_team_mascot']) ?></td>
                             <td><?= htmlspecialchars($member['role']) ?></td>
-                            <td><button class="btn btn-sm btn-primary">Reset</button></td>
+
+                            <!-- Reset Password -->
+                            <td>
+                                <form method="POST" action="../api/admin_settings/reset_password-admin.php"
+                                    onsubmit="return confirm('Are you sure you want to reset this member\'s password?');">
+
+                                    <input type="hidden" name="email"
+                                        value="<?= htmlspecialchars($member['email']) ?>">
+
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        Reset
+                                    </button>
+
+                                </form>
+                            </td>
+
                         </tr>
                     <?php endforeach ?>
                 </tbody>

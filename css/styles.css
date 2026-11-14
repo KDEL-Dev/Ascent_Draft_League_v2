@@ -1185,6 +1185,16 @@ li
 
 }
 
+#homeCurrentSeason h2
+{
+    color: var(--secondary-color);
+}
+
+#currentSeasonImg
+{
+    background-image: linear-gradient(to top, var(--main-color), var(--main-color-hover));
+}
+
 #homeAboutCont .fa-play
 {
     rotate: 270deg;
@@ -1235,7 +1245,16 @@ li
 
 #homeCreateSeasonCont
 {   
-    background-color: color-mix(in srgb, var(--main-color), white 90%); 
+    /* background-color: color-mix(in srgb, var(--main-color), white 90%);  */
+
+    background-color: var(--nav-color);
+    color: var(--secondary-color);
+
+}
+
+#homeCreateSeasonCont p
+{
+    color: var(--soft-white);
 }
 
 #statisticsCont,
@@ -1324,4 +1343,41 @@ li
 {
     background-color: var(--main-color-hover);
     border: var(--main-color-hover);
+}
+
+
+
+/* -----------------------------------------------------------------------
+---------------------------- RESET Password ----------------------------
+------------------------------------------------------------------------*/
+
+#resetPasswordAdmin .btn-primary
+{
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+
+#resetPasswordAdmin .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
+}
+
+
+/* -----------------------------------------------------------------------
+---------------------------- MEMBER LIST -ADMIN --------------------------
+------------------------------------------------------------------------*/
+
+#memberListTableAdmin .btn-primary
+{
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+
+#memberListTableAdmin .btn-primary:hover
+{
+    background-color: var(--main-color-hover);
+    border-color: var(--main-color-hover);
 }
